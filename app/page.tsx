@@ -1,10 +1,11 @@
+"use client";
 import Header from "@src/components/Main/Header";
-import Sidebar from "@src/components/Main/Sidebar";
-import clsx from "clsx";
-import useExpand from "@src/components/Main/Sidebar/hooks/useExpand";
 import Resources from "@src/components/Main/Resources";
+import Sidebar from "@src/components/Main/Sidebar";
+import useExpand from "@src/components/Main/Sidebar/hooks/useExpand";
+import clsx from "clsx";
 
-const App = () => {
+const MainPage = () => {
   const UseExpandRet = useExpand();
   const { expand } = UseExpandRet;
 
@@ -34,4 +35,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default MainPage;
