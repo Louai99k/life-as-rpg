@@ -30,6 +30,8 @@ export default {
           colors: {
             background: {
               DEFAULT: "#00171F",
+              900: "#000F14",
+              800: "#002E3D",
             },
             primary: {
               DEFAULT: "#003459",
