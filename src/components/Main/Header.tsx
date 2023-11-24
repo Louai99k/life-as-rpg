@@ -2,8 +2,8 @@ import { Chip } from "@nextui-org/react";
 
 const Header = () => {
   return (
-    <div className="flex items-end py-8 justify-center gap-4">
-      <h3 className="text-4xl font-bold">Life As RPG</h3>
+    <div className="flex items-end pt-8 justify-center gap-4">
+      <h1 className="text-4xl font-bold">Life As RPG</h1>
       <Chip
         variant="dot"
         classNames={{

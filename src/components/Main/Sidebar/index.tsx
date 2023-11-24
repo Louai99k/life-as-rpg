@@ -14,7 +14,7 @@ const Sidebar = ({ onExpand, expand, onCollapse }: SidebarProps) => {
         <span className={spanClass}>Logo</span>
         {menuItems().map((item, i) => (
           <span key={i} className={spanClass}>
-            {item.label}
+            {expand ? item.label : item.label.slice(0, 3)}
           </span>
         ))}
       </div>
@@ -27,7 +27,7 @@ const Sidebar = ({ onExpand, expand, onCollapse }: SidebarProps) => {
           }
         }}
       >
-        collapse
+        {expand ? "collapse" : "clps"}
       </button>
     </div>
   );
