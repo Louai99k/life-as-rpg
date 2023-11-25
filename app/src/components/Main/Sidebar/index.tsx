@@ -1,5 +1,6 @@
 import menuItems from "./menuItems";
 import Logo from "@src/components/UI/Logo";
+import { Button, Tooltip } from "@nextui-org/react";
 
 import type useExpand from "./hooks/useExpand";
 
@@ -13,11 +14,25 @@ const Sidebar = ({ onExpand, expand, onCollapse }: SidebarProps) => {
     <div className="flex h-full flex-col justify-between pt-2 px-2 pb-8">
       <div className="flex flex-col w-full items-center gap-2">
         <Logo />
-        {menuItems().map((item, i) => (
-          <span key={i} className={spanClass}>
-            {expand ? item.label : item.label.slice(0, 3)}
-          </span>
-        ))}
+        {menuItems().map((item, i) => {
+          if (expand) {
+            return (
+              <Button
+                className="w-full justify-start"
+                startContent={item.icon}
+                key={i}
+                variant="bordered"
+              >
+                {item.label}
+              </Button>
+            );
+          }
+          return (
+            <Tooltip placement="right" key={i} content={item.label}>
+              <Button isIconOnly>{item.icon}</Button>
+            </Tooltip>
+          );
+        })}
       </div>
       <button
         onClick={() => {

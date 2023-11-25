@@ -8,7 +8,7 @@ const MoneyIcon = ({ height, width }: IconProps) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g fill="none" stroke="#ffdc00">
+      <g fill="none" className="stroke-yellow-500">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
