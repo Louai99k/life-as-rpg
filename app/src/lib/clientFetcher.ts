@@ -1,7 +1,5 @@
-import urlGenerator from "@src/utils/urlGenerator";
-
 async function clientFetcher<T>(key: string, opt?: RequestInit) {
-  const res = await fetch(urlGenerator(key), opt);
+  const res = await fetch(`/api/${key}`, opt);
 
   if (!res.ok) {
     throw { message: "error occured" };
