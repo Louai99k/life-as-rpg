@@ -4,10 +4,14 @@ import urlGenerator from "@src/utils/urlGenerator";
 
 import type { Player } from "@src/types/player";
 
-const getMasterStats = async (): Promise<Player | undefined> => {
+const getMasterStats = async (): Promise<Player | null> => {
   const res = await fetch(urlGenerator("master-info"), {
     cache: "no-cache",
   });
+
+  if (!res.ok) {
+    return null;
+  }
 
   return res.json();
 };
