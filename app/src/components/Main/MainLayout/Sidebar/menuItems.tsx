@@ -7,6 +7,7 @@ import SkillsIcon from "@src/icons/SkillsIcon";
 type MenuItem = {
   label: string;
   icon: React.ReactNode;
+  link: string;
 };
 
 const menuItems = () => {
@@ -14,22 +15,27 @@ const menuItems = () => {
     {
       label: "Missions",
       icon: <MissionsIcon />,
+      link: "/missions",
     },
     {
       label: "Skills",
       icon: <SkillsIcon />,
+      link: "/skills",
     },
     {
       label: "Magic",
       icon: <MagicIcon />,
+      link: "/magic",
     },
     {
       label: "Physics",
       icon: <PhysicsIcon />,
+      link: "/physics",
     },
     {
       label: "Items",
       icon: <ItemsIcon />,
+      link: "/items",
     },
   ];
 
