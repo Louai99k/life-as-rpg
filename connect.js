@@ -20,16 +20,21 @@ const db = new sqlite3.Database(
 );
 
 db.serialize(() => {
-  // db.run(
-  //   SOME_SQL,
-  //   (err) => {
-  //     if (err) {
-  //       console.error("Error ...");
-  //       return console.error(err.message);
-  //     }
-  //     console.log("Success ...");
-  //   }
-  // );
+  db.run(
+    `
+      CREATE TABLE IF NOT EXISTS items (
+        id INT,
+        name TXT
+      )
+    `,
+    (err) => {
+      if (err) {
+        console.error("Error creating table");
+        return console.error(err.message);
+      }
+      console.log("Success creating table");
+    }
+  );
 });
 
 db.close((err) => {
