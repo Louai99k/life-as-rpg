@@ -9,7 +9,7 @@ const Logo = ({}: LogoProps) => {
       className="relative block w-full aspect-square cursor-pointer"
       href="/"
     >
-      <Image layout="fill" src="/logo.png" alt="" />
+      <Image fill src="/logo.png" alt="" />
     </Link>
   );
 };

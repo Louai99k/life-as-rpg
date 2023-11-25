@@ -1,6 +1,7 @@
 import { Button, Card, CardBody } from "@nextui-org/react";
 import items from "./items";
 import get from "lodash/get";
+import PlusIcon from "@src/icons/PlusIcon";
 
 import type { Player } from "@src/types/player";
 
@@ -21,7 +22,9 @@ const Resources = ({ player }: ResourcesProps) => {
                 {get(player, item.dataIndex)}
               </strong>
             </div>
-            <Button isIconOnly>+</Button>
+            <Button isIconOnly>
+              <PlusIcon />
+            </Button>
           </CardBody>
         </Card>
       ))}
