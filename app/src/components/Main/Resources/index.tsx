@@ -1,17 +1,30 @@
-import { Card, CardBody } from "@nextui-org/react";
+import { Button, Card, CardBody } from "@nextui-org/react";
+import items from "./items";
+import get from "lodash/get";
 
-const Resources = () => {
+import type { Player } from "@src/types/player";
+
+interface ResourcesProps {
+  player: Player;
+}
+
+const Resources = ({ player }: ResourcesProps) => {
   return (
     <div className="px-8 mt-8 mx-auto w-[80%] flex justify-center gap-4 flex-wrap">
-      {Array(4)
-        .fill(null)
-        .map((_, i) => (
-          <Card className="basis-[200px] flex-grow" key={i}>
-            <CardBody>
-              <p>Money, LvL Points, XP, Ki</p>
-            </CardBody>
-          </Card>
-        ))}
+      {items().map((item, i) => (
+        <Card className="basis-[200px] flex-grow" key={i}>
+          <CardBody className="flex-row justify-between items-center">
+            <div className="flex gap-1">
+              <span>{item.icon}</span>
+              <span>{item.label}:</span>
+              <strong className="cursor-pointer">
+                {get(player, item.dataIndex)}
+              </strong>
+            </div>
+            <Button isIconOnly>+</Button>
+          </CardBody>
+        </Card>
+      ))}
     </div>
   );
 };

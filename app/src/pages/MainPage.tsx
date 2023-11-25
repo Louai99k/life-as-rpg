@@ -6,7 +6,13 @@ import Sidebar from "@src/components/Main/Sidebar";
 import useExpand from "@src/components/Main/Sidebar/hooks/useExpand";
 import clsx from "clsx";
 
-const MainPage = () => {
+import type { Player } from "@src/types/player";
+
+interface MainPageProps {
+  player: Player;
+}
+
+const MainPage = ({ player }: MainPageProps) => {
   const UseExpandRet = useExpand();
   const { expand } = UseExpandRet;
 
@@ -27,7 +33,7 @@ const MainPage = () => {
         )}
       >
         <Header />
-        <Resources />
+        <Resources player={player} />
         <div className="px-8 mt-8">
           <h3 className="text-2xl font-bold">Main Content</h3>
         </div>
