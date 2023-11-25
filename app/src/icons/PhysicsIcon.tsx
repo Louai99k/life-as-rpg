@@ -11,8 +11,8 @@ const PhysicsIcon = ({ height, width }: IconProps) => {
       <g
         fill="none"
         className="stroke-primary"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         <circle cx="7" cy="2.5" r="2"></circle>
         <path d="M10.5 8a3.5 3.5 0 0 0-7 0v1.5H5l.5 4h3l.5-4h1.5Z"></path>
