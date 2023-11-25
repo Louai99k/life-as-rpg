@@ -1,5 +1,5 @@
 const urlGenerator = (url: string, prefix: string = "api") => {
-  return `${process.env.BASE_URL}/${prefix}/${url}`;
+  return `${process.env.NEXT_PUBLIC_BASE_URL}/${prefix}/${url}`;
 };
 
 export default urlGenerator;

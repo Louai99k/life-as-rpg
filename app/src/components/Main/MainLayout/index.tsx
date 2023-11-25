@@ -1,30 +1,26 @@
 "use client";
 
+import MasterInfoContext from "@src/context/MasterInfoContext";
 import Header from "./Header";
 import Resources from "./Resources";
 import Sidebar from "./Sidebar";
 import useExpand from "./Sidebar/hooks/useExpand";
 import clsx from "clsx";
-import { SWRConfig } from "swr";
+import useSWR from "swr";
+import { Player } from "@src/types/player";
+import clientFetcher from "@src/lib/clientFetcher";
 
-import type { Player } from "@src/types/player";
+interface MainLayoutProps extends React.PropsWithChildren {}
 
-interface MainLayoutProps extends React.PropsWithChildren {
-  player: Player;
-}
-
-const MainLayout = ({ player, children }: MainLayoutProps) => {
+const MainLayout = ({ children }: MainLayoutProps) => {
   const UseExpandRet = useExpand();
   const { expand } = UseExpandRet;
+  const { data: player } = useSWR<Player>("master-info", () =>
+    clientFetcher<Player>("master-info")
+  );
 
   return (
-    <SWRConfig
-      value={{
-        fallback: {
-          "master-info": player,
-        },
-      }}
-    >
+    <MasterInfoContext.Provider value={{ player }}>
       <div className="flex h-screen">
         <div
           className={clsx(
@@ -45,7 +41,7 @@ const MainLayout = ({ player, children }: MainLayoutProps) => {
           {children}
         </div>
       </div>
-    </SWRConfig>
+    </MasterInfoContext.Provider>
   );
 };
 

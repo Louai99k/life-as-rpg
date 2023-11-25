@@ -7,10 +7,6 @@ async function clientFetcher<T>(key: string, opt?: RequestInit) {
     throw { message: "error occured" };
   }
 
-  const promise = new Promise((r) => setTimeout(r, 5000));
-
-  await promise;
-
   return res.json() as Promise<T>;
 }
 
