@@ -2,14 +2,18 @@ import { Button, Card, CardBody } from "@nextui-org/react";
 import items from "./items";
 import get from "lodash/get";
 import PlusIcon from "@src/icons/PlusIcon";
+import useSWR from "swr";
+import clientFetcher from "@src/lib/clientFetcher";
 
 import type { Player } from "@src/types/player";
 
-interface ResourcesProps {
-  player: Player;
-}
+interface ResourcesProps {}
 
-const Resources = ({ player }: ResourcesProps) => {
+const Resources = ({}: ResourcesProps) => {
+  const { data: player } = useSWR<Player>("master-info", () =>
+    clientFetcher<Player>("master-info")
+  );
+
   return (
     <div className="px-8 mt-8 mx-auto w-[80%] flex justify-center gap-4 flex-wrap">
       {items().map((item, i) => (
