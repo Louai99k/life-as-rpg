@@ -1,7 +1,5 @@
-import MainPage from "@src/pages/MainPage";
-
 const Page = async () => {
-  return <MainPage />;
+  return <></>;
 };
 
 export default Page;
