@@ -1,50 +1,48 @@
 "use client";
 
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@nextui-org/react";
+import MissionsTable from "@src/components/Main/Missions/MissionsTable";
+import { SWRConfig } from "swr";
+import { Button } from "@nextui-org/react";
+import PlusIcon from "@src/icons/PlusIcon";
+import dynamic from "next/dynamic";
+import { useState } from "react";
 
-const MissionsPage = () => {
+import type { Mission } from "@src/types/mission";
+
+const AddMissionModal = dynamic(
+  () => import("@src/components/Main/Missions/AddMissionModal")
+);
+
+interface MissionsPageProps {
+  missions: Mission[];
+}
+
+const MissionsPage = ({ missions }: MissionsPageProps) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <>
+    <SWRConfig
+      value={{
+        fallback: {
+          missions,
+        },
+      }}
+    >
       <div className="px-8 mt-8">
-        <h3 className="text-2xl font-bold mb-4">Missions</h3>
-        <Table aria-label="Example static collection table">
-          <TableHeader>
-            <TableColumn>NAME</TableColumn>
-            <TableColumn>ROLE</TableColumn>
-            <TableColumn>STATUS</TableColumn>
-          </TableHeader>
-          <TableBody>
-            <TableRow key="1">
-              <TableCell>Tony Reichert</TableCell>
-              <TableCell>CEO</TableCell>
-              <TableCell>Active</TableCell>
-            </TableRow>
-            <TableRow key="2">
-              <TableCell>Zoey Lang</TableCell>
-              <TableCell>Technical Lead</TableCell>
-              <TableCell>Paused</TableCell>
-            </TableRow>
-            <TableRow key="3">
-              <TableCell>Jane Fisher</TableCell>
-              <TableCell>Senior Developer</TableCell>
-              <TableCell>Active</TableCell>
-            </TableRow>
-            <TableRow key="4">
-              <TableCell>William Howard</TableCell>
-              <TableCell>Community Manager</TableCell>
-              <TableCell>Vacation</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <div className="flex justify-between">
+          <h3 className="text-2xl font-bold mb-4">Missions</h3>
+          <Button
+            onClick={() => setOpen(true)}
+            color="primary"
+            startContent={<PlusIcon />}
+          >
+            Add Mission
+          </Button>
+        </div>
+        <MissionsTable />
       </div>
-    </>
+      {open ? <AddMissionModal onClose={() => setOpen(false)} /> : null}
+    </SWRConfig>
   );
 };
 
