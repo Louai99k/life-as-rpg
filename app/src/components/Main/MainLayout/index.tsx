@@ -8,7 +8,7 @@ import useExpand from "./Sidebar/hooks/useExpand";
 import clsx from "clsx";
 import useSWR from "swr";
 import { Player } from "@src/types/player";
-import clientFetcher from "@src/lib/clientFetcher";
+import clientORM from "@src/lib/clientFetcher";
 
 interface MainLayoutProps extends React.PropsWithChildren {}
 
@@ -16,7 +16,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   const UseExpandRet = useExpand();
   const { expand } = UseExpandRet;
   const { data: player } = useSWR<Player>("master-info", () =>
-    clientFetcher<Player>("master-info")
+    clientORM<Player>("SELECT * FROM players WHERE is_master = ?", [1])
   );
 
   return (

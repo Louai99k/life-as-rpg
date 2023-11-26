@@ -1,5 +1,11 @@
-async function clientFetcher<T>(key: string, opt?: RequestInit) {
-  const res = await fetch(`/api/${key}`, opt);
+async function clientORM<T>(sql: string, params: any[] = []) {
+  const res = await fetch("/api/query", {
+    method: "POST",
+    body: JSON.stringify({
+      sql,
+      params,
+    }),
+  });
 
   if (!res.ok) {
     throw { message: "error occured" };
@@ -8,4 +14,4 @@ async function clientFetcher<T>(key: string, opt?: RequestInit) {
   return res.json() as Promise<T>;
 }
 
-export default clientFetcher;
+export default clientORM;
