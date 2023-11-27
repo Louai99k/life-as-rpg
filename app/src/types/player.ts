@@ -6,4 +6,5 @@ export type Player = {
   xp: number;
   ki: number;
   is_master: boolean;
+  lvl: number;
 };

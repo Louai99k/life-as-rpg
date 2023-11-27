@@ -6,30 +6,48 @@ import {
   ModalFooter,
   Button,
 } from "@nextui-org/react";
+import MasterInfoContext from "@src/context/MasterInfoContext";
 import clientORM from "@src/lib/clientORM";
-import { useState } from "react";
+import { Mission } from "@src/types/mission";
+import { useContext, useState } from "react";
 import { useSWRConfig } from "swr";
 
 interface DeleteModalProps {
   onClose: VoidFunction;
-  missionId: number;
+  mission: Mission;
 }
 
-const DeleteModal = ({ onClose, missionId }: DeleteModalProps) => {
+const DeleteModal = ({ onClose, mission }: DeleteModalProps) => {
   const [loading, setLoading] = useState(false);
   const { mutate } = useSWRConfig();
+  const { player } = useContext(MasterInfoContext);
 
   const handleDelete = async () => {
+    if (!player) return;
     setLoading(true);
     const sql = "DELETE FROM missions WHERE id = ?";
 
     try {
       await clientORM(sql, {
-        params: [missionId],
+        params: [mission.id],
       });
     } catch (e) {}
 
+    if (mission.is_completed) {
+      const sql = "UPDATE players SET money = ?, xp = ? WHERE id = ?";
+      try {
+        await clientORM(sql, {
+          params: [
+            player.money - mission.money_reward,
+            player.xp - mission.xp_reward,
+            player.id,
+          ],
+        });
+      } catch (e) {}
+    }
+
     mutate("missions");
+    mutate("master-info");
     setLoading(false);
     onClose();
   };

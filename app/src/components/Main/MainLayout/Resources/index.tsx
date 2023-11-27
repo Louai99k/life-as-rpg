@@ -21,6 +21,7 @@ const Resources = ({}: ResourcesProps) => {
                 <span>{item.label}:</span>
                 <strong className="cursor-pointer">
                   {get(player, item.dataIndex)}
+                  {item.dataIndex === "xp" ? ` (LvL ${player.lvl})` : ""}
                 </strong>
               </div>
             ) : (

@@ -16,7 +16,7 @@ const orm = async (sql: string, params: any[]) => {
     db.close();
     return data;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return [];
   }
 };

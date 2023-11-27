@@ -8,7 +8,10 @@ const getData = async () => {
 
   const data = await orm(sql, []);
 
-  return dbDataSanitizer(data, { jsonFields: ["goals"] }) as Mission[];
+  return dbDataSanitizer(data, {
+    jsonFields: ["goals"],
+    booleanFields: ["is_completed"],
+  }) as Mission[];
 };
 
 const Page = async () => {

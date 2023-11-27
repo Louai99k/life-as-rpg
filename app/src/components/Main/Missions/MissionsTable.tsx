@@ -20,12 +20,16 @@ import { useState } from "react";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
 import cloneDeep from "lodash/cloneDeep";
+import PlusIcon from "@src/icons/PlusIcon";
+import CompletedIcon from "@src/icons/CompletedIcon";
+import InfoIcon from "@src/icons/InfoIcon";
+import RewardIcon from "@src/icons/RewardIcon";
 
 const DeleteModal = dynamic(() => import("./DeleteModal"));
 const ProgressModal = dynamic(() => import("./ProgressModal"));
 
 type DeleteModalState = {
-  id: null | number;
+  mission: null | Mission;
   open: boolean;
 };
 
@@ -36,11 +40,14 @@ type ProgressModalState = {
 
 const MissionsTable = () => {
   const { data: missions, isLoading } = useSWR("missions", () =>
-    clientORM<Mission[]>("SELECT * FROM missions", { jsonFields: ["goals"] })
+    clientORM<Mission[]>("SELECT * FROM missions", {
+      jsonFields: ["goals"],
+      booleanFields: ["is_completed"],
+    })
   );
 
   const [deleteModal, setDeleteModal] = useState<DeleteModalState>({
-    id: null,
+    mission: null,
     open: false,
   });
 
@@ -71,7 +78,7 @@ const MissionsTable = () => {
                 <TableCell>{mission.id}</TableCell>
                 <TableCell>{mission.name}</TableCell>
                 <TableCell>{mission.description}</TableCell>
-                <TableCell>{mission.overall_progress}</TableCell>
+                <TableCell>% {mission.overall_progress}</TableCell>
                 <TableCell>
                   <Popover placement="bottom">
                     <PopoverTrigger>
@@ -84,9 +91,19 @@ const MissionsTable = () => {
                         </p>
                         <div className="flex flex-col gap-2 py-4">
                           {mission.goals.map((goal, i) => (
-                            <p key={i} className="w-max max-w-md text-justify">
-                              {goal.description}
-                            </p>
+                            <div
+                              className="flex justify-between gap-4 items-center"
+                              key={i}
+                            >
+                              <p className="w-max max-w-md text-justify">
+                                {goal.description}
+                              </p>
+                              {goal.completed ? (
+                                <CompletedIcon />
+                              ) : (
+                                <InfoIcon />
+                              )}
+                            </div>
                           ))}
                         </div>
                       </div>
@@ -97,7 +114,10 @@ const MissionsTable = () => {
                   <Tooltip content="Delete this mission with all it's progress">
                     <Button
                       onClick={() => {
-                        setDeleteModal({ id: mission.id, open: true });
+                        setDeleteModal({
+                          mission: cloneDeep(mission),
+                          open: true,
+                        });
                       }}
                       variant="ghost"
                       isIconOnly
@@ -112,14 +132,31 @@ const MissionsTable = () => {
                           mission: cloneDeep(mission),
                           open: true,
                         });
-                        console.log(mission);
                       }}
                       variant="ghost"
                       isIconOnly
+                      isDisabled={mission.is_completed}
                     >
                       <ProgressIcon />
                     </Button>
                   </Tooltip>
+                  <Popover placement="bottom">
+                    <PopoverTrigger>
+                      <Button variant="ghost" isIconOnly>
+                        <RewardIcon />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <div className="flex flex-col gap-4 p-4">
+                        <p className="w-max max-w-md text-justify">
+                          Money Reward: {mission.money_reward}
+                        </p>
+                        <p className="w-max max-w-md text-justify">
+                          XP Reward: {mission.xp_reward}
+                        </p>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </TableCell>
               </TableRow>
             );
@@ -129,9 +166,9 @@ const MissionsTable = () => {
       {deleteModal.open ? (
         <DeleteModal
           onClose={() => {
-            setDeleteModal({ id: null, open: false });
+            setDeleteModal({ mission: null, open: false });
           }}
-          missionId={deleteModal.id as number}
+          mission={deleteModal.mission as Mission}
         />
       ) : null}
       {progressModal.open ? (
