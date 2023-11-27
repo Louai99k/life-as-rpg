@@ -36,7 +36,7 @@ type ProgressModalState = {
 
 const MissionsTable = () => {
   const { data: missions, isLoading } = useSWR("missions", () =>
-    clientORM<Mission[]>("SELECT * FROM missions")
+    clientORM<Mission[]>("SELECT * FROM missions", { jsonFields: ["goals"] })
   );
 
   const [deleteModal, setDeleteModal] = useState<DeleteModalState>({
@@ -66,9 +66,6 @@ const MissionsTable = () => {
           items={missions!}
         >
           {(mission) => {
-            const parsedGoals = JSON.parse(
-              mission.goals as any
-            ) as Mission["goals"];
             return (
               <TableRow>
                 <TableCell>{mission.id}</TableCell>
@@ -86,7 +83,7 @@ const MissionsTable = () => {
                           <strong>Goals:</strong>
                         </p>
                         <div className="flex flex-col gap-2 py-4">
-                          {parsedGoals.map((goal, i) => (
+                          {mission.goals.map((goal, i) => (
                             <p key={i} className="w-max max-w-md text-justify">
                               {goal.description}
                             </p>
