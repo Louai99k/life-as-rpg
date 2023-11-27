@@ -22,3 +22,5 @@ export async function POST(req: Request) {
 
   return NextResponse.json(body.isSingle ? sanitizedData[0] : sanitizedData);
 }
+
+export const dynamic = "force-dynamic";
