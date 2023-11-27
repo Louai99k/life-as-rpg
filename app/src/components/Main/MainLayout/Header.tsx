@@ -1,9 +1,13 @@
 import { Chip } from "@nextui-org/react";
 import MasterInfoContext from "@src/context/MasterInfoContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import dynamic from "next/dynamic";
+
+const CalculateModal = dynamic(() => import("./CalculateModal"));
 
 const Header = () => {
   const { player } = useContext(MasterInfoContext);
+  const [calculateModal, setCalculateModal] = useState(false);
 
   return (
     <div className="flex items-end pt-8 justify-center gap-4">
@@ -17,6 +21,12 @@ const Header = () => {
       >
         {player ? "Active" : "Connecting"}
       </Chip>
+      <Chip className="cursor-pointer" onClick={() => setCalculateModal(true)}>
+        Calculate
+      </Chip>
+      {calculateModal ? (
+        <CalculateModal onClose={() => setCalculateModal(false)} />
+      ) : null}
     </div>
   );
 };

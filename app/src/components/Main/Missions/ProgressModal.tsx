@@ -13,6 +13,7 @@ import { useContext, useRef, useState } from "react";
 import { useSWRConfig } from "swr";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import MasterInfoContext from "@src/context/MasterInfoContext";
+import calculateLvL from "@src/utils/game/calculateLvL";
 
 import type { Mission } from "@src/types/mission";
 
@@ -48,12 +49,15 @@ const ProgressModal = ({ onClose, mission }: ProgressModalProps) => {
       "UPDATE missions SET goals = ?, overall_progress = ?, is_completed = ? WHERE id = ?";
 
     if (isCompleted) {
-      const sql = "UPDATE players SET money = ?, xp = ? WHERE id = ?";
+      const sql = "UPDATE players SET money = ?, xp = ?, lvl = ? WHERE id = ?";
+      const newXP = player.xp + mission.xp_reward;
+      const newLvL = calculateLvL(newXP);
       try {
         await clientORM(sql, {
           params: [
             player.money + mission.money_reward,
-            player.xp + mission.xp_reward,
+            newXP,
+            newLvL,
             player.id,
           ],
         });

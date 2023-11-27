@@ -1,11 +1,8 @@
 const calculateXP = (level: number) => {
-  let xpRequired = 0;
-  let baseXP = 100;
-  let multiplier = 1.1;
+  let xpRequired = 20;
 
-  for (let i = 1; i < level; i++) {
-    xpRequired += baseXP;
-    baseXP = Math.round(baseXP * multiplier);
+  for (let i = 3; i <= level; i++) {
+    xpRequired += i * 10;
   }
 
   return xpRequired;
