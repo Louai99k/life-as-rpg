@@ -4,12 +4,17 @@ import MoneyIcon from "@src/icons/MoneyIcon";
 import XPIcon from "@src/icons/XPIcon";
 
 import type { Player } from "@src/types/player";
+import calculateXP from "@src/utils/game/calculateXP";
 
-type ItemType = {
-  label: string;
-  icon: React.ReactNode;
-  dataIndex: keyof Player;
-};
+type ItemType =
+  | {
+      label: string;
+      icon: React.ReactNode;
+      dataIndex: keyof Player;
+    }
+  | {
+      render: (player: Player) => React.ReactNode;
+    };
 
 const items = (): ItemType[] => {
   return [
@@ -24,9 +29,21 @@ const items = (): ItemType[] => {
       dataIndex: "lvl_points",
     },
     {
-      label: "XP",
-      icon: <XPIcon />,
-      dataIndex: "xp",
+      render: (player) => (
+        <div className="flex gap-1">
+          <span>
+            <XPIcon />
+          </span>
+          <div className="flex flex-col">
+            <span>
+              Level: <strong className="cursor-pointer">{player.lvl}</strong>
+            </span>
+            <span className="text-[10px] text-zinc-500">
+              XP: {player.xp} / {calculateXP(player.lvl + 1)}
+            </span>
+          </div>
+        </div>
+      ),
     },
     {
       label: "Ki",

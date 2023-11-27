@@ -4,6 +4,7 @@ import get from "lodash/get";
 import PlusIcon from "@src/icons/PlusIcon";
 import { useContext } from "react";
 import MasterInfoContext from "@src/context/MasterInfoContext";
+import calculateXP from "@src/utils/game/calculateXP";
 
 interface ResourcesProps {}
 
@@ -16,14 +17,17 @@ const Resources = ({}: ResourcesProps) => {
         <Card className="basis-[200px] flex-grow" key={i}>
           <CardBody className="flex-row justify-between items-center">
             {player ? (
-              <div className="flex gap-1">
-                <span>{item.icon}</span>
-                <span>{item.label}:</span>
-                <strong className="cursor-pointer">
-                  {get(player, item.dataIndex)}
-                  {item.dataIndex === "xp" ? ` (LvL ${player.lvl})` : ""}
-                </strong>
-              </div>
+              "render" in item ? (
+                item.render(player)
+              ) : (
+                <div className="flex gap-1">
+                  <span>{item.icon}</span>
+                  <span>{item.label}:</span>
+                  <strong className="cursor-pointer">
+                    {get(player, item.dataIndex)}
+                  </strong>
+                </div>
+              )
             ) : (
               <>
                 <Skeleton className="h-3 w-4/5 rounded-lg" />

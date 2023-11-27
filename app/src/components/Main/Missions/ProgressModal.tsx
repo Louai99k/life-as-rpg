@@ -49,15 +49,18 @@ const ProgressModal = ({ onClose, mission }: ProgressModalProps) => {
       "UPDATE missions SET goals = ?, overall_progress = ?, is_completed = ? WHERE id = ?";
 
     if (isCompleted) {
-      const sql = "UPDATE players SET money = ?, xp = ?, lvl = ? WHERE id = ?";
+      const sql =
+        "UPDATE players SET money = ?, xp = ?, lvl = ?, lvl_points = ? WHERE id = ?";
       const newXP = player.xp + mission.xp_reward;
       const newLvL = calculateLvL(newXP);
+      const newLvLPts = (newLvL - player.lvl) * 3 + player.lvl_points;
       try {
         await clientORM(sql, {
           params: [
             player.money + mission.money_reward,
             newXP,
             newLvL,
+            newLvLPts,
             player.id,
           ],
         });
