@@ -7,8 +7,9 @@ import Sidebar from "./Sidebar";
 import useExpand from "./Sidebar/hooks/useExpand";
 import clsx from "clsx";
 import useSWR from "swr";
-import { Player } from "@src/types/player";
 import clientORM from "@src/lib/clientORM";
+
+import type { Player } from "@src/types/player";
 
 interface MainLayoutProps extends React.PropsWithChildren {}
 

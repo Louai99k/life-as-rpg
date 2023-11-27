@@ -15,10 +15,11 @@ import { MISSION_RANK } from "@src/types/enum";
 import { useRef, useState } from "react";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 import get from "lodash/get";
-import { Mission } from "@src/types/mission";
 import { useSWRConfig } from "swr";
 import clientORM from "@src/lib/clientORM";
 import randomstring from "randomstring";
+
+import type { Mission } from "@src/types/mission";
 
 interface AddMissionModalProps {
   onClose: VoidFunction;

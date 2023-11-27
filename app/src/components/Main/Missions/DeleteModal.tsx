@@ -8,9 +8,10 @@ import {
 } from "@nextui-org/react";
 import MasterInfoContext from "@src/context/MasterInfoContext";
 import clientORM from "@src/lib/clientORM";
-import { Mission } from "@src/types/mission";
 import { useContext, useState } from "react";
 import { useSWRConfig } from "swr";
+
+import type { Mission } from "@src/types/mission";
 
 interface DeleteModalProps {
   onClose: VoidFunction;

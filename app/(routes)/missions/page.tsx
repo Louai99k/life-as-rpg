@@ -1,7 +1,8 @@
 import MissionsPage from "@src/pages/MissionsPage";
 import orm from "@src/services/orm";
-import { Mission } from "@src/types/mission";
 import dbDataSanitizer from "@src/utils/dbDataSanitizer";
+
+import type { Mission } from "@src/types/mission";
 
 const getData = async () => {
   const sql = "SELECT * FROM missions";

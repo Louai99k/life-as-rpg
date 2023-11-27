@@ -15,15 +15,15 @@ import {
 import DeleteIcon from "@src/icons/DeleteIcon";
 import ProgressIcon from "@src/icons/ProgressIcon";
 import clientORM from "@src/lib/clientORM";
-import { Mission } from "@src/types/mission";
 import { useState } from "react";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
 import cloneDeep from "lodash/cloneDeep";
-import PlusIcon from "@src/icons/PlusIcon";
 import CompletedIcon from "@src/icons/CompletedIcon";
 import InfoIcon from "@src/icons/InfoIcon";
 import RewardIcon from "@src/icons/RewardIcon";
+
+import type { Mission } from "@src/types/mission";
 
 const DeleteModal = dynamic(() => import("./DeleteModal"));
 const ProgressModal = dynamic(() => import("./ProgressModal"));
