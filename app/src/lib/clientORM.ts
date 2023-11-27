@@ -1,22 +1,20 @@
 export type ClientORMOptions = {
   isSingle: boolean;
+  params: any[];
 };
 
 const defaultOptions: ClientORMOptions = {
   isSingle: false,
+  params: [],
 };
 
-async function clientORM<T>(
-  sql: string,
-  params: any[] = [],
-  o: Partial<ClientORMOptions> = {}
-) {
+async function clientORM<T>(sql: string, o: Partial<ClientORMOptions> = {}) {
   const options = { ...defaultOptions, ...o };
   const res = await fetch("/api/query", {
     method: "POST",
     body: JSON.stringify({
       sql,
-      params,
+      params: options.params,
       isSingle: options.isSingle,
     }),
   });

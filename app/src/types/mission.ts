@@ -1,8 +1,9 @@
 import type { MISSION_RANK } from "./enum";
 
 export type Goal = {
-  count: number;
   description: string;
+  completed: boolean;
+  uid: string;
 };
 
 export type Mission = {

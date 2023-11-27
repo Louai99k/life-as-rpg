@@ -17,7 +17,8 @@ import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 import get from "lodash/get";
 import { Mission } from "@src/types/mission";
 import { useSWRConfig } from "swr";
-import clientORM from "@src/lib/clientFetcher";
+import clientORM from "@src/lib/clientORM";
+import randomstring from "randomstring";
 
 interface AddMissionModalProps {
   onClose: VoidFunction;
@@ -36,6 +37,7 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "goals",
+    rules: { minLength: 1 },
   });
 
   const onSubmit: SubmitHandler<Omit<Mission, "id">> = async (data) => {
@@ -44,14 +46,16 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
       "INSERT INTO missions ('name', 'description', 'money_reward', 'xp_reward', 'goals', 'rank') VALUES (?, ?, ?, ?, ?, ?)";
 
     try {
-      await clientORM(sql, [
-        data.name,
-        data.description,
-        +data.money_reward,
-        +data.xp_reward,
-        JSON.stringify(data.goals),
-        data.rank,
-      ]);
+      await clientORM(sql, {
+        params: [
+          data.name,
+          data.description,
+          +data.money_reward,
+          +data.xp_reward,
+          JSON.stringify(data.goals),
+          data.rank,
+        ],
+      });
     } catch (e) {}
 
     mutate("missions");
@@ -128,24 +132,10 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
                   errorMessage={errors.description?.message as string}
                 />
                 {fields.map((_, i) => {
-                  const countPath = `goals.${i}.count` as any;
                   const descriptionPath = `goals.${i}.description` as any;
                   return (
                     <div key={i} className="flex items-center">
                       <div className="basis-5/6 flex flex-col gap-4">
-                        <Input
-                          {...register(countPath, {
-                            required: "Required Field",
-                          })}
-                          isRequired
-                          label="Count"
-                          type="number"
-                          placeholder="Enter an amount"
-                          isInvalid={get(errors, countPath) ? true : false}
-                          errorMessage={
-                            get(errors, countPath)?.message as string
-                          }
-                        />
                         <Textarea
                           {...register(descriptionPath, {
                             required: "Required Field",
@@ -172,8 +162,12 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
                 <Button
                   onClick={() => {
                     append({
-                      count: 0,
                       description: "",
+                      completed: false,
+                      uid: randomstring.generate({
+                        capitalization: "uppercase",
+                        length: 10,
+                      }),
                     });
                   }}
                   endContent={<PlusIcon />}
@@ -185,20 +179,16 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
               </form>
             </ModalBody>
             <ModalFooter>
-              <Button
-                isLoading={loading}
-                color="danger"
-                variant="light"
-                onPress={onClose}
-              >
+              <Button isLoading={loading} variant="light" onPress={onClose}>
                 Close
               </Button>
               <Button
                 isLoading={loading}
-                color="primary"
+                color="success"
+                className="text-white"
                 onPress={() => submitRef.current?.click()}
               >
-                Action
+                Add
               </Button>
             </ModalFooter>
           </>
