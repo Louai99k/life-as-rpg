@@ -1,7 +1,9 @@
 import sqlite3 from "sqlite3";
+import * as path from "path";
 
 const orm = async (sql: string, params: any[]) => {
-  const dbPath = "./database/data.db";
+  console.log(path.resolve(__dirname));
+  const dbPath = "./public/database/data.db";
   const db = new sqlite3.Database(dbPath);
 
   const query = new Promise<any[]>((resolve, reject) => {
@@ -13,11 +15,9 @@ const orm = async (sql: string, params: any[]) => {
 
   try {
     const data = await query;
-    console.log("sucess getting data from orm");
     db.close();
     return data;
   } catch (e) {
-    console.log("error getting data from orm");
     console.error(e);
     return [];
   }
