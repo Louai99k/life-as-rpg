@@ -1,9 +1,11 @@
 import sqlite3 from "sqlite3";
 import * as path from "path";
+import fs from "fs";
 
 const orm = async (sql: string, params: any[]) => {
-  console.log(path.resolve(__dirname));
-  const dbPath = "./public/database/data.db";
+  console.log("__dirname: ", path.resolve(__dirname));
+  console.log("reading db from orm: ", fs.readFileSync("./database/data.db"));
+  const dbPath = "./database/data.db";
   const db = new sqlite3.Database(dbPath);
 
   const query = new Promise<any[]>((resolve, reject) => {
