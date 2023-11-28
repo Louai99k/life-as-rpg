@@ -11,6 +11,7 @@ type Body = {
 };
 
 export async function POST(req: Request) {
+  console.log("From POST method");
   const body: Body = await req.json();
 
   const data = await orm(body.sql, body.params);

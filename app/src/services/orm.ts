@@ -13,9 +13,11 @@ const orm = async (sql: string, params: any[]) => {
 
   try {
     const data = await query;
+    console.log("sucess getting data from orm");
     db.close();
     return data;
   } catch (e) {
+    console.log("error getting data from orm");
     console.error(e);
     return [];
   }
