@@ -34,7 +34,6 @@ const CalculateModal = ({ onClose }: CalculateModalProps) => {
                     type="number"
                     label="XP Amount"
                     placeholder="500..."
-                    isClearable
                   />
                   <p>
                     Level: <strong>{xp ? calculateLvL(xp) : null}</strong>
@@ -47,7 +46,6 @@ const CalculateModal = ({ onClose }: CalculateModalProps) => {
                     type="number"
                     label="Level"
                     placeholder="60..."
-                    isClearable
                   />
                   <p>
                     XP Required:{" "}

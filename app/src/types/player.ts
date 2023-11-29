@@ -1,3 +1,7 @@
+export type PlayerSkill = {
+  lvl: number;
+};
+
 export type Player = {
   id: number;
   name: string;
@@ -7,4 +11,5 @@ export type Player = {
   ki: number;
   is_master: boolean;
   lvl: number;
+  skills: Record<string, PlayerSkill>;
 };

@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -29,4 +29,13 @@ model players {
   ki         Int?     @default(100)
   is_master  Boolean? @default(false)
   lvl        Int?     @default(1)
+  skills     Json?    @default("{}")
+}
+
+model skills {
+  id             Int    @id @default(autoincrement())
+  name           String
+  skill_code     String @db.VarChar(255)
+  description    String
+  lvls_available Int?   @default(4)
 }

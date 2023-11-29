@@ -43,7 +43,7 @@ const ProgressModal = ({ onClose, mission }: ProgressModalProps) => {
       (completedGoals.length / data.goals.length) *
       100
     ).toFixed(2);
-    const isCompleted = completedGoals.length === data.goals.length ? 1 : 0;
+    const isCompleted = completedGoals.length === data.goals.length;
 
     const sql = `UPDATE "missions" SET "goals" = $1, "overall_progress" = $2, "is_completed" = $3 WHERE "id" = $4`;
 
