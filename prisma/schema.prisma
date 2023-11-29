@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model missions {
+  id               Int      @id @default(autoincrement())
+  name             String
+  description      String
+  money_reward     Int
+  xp_reward        Int
+  overall_progress Float?   @default(0)
+  is_completed     Boolean? @default(false)
+  rank             String?  @db.VarChar(255)
+  goals            Json?    @default("[]")
+}
+
+model players {
+  id         Int      @id @default(autoincrement())
+  name       String
+  money      Int?     @default(8000)
+  lvl_points Int?     @default(5)
+  xp         Int?     @default(0)
+  ki         Int?     @default(100)
+  is_master  Boolean? @default(false)
+  lvl        Int?     @default(1)
+}
