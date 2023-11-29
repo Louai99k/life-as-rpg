@@ -17,8 +17,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   const UseExpandRet = useExpand();
   const { expand } = UseExpandRet;
   const { data: player } = useSWR("master-info", () =>
-    clientORM<Player>("SELECT * FROM players WHERE is_master = ?", {
-      params: [1],
+    clientORM<Player>(`SELECT * FROM "players" WHERE "is_master" = $1`, {
+      params: [true],
       isSingle: true,
     })
   );

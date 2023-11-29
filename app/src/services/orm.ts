@@ -1,24 +1,9 @@
-import sqlite3 from "sqlite3";
+import { PrismaClient } from "@prisma/client";
 
-const orm = async (sql: string, params: any[]) => {
-  const dbPath = "./database/data.db";
-  const db = new sqlite3.Database(dbPath);
+const prisma = new PrismaClient();
 
-  const query = new Promise<any[]>((resolve, reject) => {
-    db.all(sql, params, (err, rows) => {
-      if (err) reject(err);
-      resolve(rows);
-    });
-  });
-
-  try {
-    const data = await query;
-    db.close();
-    return data;
-  } catch (e) {
-    console.error(e);
-    return [];
-  }
-};
+async function orm<T>(sql: string, params: (string | number | boolean)[]) {
+  return prisma.$queryRawUnsafe<T[]>(sql, ...params);
+}
 
 export default orm;

@@ -40,9 +40,7 @@ type ProgressModalState = {
 
 const MissionsTable = () => {
   const { data: missions, isLoading } = useSWR("missions", () =>
-    clientORM<Mission[]>("SELECT * FROM missions", {
-      jsonFields: ["goals"],
-    })
+    clientORM<Mission[]>(`SELECT * FROM "missions"`)
   );
 
   const [deleteModal, setDeleteModal] = useState<DeleteModalState>({

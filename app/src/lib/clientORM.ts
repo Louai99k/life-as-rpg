@@ -1,13 +1,11 @@
 export type ClientORMOptions = {
   isSingle: boolean;
   params: any[];
-  jsonFields: string[];
 };
 
 const defaultOptions: ClientORMOptions = {
   isSingle: false,
   params: [],
-  jsonFields: [],
 };
 
 async function clientORM<T>(sql: string, o: Partial<ClientORMOptions> = {}) {
@@ -18,7 +16,6 @@ async function clientORM<T>(sql: string, o: Partial<ClientORMOptions> = {}) {
       sql,
       params: options.params,
       isSingle: options.isSingle,
-      jsonFields: options.jsonFields,
     }),
   });
 

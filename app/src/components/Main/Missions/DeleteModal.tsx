@@ -27,7 +27,7 @@ const DeleteModal = ({ onClose, mission }: DeleteModalProps) => {
   const handleDelete = async () => {
     if (!player) return;
     setLoading(true);
-    const sql = "DELETE FROM missions WHERE id = ?";
+    const sql = `DELETE FROM "missions" WHERE "id" = $1`;
 
     try {
       await clientORM(sql, {
@@ -36,7 +36,7 @@ const DeleteModal = ({ onClose, mission }: DeleteModalProps) => {
     } catch (e) {}
 
     if (mission.is_completed) {
-      const sql = "UPDATE players SET money = ?, xp = ?, lvl = ? WHERE id = ?";
+      const sql = `UPDATE "players" SET "money" = $1, "xp" = $2, "lvl" = $3 WHERE "id" = $4`;
       const newXP = player.xp - mission.xp_reward;
       const newLvL = calculateLvL(newXP);
       try {

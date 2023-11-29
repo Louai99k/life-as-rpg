@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import orm from "@src/services/orm";
-import dbDataSanitizer from "@src/utils/dbDataSanitizer";
 
 type Body = {
   sql: string;
@@ -14,11 +13,7 @@ export async function POST(req: Request) {
 
   const data = await orm(body.sql, body.params);
 
-  const sanitizedData = dbDataSanitizer(data, {
-    jsonFields: body.jsonFields,
-  });
-
-  return NextResponse.json(body.isSingle ? sanitizedData[0] : sanitizedData);
+  return NextResponse.json(body.isSingle ? data[0] : data);
 }
 
 export const dynamic = "force-dynamic";

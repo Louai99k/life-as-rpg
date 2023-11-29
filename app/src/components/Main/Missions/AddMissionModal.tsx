@@ -43,8 +43,7 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
 
   const onSubmit: SubmitHandler<Omit<Mission, "id">> = async (data) => {
     setLoading(true);
-    const sql =
-      "INSERT INTO missions ('name', 'description', 'money_reward', 'xp_reward', 'goals', 'rank') VALUES (?, ?, ?, ?, ?, ?)";
+    const sql = `INSERT INTO "missions" ("name", "description", "money_reward", "xp_reward", "goals", "rank") VALUES ($1, $2, $3, $4, $5, $6)`;
 
     try {
       await clientORM(sql, {
@@ -53,7 +52,7 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
           data.description,
           +data.money_reward,
           +data.xp_reward,
-          JSON.stringify(data.goals),
+          data.goals,
           data.rank,
         ],
       });
