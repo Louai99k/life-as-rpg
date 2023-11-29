@@ -10,7 +10,7 @@ type ItemType =
   | {
       label: string;
       icon: React.ReactNode;
-      dataIndex: keyof Player;
+      dataIndex: "money" | "lvl_points" | "ki";
     }
   | {
       render: (player: Player) => React.ReactNode;
