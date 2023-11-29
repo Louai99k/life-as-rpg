@@ -1,6 +1,7 @@
 import SkillsPage from "@src/pages/SkillsPage";
 import orm from "@src/services/orm";
-import { Skill } from "@src/types/skills";
+
+import type { Skill } from "@src/types/skills";
 
 const getData = async () => {
   const sql = `SELECT * FROM "skills"`;
