@@ -1,10 +1,8 @@
 export type DBDataSanitizerParams = {
   jsonFields: string[];
-  booleanFields: string[];
 };
 
 const defaultOptions: DBDataSanitizerParams = {
-  booleanFields: [],
   jsonFields: [],
 };
 
@@ -19,9 +17,7 @@ const dbDataSanitizer = (
 
     for (const key of Object.keys(item)) {
       const value = item[key];
-      if (options.booleanFields.includes(key)) {
-        newItem[key] = value === 1;
-      } else if (options.jsonFields.includes(key)) {
+      if (options.jsonFields.includes(key)) {
         newItem[key] = JSON.parse(value);
       } else {
         newItem[key] = value;

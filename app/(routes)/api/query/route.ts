@@ -7,7 +7,6 @@ type Body = {
   params: any[];
   isSingle: boolean;
   jsonFields: string[];
-  booleanFields: string[];
 };
 
 export async function POST(req: Request) {
@@ -16,7 +15,6 @@ export async function POST(req: Request) {
   const data = await orm(body.sql, body.params);
 
   const sanitizedData = dbDataSanitizer(data, {
-    booleanFields: body.booleanFields,
     jsonFields: body.jsonFields,
   });
 

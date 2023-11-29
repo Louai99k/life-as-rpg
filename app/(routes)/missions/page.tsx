@@ -11,7 +11,6 @@ const getData = async () => {
 
   return dbDataSanitizer(data, {
     jsonFields: ["goals"],
-    booleanFields: ["is_completed"],
   }) as Mission[];
 };
 

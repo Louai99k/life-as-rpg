@@ -42,7 +42,6 @@ const MissionsTable = () => {
   const { data: missions, isLoading } = useSWR("missions", () =>
     clientORM<Mission[]>("SELECT * FROM missions", {
       jsonFields: ["goals"],
-      booleanFields: ["is_completed"],
     })
   );
 
