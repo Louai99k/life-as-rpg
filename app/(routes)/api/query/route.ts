@@ -5,7 +5,6 @@ type Body = {
   sql: string;
   params: any[];
   isSingle: boolean;
-  jsonFields: string[];
 };
 
 export async function POST(req: Request) {
