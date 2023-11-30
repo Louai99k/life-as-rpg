@@ -23,7 +23,7 @@ const MagicCategoriesView = () => {
     clientORM<MagicCategory[]>(`SELECT * FROM "magic_categories"`)
   );
   const { player } = useContext(MasterInfoContext);
-  const [upgradeModal, setUpgradeModal] = useState<PurchaseModalState>({
+  const [purchaseModal, setPurchaseModal] = useState<PurchaseModalState>({
     category: null,
     open: false,
   });
@@ -55,7 +55,7 @@ const MagicCategoriesView = () => {
                       <Button
                         size="sm"
                         onClick={() => {
-                          setUpgradeModal({
+                          setPurchaseModal({
                             open: true,
                             category: cloneDeep(category),
                           });
@@ -74,12 +74,13 @@ const MagicCategoriesView = () => {
             );
           })
         : null}
-      {upgradeModal.open ? (
+      {purchaseModal.open ? (
         <PurchaseModal
           price={newMagicPrice}
           onClose={() => {
-            setUpgradeModal({ open: false, category: null });
+            setPurchaseModal({ open: false, category: null });
           }}
+          magic={purchaseModal.category!}
         />
       ) : null}
     </div>

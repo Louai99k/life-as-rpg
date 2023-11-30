@@ -6,7 +6,7 @@ const MagicPageSkeleton = () => {
       <div className="px-8 mt-8 flex justify-between">
         <h3 className="text-2xl font-bold">Magic</h3>
       </div>
-      <div className="px-8 gap-4 grid grid-cols-4">
+      <div className="px-8 gap-4 grid grid-cols-3">
         {Array(8)
           .fill(null)
           .map((_, i) => (
