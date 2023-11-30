@@ -28,7 +28,10 @@ const UpgradeModal = ({ onClose, skill }: UpgradeModalProps) => {
   const [upgradeWith, setUpgradeWith] = useState<"money" | "lvl_points" | null>(
     null
   );
-  const playerSkill = player?.skills[skill.skill_code];
+
+  if (!player) return null;
+
+  const playerSkill = player.skills[skill.skill_code];
 
   const moneyRequired = calculateSkillUpgradePrice(
     playerSkill?.lvl ? playerSkill.lvl + 1 : 0
@@ -41,7 +44,7 @@ const UpgradeModal = ({ onClose, skill }: UpgradeModalProps) => {
 
     const sql = `UPDATE "players" SET "skills" = $1, "${upgradeWith}" = $2 WHERE "id" = $3`;
 
-    const oldSkill = player.skills[skill.skill_code] || { lvl: 0 };
+    const oldSkill = playerSkill || { lvl: 0 };
     const newSkills = {
       ...player.skills,
       [skill.skill_code]: {
@@ -85,7 +88,7 @@ const UpgradeModal = ({ onClose, skill }: UpgradeModalProps) => {
                 onChange={(e) => {
                   setUpgradeWith(e.target.checked ? "money" : null);
                 }}
-                isDisabled={moneyRequired > (player?.money || 0)}
+                isDisabled={moneyRequired > player.money}
               >
                 With Money ({player ? moneyRequired : "Calculating..."})
               </Checkbox>
@@ -99,7 +102,7 @@ const UpgradeModal = ({ onClose, skill }: UpgradeModalProps) => {
                   ),
                   wrapper: "hidden",
                 }}
-                isDisabled={1 > (player?.lvl_points || 0)}
+                isDisabled={1 > player.lvl_points}
                 onChange={(e) => {
                   setUpgradeWith(e.target.checked ? "lvl_points" : null);
                 }}

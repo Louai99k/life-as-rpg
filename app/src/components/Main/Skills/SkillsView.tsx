@@ -1,5 +1,4 @@
 import { Button, Card, CardBody, ScrollShadow } from "@nextui-org/react";
-import StarIcon from "@src/icons/StarIcon";
 import clientORM from "@src/lib/clientORM";
 import { Skill } from "@src/types/skills";
 import { useContext, useState } from "react";
