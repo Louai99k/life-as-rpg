@@ -50,3 +50,13 @@ model magic_categories {
   description   String
   category_code String
 }
+
+model items {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String
+  item_code    String
+  upgradable   Boolean? @default(false)
+  upgrade_tree Json[]   @default([])
+  price        Int
+}
