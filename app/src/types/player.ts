@@ -6,6 +6,11 @@ export type PlayerMagic = {
   category_code: string;
 };
 
+export type PlayerItem = {
+  item_code: string;
+  upgrades: { upgrade_code: string }[];
+};
+
 export type Player = {
   id: number;
   name: string;
@@ -17,4 +22,5 @@ export type Player = {
   lvl: number;
   skills: Record<string, PlayerSkill>;
   magic: PlayerMagic[];
+  items: PlayerItem[];
 };

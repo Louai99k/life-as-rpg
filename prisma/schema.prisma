@@ -31,6 +31,9 @@ model players {
   lvl        Int?     @default(1)
   skills     Json?    @default("{}")
   magic      Json[]   @default([])
+  items      Json[]   @default([])
+
+  @@index([id], map: "idx_id")
 }
 
 model skills {
