@@ -6,21 +6,14 @@ import {
   ModalFooter,
   Button,
   Input,
-  Select,
-  SelectItem,
   Textarea,
 } from "@nextui-org/react";
-import PlusIcon from "@src/icons/PlusIcon";
-import { MISSION_RANK } from "@src/types/enum";
 import { useRef, useState } from "react";
-import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
-import get from "lodash/get";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useSWRConfig } from "swr";
 import clientORM from "@src/lib/clientORM";
-import randomstring from "randomstring";
 
-import type { Mission } from "@src/types/mission";
-import { Skill } from "@src/types/skills";
+import type { Skill } from "@src/types/skills";
 
 interface AddSkillModalProps {
   onClose: VoidFunction;

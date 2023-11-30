@@ -30,6 +30,7 @@ model players {
   is_master  Boolean? @default(false)
   lvl        Int?     @default(1)
   skills     Json?    @default("{}")
+  magic      Json[]   @default([])
 }
 
 model skills {
@@ -38,4 +39,11 @@ model skills {
   skill_code     String @db.VarChar(255)
   description    String
   lvls_available Int?   @default(4)
+}
+
+model magic_categories {
+  id            Int    @id @default(autoincrement())
+  name          String
+  description   String
+  category_code String
 }

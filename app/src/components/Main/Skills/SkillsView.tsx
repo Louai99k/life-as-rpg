@@ -26,9 +26,11 @@ const SkillsView = () => {
     open: false,
   });
 
+  if (!player) return null;
+
   return (
     <div className="px-8 gap-4 grid grid-cols-4">
-      {player && skills
+      {skills
         ? skills.map((skill) => {
             const playerSkill = player.skills[skill.skill_code];
             return (
@@ -45,17 +47,20 @@ const SkillsView = () => {
                   </div>
                   <div className="flex items-center justify-between cursor-default">
                     <p className="text-lg font-bold">{skill.name}</p>
-                    <Button
-                      size="sm"
-                      onClick={() => {
-                        setUpgradeModal({
-                          open: true,
-                          skill: cloneDeep(skill),
-                        });
-                      }}
-                    >
-                      Upgrade
-                    </Button>
+                    {!playerSkill ||
+                    skill.lvls_available > playerSkill.lvl ? null : (
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          setUpgradeModal({
+                            open: true,
+                            skill: cloneDeep(skill),
+                          });
+                        }}
+                      >
+                        Upgrade
+                      </Button>
+                    )}
                   </div>
                   <ScrollShadow className="h-[100px]">
                     <p className="cursor-default">{skill.description}</p>

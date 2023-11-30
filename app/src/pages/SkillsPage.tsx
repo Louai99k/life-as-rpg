@@ -28,7 +28,7 @@ const SkillsPage = ({ skills }: SkillsPageProps) => {
         },
       }}
     >
-      <div className="px-8 mt-8 flex justify-between">
+      <div className="px-8 mt-8 mb-4 flex justify-between">
         <h3 className="text-2xl font-bold">Skills:</h3>
         <Button onClick={() => setOpen(true)} startContent={<PlusIcon />}>
           Add Skill

@@ -28,7 +28,7 @@ const MissionsPage = ({ missions }: MissionsPageProps) => {
         },
       }}
     >
-      <div className="px-8 mt-8">
+      <div className="px-8 mt-8 mb-4">
         <div className="flex justify-between">
           <h3 className="text-2xl font-bold mb-4">Missions</h3>
           <Button

@@ -1,12 +1,10 @@
-import { Button, Card, Skeleton } from "@nextui-org/react";
-import PlusIcon from "@src/icons/PlusIcon";
+import { Card, Skeleton } from "@nextui-org/react";
 
-const SkillsPageSkeleton = () => {
+const MagicPageSkeleton = () => {
   return (
     <>
       <div className="px-8 mt-8 flex justify-between">
-        <h3 className="text-2xl font-bold">Skills</h3>
-        <Button startContent={<PlusIcon />}>Add Skill</Button>
+        <h3 className="text-2xl font-bold">Magic</h3>
       </div>
       <div className="px-8 gap-4 grid grid-cols-4">
         {Array(8)
@@ -34,4 +32,4 @@ const SkillsPageSkeleton = () => {
   );
 };
 
-export default SkillsPageSkeleton;
+export default MagicPageSkeleton;

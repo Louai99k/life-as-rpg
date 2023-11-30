@@ -2,6 +2,10 @@ export type PlayerSkill = {
   lvl: number;
 };
 
+export type PlayerMagic = {
+  category_code: string;
+};
+
 export type Player = {
   id: number;
   name: string;
@@ -12,4 +16,5 @@ export type Player = {
   is_master: boolean;
   lvl: number;
   skills: Record<string, PlayerSkill>;
+  magic: PlayerMagic[];
 };
