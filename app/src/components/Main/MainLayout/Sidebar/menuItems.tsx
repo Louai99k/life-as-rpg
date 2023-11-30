@@ -28,11 +28,6 @@ const menuItems = () => {
       link: "/magic",
     },
     {
-      label: "Physics",
-      icon: <PhysicsIcon />,
-      link: "/physics",
-    },
-    {
       label: "Items",
       icon: <ItemsIcon />,
       link: "/items",
