@@ -59,4 +59,5 @@ model items {
   upgradable   Boolean? @default(false)
   upgrade_tree Json[]   @default([])
   price        Int
+  url          String
 }

@@ -13,4 +13,5 @@ export type Item = {
   upgradable: boolean;
   upgrade_tree: [];
   price: number;
+  url: string;
 };
