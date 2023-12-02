@@ -1,10 +1,9 @@
-import { Button, Card, CardBody, Skeleton } from "@nextui-org/react";
+import { Button, Card, CardBody, Skeleton, Tooltip } from "@nextui-org/react";
 import items from "./items";
 import get from "lodash/get";
-import PlusIcon from "@src/icons/PlusIcon";
 import { useContext } from "react";
 import MasterInfoContext from "@src/context/MasterInfoContext";
-import calculateXP from "@src/utils/game/calculateXP";
+import InfoIcon from "@src/icons/InfoIcon";
 
 interface ResourcesProps {}
 
@@ -34,9 +33,11 @@ const Resources = ({}: ResourcesProps) => {
               </>
             )}
 
-            <Button isIconOnly>
-              <PlusIcon />
-            </Button>
+            <Tooltip content={item.tooltipContent}>
+              <div>
+                <InfoIcon />
+              </div>
+            </Tooltip>
           </CardBody>
         </Card>
       ))}

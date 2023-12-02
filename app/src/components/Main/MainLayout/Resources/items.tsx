@@ -11,9 +11,11 @@ type ItemType =
       label: string;
       icon: React.ReactNode;
       dataIndex: "money" | "lvl_points" | "ki";
+      tooltipContent: string;
     }
   | {
       render: (player: Player) => React.ReactNode;
+      tooltipContent: string;
     };
 
 const items = (): ItemType[] => {
@@ -22,9 +24,11 @@ const items = (): ItemType[] => {
       label: "Money",
       icon: <MoneyIcon />,
       dataIndex: "money",
+      tooltipContent: "Money",
     },
     {
       label: "LvL Points",
+      tooltipContent: "LvL Points",
       icon: <LvLPointsIcon />,
       dataIndex: "lvl_points",
     },
@@ -44,9 +48,11 @@ const items = (): ItemType[] => {
           </div>
         </div>
       ),
+      tooltipContent: "Level",
     },
     {
       label: "Ki",
+      tooltipContent: "Ki",
       icon: <KiIcon />,
       dataIndex: "ki",
     },
