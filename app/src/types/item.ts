@@ -1,7 +1,8 @@
 export type ItemUpgrade = {
   upgrade_code: string;
   description: string;
-  price: number;
+  name: string;
+  price: string;
   nodes?: ItemUpgrade[];
 };
 
@@ -11,7 +12,7 @@ export type Item = {
   description: string;
   item_code: string;
   upgradable: boolean;
-  upgrade_tree: [];
+  upgrade_tree: ItemUpgrade[];
   price: number;
   url: string;
 };

@@ -52,7 +52,7 @@ const ProgressModal = ({ onClose, mission }: ProgressModalProps) => {
       const newXP = player.xp + mission.xp_reward;
       const newLvL = calculateLvL(newXP);
       const newLvLPts = (newLvL - player.lvl) * 3 + player.lvl_points;
-      const newKi = newLvL === 1 ? 100 : Math.pow(2, newLvL - 1) + 100;
+      const newKi = newLvL === 1 ? 100 : Math.pow(2, newLvL - 1) * 100 + 100;
       try {
         await clientORM(sql, {
           params: [

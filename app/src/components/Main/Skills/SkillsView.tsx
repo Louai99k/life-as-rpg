@@ -46,8 +46,7 @@ const SkillsView = () => {
                   </div>
                   <div className="flex items-center justify-between cursor-default">
                     <p className="text-lg font-bold">{skill.name}</p>
-                    {!playerSkill ||
-                    skill.lvls_available > playerSkill.lvl ? null : (
+                    {!playerSkill || skill.lvls_available > playerSkill.lvl ? (
                       <Button
                         size="sm"
                         onClick={() => {
@@ -59,7 +58,7 @@ const SkillsView = () => {
                       >
                         Upgrade
                       </Button>
-                    )}
+                    ) : null}
                   </div>
                   <ScrollShadow className="h-[100px]">
                     <p className="cursor-default">{skill.description}</p>

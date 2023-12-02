@@ -1,20 +1,23 @@
-import { Button, Card, CardBody, ScrollShadow } from "@nextui-org/react";
+import { Button, Card, CardBody, Chip, ScrollShadow } from "@nextui-org/react";
 import clientORM from "@src/lib/clientORM";
 import { useContext, useState } from "react";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
-import cloneDeep from "lodash/cloneDeep";
 import MasterInfoContext from "@src/context/MasterInfoContext";
 import LockIcon from "@src/icons/LockIcon";
+import PurchaseModal from "./PurchaseModal";
+import Image from "next/image";
+import cloneDeep from "lodash/cloneDeep";
 
 import type { Item } from "@src/types/item";
-import UnlockIcon from "@src/icons/UnlockIcon";
-import PurchaseModal from "./PurchaseModal";
+import type { PlayerItem } from "@src/types/player";
 
 const UpgradeModal = dynamic(() => import("./UpgradeModal"));
 
 type UpgradeModalState = {
   open: boolean;
+  item: Item | null;
+  playerItem: PlayerItem | null;
 };
 
 type PurchaseModalState = {
@@ -29,6 +32,8 @@ const ItemsView = () => {
   const { player } = useContext(MasterInfoContext);
   const [upgradeModal, setUpgradeModal] = useState<UpgradeModalState>({
     open: false,
+    item: null,
+    playerItem: null,
   });
   const [purchaseModal, setPurchaseModal] = useState<PurchaseModalState>({
     open: false,
@@ -49,14 +54,50 @@ const ItemsView = () => {
                 <CardBody className="space-y-2 p-4">
                   <div className="flex items-center justify-center">
                     {playerItem ? (
-                      <UnlockIcon width="100px" height="100px" />
+                      <div className="relative w-full h-[100px]">
+                        <Image
+                          fill
+                          src={item.url}
+                          alt="any"
+                          style={{ objectFit: "cover" }}
+                        />
+                      </div>
                     ) : (
                       <LockIcon width="100px" height="100px" />
                     )}
                   </div>
                   <div className="flex items-center justify-between cursor-default">
                     <p className="text-lg font-bold">{item.name}</p>
-                    {/* Upgrade Or Purchase Buttons */}
+                    {playerItem && item.upgradable ? (
+                      <Button
+                        onClick={() => {
+                          setUpgradeModal({
+                            open: true,
+                            playerItem: cloneDeep(playerItem),
+                            item: cloneDeep(item),
+                          });
+                        }}
+                        size="sm"
+                      >
+                        Upgrade
+                      </Button>
+                    ) : !playerItem ? (
+                      <Button
+                        onClick={() => {
+                          setPurchaseModal({
+                            item: cloneDeep(item),
+                            open: true,
+                          });
+                        }}
+                        size="sm"
+                      >
+                        Purchase
+                      </Button>
+                    ) : (
+                      <Chip color="secondary" size="sm">
+                        Owned
+                      </Chip>
+                    )}
                   </div>
                   <ScrollShadow className="h-[100px]">
                     <p className="cursor-default">{item.description}</p>
@@ -69,8 +110,10 @@ const ItemsView = () => {
       {upgradeModal.open ? (
         <UpgradeModal
           onClose={() => {
-            setUpgradeModal({ open: false });
+            setUpgradeModal({ open: false, item: null, playerItem: null });
           }}
+          item={upgradeModal.item!}
+          playerItem={upgradeModal.playerItem!}
         />
       ) : null}
       {purchaseModal.open ? (

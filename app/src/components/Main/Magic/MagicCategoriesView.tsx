@@ -62,7 +62,7 @@ const MagicCategoriesView = () => {
                         }}
                         isDisabled={player.money < newMagicPrice}
                       >
-                        Purchase
+                        Purchase ({newMagicPrice})
                       </Button>
                     ) : null}
                   </div>

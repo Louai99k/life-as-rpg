@@ -35,7 +35,7 @@ const AddItemModal = ({ onClose }: AddItemModalProps) => {
 
   const onSubmit: SubmitHandler<Omit<Item, "id">> = async (data) => {
     setLoading(true);
-    const sql = `INSERT INTO "items" ("name", "item_code", "price", "upgradable", "upgrade_tree", "description") VALUES ($1, $2, $3, $4, $5, $6)`;
+    const sql = `INSERT INTO "items" ("name", "item_code", "price", "upgradable", "upgrade_tree", "description", "url") VALUES ($1, $2, $3, $4, $5, $6, $7)`;
 
     try {
       await clientORM(sql, {
@@ -44,8 +44,9 @@ const AddItemModal = ({ onClose }: AddItemModalProps) => {
           data.item_code,
           +data.price,
           data.upgradable || false,
-          JSON.parse(data.upgrade_tree as any),
+          JSON.parse((data.upgrade_tree || "[]") as any),
           data.description,
+          data.url,
         ],
       });
     } catch (e) {}
@@ -130,6 +131,17 @@ const AddItemModal = ({ onClose }: AddItemModalProps) => {
                   placeholder="Enter your description"
                   isInvalid={errors.description ? true : false}
                   errorMessage={errors.description?.message as string}
+                />
+                <Input
+                  {...register("url", {
+                    required: "URL is Required",
+                  })}
+                  isRequired
+                  label="Item Image Link"
+                  placeholder="https://...."
+                  type="website"
+                  isInvalid={errors.url ? true : false}
+                  errorMessage={errors.url?.message as string}
                 />
                 <button type="submit" ref={submitRef} className="hidden" />
               </form>
