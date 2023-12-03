@@ -43,7 +43,7 @@ const ItemsView = () => {
   if (!player) return null;
 
   return (
-    <div className="px-8 gap-4 grid grid-cols-4">
+    <div className="px-4 md:px-8 gap-4 grid grid-cols-1 md:grid-cols-4">
       {items
         ? items.map((item) => {
             const playerItem = player.items.find(

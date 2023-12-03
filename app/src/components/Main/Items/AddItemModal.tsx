@@ -59,7 +59,7 @@ const AddItemModal = ({ onClose }: AddItemModalProps) => {
 
   return (
     <Modal isOpen size="3xl" onClose={onClose}>
-      <ModalContent>
+      <ModalContent className="max-h-[90vh] overflow-auto">
         {(onClose) => (
           <>
             <ModalHeader>Add An Item</ModalHeader>
@@ -69,7 +69,7 @@ const AddItemModal = ({ onClose }: AddItemModalProps) => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-4"
               >
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap md:flex-nowrap">
                   <Input
                     {...register("name", {
                       required: "Name is required",
@@ -91,7 +91,7 @@ const AddItemModal = ({ onClose }: AddItemModalProps) => {
                     errorMessage={errors.item_code?.message as string}
                   />
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap md:flex-nowrap">
                   <Input
                     {...register("price", {
                       required: "Price is required",
@@ -102,7 +102,7 @@ const AddItemModal = ({ onClose }: AddItemModalProps) => {
                     type="number"
                     isInvalid={errors.price ? true : false}
                     errorMessage={errors.price?.message as string}
-                    className="w-1/2"
+                    className="md:w-1/2"
                   />
                   <Checkbox
                     onChange={(e) => {
