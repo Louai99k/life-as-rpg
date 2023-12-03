@@ -143,13 +143,15 @@ const UpgradeModal = ({ onClose, playerItem, item }: UpgradeModalProps) => {
   };
 
   return (
-    <Modal isOpen size="5xl" onClose={onClose}>
+    <Modal scrollBehavior="inside" isOpen size="5xl" onClose={onClose}>
       <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader>Upgrade Item</ModalHeader>
-            <ModalBody className="max-h-[75vh] overflow-auto">
-              <div>{renderNodes(item.upgrade_tree)}</div>
+            <ModalBody className="w-screen md:w-auto">
+              <div className="min-w-[500px]">
+                {renderNodes(item.upgrade_tree)}
+              </div>
             </ModalBody>
             <ModalFooter>
               <Button isLoading={loading} variant="light" onPress={onClose}>
