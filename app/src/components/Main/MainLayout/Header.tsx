@@ -10,8 +10,10 @@ const Header = () => {
   const [calculateModal, setCalculateModal] = useState(false);
 
   return (
-    <div className="flex items-end pt-8 justify-center gap-4">
-      <h1 className="text-4xl font-bold">Life As RPG</h1>
+    <div className="flex flex-wrap items-end pt-8 justify-center gap-4">
+      <h1 className="text-4xl font-bold w-full md:w-auto text-center">
+        Life As RPG
+      </h1>
       <Chip
         variant="dot"
         classNames={{
