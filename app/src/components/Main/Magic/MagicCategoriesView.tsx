@@ -33,7 +33,7 @@ const MagicCategoriesView = () => {
   const newMagicPrice = calculateMagicPrice(player);
 
   return (
-    <div className="px-8 gap-4 grid grid-cols-3">
+    <div className="px-4 md:px-8 gap-4 grid grid-cols-1 md:grid-cols-3">
       {player && magic_categories
         ? magic_categories.map((category) => {
             const playerMagic = player.magic.find(

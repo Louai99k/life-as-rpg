@@ -18,7 +18,7 @@ const MagicPage = ({ categories }: MagicPageProps) => {
         },
       }}
     >
-      <div className="px-8 mt-8 mb-4 flex justify-between">
+      <div className="px-4 md:px-8 mt-8 mb-4 flex justify-between">
         <h3 className="text-2xl font-bold">Magic Categories:</h3>
       </div>
       <MagicCategoriesView />
