@@ -65,7 +65,7 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
 
   return (
     <Modal isOpen size="3xl" onClose={onClose}>
-      <ModalContent>
+      <ModalContent className="overflow-auto max-h-[90vh]">
         {(onClose) => (
           <>
             <ModalHeader>Add A Mission</ModalHeader>
@@ -75,7 +75,7 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-4"
               >
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap md:flex-nowrap">
                   <Input
                     {...register("name", { required: "Name is required" })}
                     isRequired
@@ -99,7 +99,7 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
                     ))}
                   </Select>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap md:flex-nowrap">
                   <Input
                     {...register("money_reward", {
                       required: "Required Field",
