@@ -74,7 +74,7 @@ const UpgradeModal = ({ onClose, skill }: UpgradeModalProps) => {
             <ModalHeader>
               Upgrade {skill.name} To Level {(playerSkill?.lvl || 0) + 1} !
             </ModalHeader>
-            <ModalBody className="flex-row gap-8">
+            <ModalBody className="flex-row gap-8 flex-wrap md:flex-nowrap">
               <Checkbox
                 classNames={{
                   base: cn(
