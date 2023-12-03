@@ -13,8 +13,8 @@ const Header = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
 
   return (
-    <div className="flex md:hidden relative flex-wrap items-end pt-8 justify-center gap-4">
-      <div className="absolute top-1 left-2 pt-8">
+    <div className="flex relative flex-wrap items-end pt-8 justify-center gap-4">
+      <div className="absolute md:hidden top-1 left-2 pt-8">
         <span onClick={() => setOpenSidebar(true)}>
           <BurgerIcon width="2.5rem" height="2.5rem" />
         </span>

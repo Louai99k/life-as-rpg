@@ -11,7 +11,7 @@ const Resources = ({}: ResourcesProps) => {
   const { player } = useContext(MasterInfoContext);
 
   return (
-    <div className="mt-8 mx-auto px-4 md:px-8 flex justify-center gap-4 flex-wrap">
+    <div className="mt-8 mx-auto px-4 md:px-8 w-full md:w-[80%] flex justify-center gap-4 flex-wrap">
       {items().map((item, i) => (
         <Card className="basis-[200px] flex-grow" key={i}>
           <CardBody className="flex-row justify-between items-center">

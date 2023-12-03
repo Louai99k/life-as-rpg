@@ -15,7 +15,7 @@ const MobilSidebar = ({ onClose, translateCSS }: MobilSidebarProps) => {
   return (
     <div
       className={cn(
-        "absolute top-0 left-0 w-screen h-screen bg-black z-50 flex flex-col gap-4 py-4 px-2 transition",
+        "absolute top-0 left-0 w-screen md:hidden h-screen bg-black z-50 flex flex-col gap-4 py-4 px-2 transition",
         translateCSS
       )}
     >
