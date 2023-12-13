@@ -59,7 +59,9 @@ const MissionsTable = () => {
         <TableHeader>
           <TableColumn>ID</TableColumn>
           <TableColumn>Name</TableColumn>
-          <TableColumn className="hidden md:block" >Description</TableColumn>
+          <TableColumn className="hidden md:table-cell">
+            Description
+          </TableColumn>
           <TableColumn>Progress</TableColumn>
           <TableColumn>Goals</TableColumn>
           <TableColumn>Actions</TableColumn>
@@ -74,7 +76,9 @@ const MissionsTable = () => {
               <TableRow>
                 <TableCell>{mission.id}</TableCell>
                 <TableCell>{mission.name}</TableCell>
-                <TableCell className="hidden md:block" >{mission.description}</TableCell>
+                <TableCell className="hidden md:table-cell">
+                  {mission.description}
+                </TableCell>
                 <TableCell>% {mission.overall_progress}</TableCell>
                 <TableCell>
                   <Popover placement="bottom">
