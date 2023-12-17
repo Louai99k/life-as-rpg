@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, ScrollShadow } from "@nextui-org/react";
+import { Button, Card, CardBody, Chip, ScrollShadow } from "@nextui-org/react";
 import clientORM from "@src/lib/clientORM";
 import { Skill } from "@src/types/skills";
 import { useContext, useState } from "react";
@@ -58,6 +58,8 @@ const SkillsView = () => {
                       >
                         Upgrade
                       </Button>
+                    ) : playerSkill.lvl === skill.lvls_available ? (
+                      <Chip color="primary">Max LvL</Chip>
                     ) : null}
                   </div>
                   <ScrollShadow className="h-[100px]">
