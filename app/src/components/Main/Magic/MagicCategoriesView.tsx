@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, ScrollShadow } from "@nextui-org/react";
+import { Button, Card, CardBody, ScrollShadow, cn } from "@nextui-org/react";
 import clientORM from "@src/lib/clientORM";
 import { useContext, useState } from "react";
 import useSWR from "swr";
@@ -12,6 +12,7 @@ import calculateMagicPrice from "@src/utils/game/calculateMagicPrice";
 import type { MagicCategory } from "@src/types/magic";
 
 const PurchaseModal = dynamic(() => import("./PurchaseModal"));
+const SellModal = dynamic(() => import("./SellModal"));
 
 type PurchaseModalState = {
   category: MagicCategory | null;
@@ -27,10 +28,15 @@ const MagicCategoriesView = () => {
     category: null,
     open: false,
   });
+  const [sellModal, setSellModal] = useState<PurchaseModalState>({
+    category: null,
+    open: false,
+  });
 
   if (!player) return null;
 
-  const newMagicPrice = calculateMagicPrice(player);
+  const newMagicPrice = calculateMagicPrice(player.magic.length);
+  const prevMagicPrice = calculateMagicPrice(player.magic.length - 1);
 
   return (
     <div className="px-4 md:px-8 gap-4 grid grid-cols-1 md:grid-cols-3">
@@ -51,7 +57,25 @@ const MagicCategoriesView = () => {
                   </div>
                   <div className="flex items-center justify-between cursor-default">
                     <p className="text-lg font-bold">{category.name}</p>
-                    {!playerMagic ? (
+                    {playerMagic ? (
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          setSellModal({
+                            open: true,
+                            category: cloneDeep(category),
+                          });
+                        }}
+                        color="warning"
+                        className={cn(
+                          playerMagic.category_code === "time"
+                            ? "hidden"
+                            : undefined
+                        )}
+                      >
+                        Sell Magic
+                      </Button>
+                    ) : (
                       <Button
                         size="sm"
                         onClick={() => {
@@ -64,7 +88,7 @@ const MagicCategoriesView = () => {
                       >
                         Purchase ({newMagicPrice})
                       </Button>
-                    ) : null}
+                    )}
                   </div>
                   <ScrollShadow className="h-[150px]">
                     <p className="cursor-default">{category.description}</p>
@@ -81,6 +105,15 @@ const MagicCategoriesView = () => {
             setPurchaseModal({ open: false, category: null });
           }}
           magic={purchaseModal.category!}
+        />
+      ) : null}
+      {sellModal.open ? (
+        <SellModal
+          price={Math.floor(prevMagicPrice - prevMagicPrice * 0.3)}
+          onClose={() => {
+            setSellModal({ open: false, category: null });
+          }}
+          magic={sellModal.category!}
         />
       ) : null}
     </div>
