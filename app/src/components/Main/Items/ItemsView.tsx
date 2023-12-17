@@ -13,6 +13,7 @@ import type { Item } from "@src/types/item";
 import type { PlayerItem } from "@src/types/player";
 
 const UpgradeModal = dynamic(() => import("./UpgradeModal"));
+const SellModal = dynamic(() => import("./SellModal"));
 
 type UpgradeModalState = {
   open: boolean;
@@ -21,6 +22,11 @@ type UpgradeModalState = {
 };
 
 type PurchaseModalState = {
+  open: boolean;
+  item: Item | null;
+};
+
+type SellModalState = {
   open: boolean;
   item: Item | null;
 };
@@ -36,6 +42,10 @@ const ItemsView = () => {
     playerItem: null,
   });
   const [purchaseModal, setPurchaseModal] = useState<PurchaseModalState>({
+    open: false,
+    item: null,
+  });
+  const [sellModal, setSellModal] = useState<SellModalState>({
     open: false,
     item: null,
   });
@@ -69,18 +79,32 @@ const ItemsView = () => {
                   <div className="flex items-center justify-between cursor-default">
                     <p className="text-lg font-bold">{item.name}</p>
                     {playerItem && item.upgradable ? (
-                      <Button
-                        onClick={() => {
-                          setUpgradeModal({
-                            open: true,
-                            playerItem: cloneDeep(playerItem),
-                            item: cloneDeep(item),
-                          });
-                        }}
-                        size="sm"
-                      >
-                        Upgrade
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => {
+                            setSellModal({
+                              open: true,
+                              item: cloneDeep(item),
+                            });
+                          }}
+                          size="sm"
+                          color="warning"
+                        >
+                          Sell
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            setUpgradeModal({
+                              open: true,
+                              playerItem: cloneDeep(playerItem),
+                              item: cloneDeep(item),
+                            });
+                          }}
+                          size="sm"
+                        >
+                          Upgrade
+                        </Button>
+                      </div>
                     ) : !playerItem ? (
                       <Button
                         onClick={() => {
@@ -122,6 +146,14 @@ const ItemsView = () => {
             setPurchaseModal({ open: false, item: null });
           }}
           item={purchaseModal.item!}
+        />
+      ) : null}
+      {sellModal.open ? (
+        <SellModal
+          onClose={() => {
+            setSellModal({ open: false, item: null });
+          }}
+          item={sellModal.item!}
         />
       ) : null}
     </div>
