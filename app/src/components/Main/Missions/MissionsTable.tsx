@@ -11,11 +11,12 @@ import {
   Button,
   PopoverContent,
   Tooltip,
+  Pagination,
 } from "@nextui-org/react";
 import DeleteIcon from "@src/icons/DeleteIcon";
 import ProgressIcon from "@src/icons/ProgressIcon";
 import clientORM from "@src/lib/clientORM";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
 import cloneDeep from "lodash/cloneDeep";
@@ -38,16 +39,38 @@ type ProgressModalState = {
   open: boolean;
 };
 
-const MissionsTable = () => {
-  const { data: missions, isLoading } = useSWR("missions", () =>
+interface MissionsTableProps {
+  showDoneMissions: boolean;
+}
+
+const ROWS_PER_PAGE = 10;
+
+const MissionsTable = ({ showDoneMissions }: MissionsTableProps) => {
+  const { data: missions = [], isLoading } = useSWR("missions", () =>
     clientORM<Mission[]>(`SELECT * FROM "missions"`)
   );
+  const filteredMissions = useMemo(
+    () =>
+      missions.filter(
+        (el) =>
+          (showDoneMissions && el.is_completed) ||
+          (!showDoneMissions && !el.is_completed)
+      ),
+    [missions, showDoneMissions]
+  );
+  const [page, setPage] = useState(1);
+  const pages = Math.ceil(filteredMissions.length / ROWS_PER_PAGE);
+  const items = useMemo(() => {
+    const start = (page - 1) * ROWS_PER_PAGE;
+    const end = start + ROWS_PER_PAGE;
+
+    return filteredMissions.slice(start, end);
+  }, [page, filteredMissions]);
 
   const [deleteModal, setDeleteModal] = useState<DeleteModalState>({
     mission: null,
     open: false,
   });
-
   const [progressModal, setProgressModal] = useState<ProgressModalState>({
     mission: null,
     open: false,
@@ -55,7 +78,22 @@ const MissionsTable = () => {
 
   return (
     <>
-      <Table aria-label="Example static collection table">
+      <Table
+        bottomContent={
+          pages > 0 ? (
+            <div className="flex w-full justify-center">
+              <Pagination
+                isCompact
+                showControls
+                page={page}
+                total={pages}
+                onChange={(page) => setPage(page)}
+              />
+            </div>
+          ) : null
+        }
+        aria-label="Missions Table"
+      >
         <TableHeader>
           <TableColumn>ID</TableColumn>
           <TableColumn>Name</TableColumn>
@@ -69,7 +107,7 @@ const MissionsTable = () => {
         <TableBody
           isLoading={isLoading && !missions}
           loadingContent={<Spinner />}
-          items={missions!}
+          items={items}
         >
           {(mission) => {
             return (

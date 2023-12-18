@@ -2,7 +2,7 @@
 
 import MissionsTable from "@src/components/Main/Missions/MissionsTable";
 import { SWRConfig } from "swr";
-import { Button } from "@nextui-org/react";
+import { Button, Switch } from "@nextui-org/react";
 import PlusIcon from "@src/icons/PlusIcon";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -19,6 +19,7 @@ interface MissionsPageProps {
 
 const MissionsPage = ({ missions }: MissionsPageProps) => {
   const [open, setOpen] = useState(false);
+  const [showDoneMissions, setShowDoneMissions] = useState(false);
 
   return (
     <SWRConfig
@@ -29,17 +30,22 @@ const MissionsPage = ({ missions }: MissionsPageProps) => {
       }}
     >
       <div className="px-4 md:px-8 mt-8 mb-4">
-        <div className="flex justify-between">
+        <div className="flex flex-col md:flex-row justify-between mb-4 md:mb-0">
           <h3 className="text-2xl font-bold mb-4">Missions</h3>
-          <Button
-            onClick={() => setOpen(true)}
-            color="primary"
-            startContent={<PlusIcon />}
-          >
-            Add Mission
-          </Button>
+          <div className="flex gap-4 flex-col md:flex-row">
+            <Button
+              onClick={() => setOpen(true)}
+              color="primary"
+              startContent={<PlusIcon />}
+            >
+              Add Mission
+            </Button>
+            <Switch onChange={(e) => setShowDoneMissions(e.target.checked)}>
+              Show Done Missions
+            </Switch>
+          </div>
         </div>
-        <MissionsTable />
+        <MissionsTable showDoneMissions={showDoneMissions} />
       </div>
       {open ? <AddMissionModal onClose={() => setOpen(false)} /> : null}
     </SWRConfig>
