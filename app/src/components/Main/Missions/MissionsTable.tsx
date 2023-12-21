@@ -113,7 +113,9 @@ const MissionsTable = ({ showDoneMissions }: MissionsTableProps) => {
             return (
               <TableRow>
                 <TableCell>{mission.id}</TableCell>
-                <TableCell>{mission.name}</TableCell>
+                <TableCell>
+                  <span className="w-max md:w-auto block">{mission.name}</span>
+                </TableCell>
                 <TableCell className="hidden md:table-cell">
                   {mission.description}
                 </TableCell>
