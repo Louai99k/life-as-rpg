@@ -9,13 +9,13 @@ import {
   Tooltip,
   cn,
 } from "@nextui-org/react";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import MasterInfoContext from "@src/context/MasterInfoContext";
+import clientORM from "@src/lib/clientORM";
+import { useSWRConfig } from "swr";
 
 import type { Item, ItemUpgrade } from "@src/types/item";
 import type { PlayerItem } from "@src/types/player";
-import clientORM from "@src/lib/clientORM";
-import { useSWRConfig } from "swr";
 
 interface UpgradeModalProps {
   onClose: VoidFunction;
@@ -33,6 +33,8 @@ const UpgradeModal = ({ onClose, playerItem, item }: UpgradeModalProps) => {
   const [upgrades, setUpgrades] = useState<UpgradesState>(
     playerItem.upgrades.map((el) => ({ ...el, upgraded: true }))
   );
+  const timer = useRef<NodeJS.Timeout | null>(null);
+  const [openTooltip, setOpenTooltip] = useState<null | string>(null);
   const { mutate } = useSWRConfig();
   const { player } = useContext(MasterInfoContext);
 
@@ -71,6 +73,17 @@ const UpgradeModal = ({ onClose, playerItem, item }: UpgradeModalProps) => {
     onClose();
   };
 
+  const startPress = (u: string) => {
+    timer.current = setTimeout(() => setOpenTooltip(u), 300);
+  };
+
+  const stopPress = () => {
+    if (timer.current !== null) {
+      clearTimeout(timer.current);
+      setOpenTooltip(null);
+    }
+  };
+
   const renderNodes = (
     nodes: ItemUpgrade[],
     level = 1,
@@ -99,8 +112,15 @@ const UpgradeModal = ({ onClose, playerItem, item }: UpgradeModalProps) => {
           key={node.upgrade_code}
           className={`w-full flex items-center flex-col basis-1/${nodes.length}`}
         >
-          <Tooltip content={node.description}>
-            <div>
+          <Tooltip
+            isOpen={openTooltip === node.upgrade_code}
+            onOpenChange={() => setOpenTooltip(node.upgrade_code)}
+            content={node.description}
+          >
+            <div
+              onTouchStart={() => startPress(node.upgrade_code)}
+              onTouchEnd={stopPress}
+            >
               <Checkbox
                 classNames={{
                   wrapper: "hidden",

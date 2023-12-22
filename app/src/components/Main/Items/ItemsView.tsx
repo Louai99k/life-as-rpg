@@ -8,6 +8,7 @@ import LockIcon from "@src/icons/LockIcon";
 import PurchaseModal from "./PurchaseModal";
 import Image from "next/image";
 import cloneDeep from "lodash/cloneDeep";
+import isEqual from "lodash/isEqual";
 
 import type { Item } from "@src/types/item";
 import type { PlayerItem } from "@src/types/player";
@@ -59,6 +60,15 @@ const ItemsView = () => {
             const playerItem = player.items.find(
               (el) => el.item_code === item.item_code
             );
+            const isMaxed =
+              playerItem &&
+              item.upgradable &&
+              isEqual(
+                cloneDeep(
+                  playerItem.upgrades.map((el) => el.upgrade_code)
+                ).sort(),
+                cloneDeep(item.upgrade_tree.map((el) => el.upgrade_code)).sort()
+              );
             return (
               <Card className="cursor-pointer" key={item.id} radius="lg">
                 <CardBody className="space-y-2 p-4">
@@ -92,18 +102,24 @@ const ItemsView = () => {
                         >
                           Sell
                         </Button>
-                        <Button
-                          onClick={() => {
-                            setUpgradeModal({
-                              open: true,
-                              playerItem: cloneDeep(playerItem),
-                              item: cloneDeep(item),
-                            });
-                          }}
-                          size="sm"
-                        >
-                          Upgrade
-                        </Button>
+                        {isMaxed ? (
+                          <Chip className="rounded-lg py-4" color="primary">
+                            Max
+                          </Chip>
+                        ) : (
+                          <Button
+                            onClick={() => {
+                              setUpgradeModal({
+                                open: true,
+                                playerItem: cloneDeep(playerItem),
+                                item: cloneDeep(item),
+                              });
+                            }}
+                            size="sm"
+                          >
+                            Upgrade
+                          </Button>
+                        )}
                       </div>
                     ) : !playerItem ? (
                       <Button
