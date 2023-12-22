@@ -103,7 +103,15 @@ const ItemsView = () => {
                           Sell
                         </Button>
                         {isMaxed ? (
-                          <Chip className="rounded-lg py-4" color="primary">
+                          <Chip className="rounded-lg py-4" color="primary"
+onClick={() => {
+                              setUpgradeModal({
+                                open: true,
+                                playerItem: cloneDeep(playerItem),
+                                item: cloneDeep(item),
+                              });
+                            }}
+>
                             Max
                           </Chip>
                         ) : (
