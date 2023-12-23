@@ -30,7 +30,7 @@ const PurchaseModal = ({ onClose, item }: PurchaseModalProps) => {
     const sql = `UPDATE "players" SET "items" = $1, "money" = $2 WHERE "id" = $3`;
 
     const newItems = [
-      ...player.magic,
+      ...player.items,
       { item_code: item.item_code, upgrades: [] },
     ];
 
