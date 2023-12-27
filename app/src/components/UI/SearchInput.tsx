@@ -3,13 +3,17 @@ import SearchIcon from "@src/icons/SearchIcon";
 
 interface SearchInputProps {
   onChange: (s: string) => void;
+  onClear: VoidFunction;
+  value: string;
 }
 
-const SearchInput = ({ onChange }: SearchInputProps) => {
+const SearchInput = ({ onChange, onClear, value }: SearchInputProps) => {
   return (
     <Input
       label="Search"
       isClearable
+      value={value}
+      onClear={onClear}
       radius="lg"
       classNames={{
         label: "text-black/50 dark:text-white/90",

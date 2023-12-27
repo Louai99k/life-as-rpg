@@ -30,10 +30,14 @@ const ItemsPage = ({ items }: ItemsPageProps) => {
         },
       }}
     >
-      <div className="px-4 md:px-8 mt-8 mb-4 flex justify-between">
+      <div className="px-4 md:px-8 mt-8 mb-4 flex flex-col md:flex-row gap-4 md:gap-0 justify-between">
         <h3 className="text-2xl font-bold">Items:</h3>
-        <div className="flex items-center gap-4">
-          <SearchInput onChange={setItemSearch} />
+        <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
+          <SearchInput
+            onClear={() => setItemSearch("")}
+            onChange={setItemSearch}
+            value={itemSearch}
+          />
           <Button onClick={() => setOpen(true)} startContent={<PlusIcon />}>
             Add Item
           </Button>
