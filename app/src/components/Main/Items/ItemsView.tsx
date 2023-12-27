@@ -64,8 +64,10 @@ const ItemsView = ({ itemSearch }: ItemsViewProps) => {
             .filter(
               (item) =>
                 itemSearch === "" ||
-                item.name.toLowerCase().includes(itemSearch) ||
-                item.description.toLowerCase().includes(itemSearch)
+                item.name.toLowerCase().includes(itemSearch.toLowerCase()) ||
+                item.description
+                  .toLowerCase()
+                  .includes(itemSearch.toLowerCase())
             )
             .map((item) => {
               const playerItem = player.items.find(
