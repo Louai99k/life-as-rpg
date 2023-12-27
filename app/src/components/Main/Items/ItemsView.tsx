@@ -32,7 +32,11 @@ type SellModalState = {
   item: Item | null;
 };
 
-const ItemsView = () => {
+interface ItemsViewProps {
+  itemSearch: string;
+}
+
+const ItemsView = ({ itemSearch }: ItemsViewProps) => {
   const { data: items } = useSWR("items", () =>
     clientORM<Item[]>(`SELECT * FROM "items"`)
   );
@@ -56,104 +60,115 @@ const ItemsView = () => {
   return (
     <div className="px-4 md:px-8 gap-4 grid grid-cols-1 md:grid-cols-4">
       {items
-        ? items.map((item) => {
-            const playerItem = player.items.find(
-              (el) => el.item_code === item.item_code
-            );
-            const isMaxed =
-              playerItem &&
-              item.upgradable &&
-              isEqual(
-                cloneDeep(
-                  playerItem.upgrades.map((el) => el.upgrade_code)
-                ).sort(),
-                cloneDeep(item.upgrade_tree.map((el) => el.upgrade_code)).sort()
+        ? items
+            .filter(
+              (item) =>
+                itemSearch === "" ||
+                item.name.toLowerCase().includes(itemSearch) ||
+                item.description.toLowerCase().includes(itemSearch)
+            )
+            .map((item) => {
+              const playerItem = player.items.find(
+                (el) => el.item_code === item.item_code
               );
-            return (
-              <Card className="cursor-pointer" key={item.id} radius="lg">
-                <CardBody className="space-y-2 p-4">
-                  <div className="flex items-center justify-center">
-                    {playerItem ? (
-                      <div className="relative w-full h-[100px]">
-                        <Image
-                          fill
-                          src={item.url}
-                          alt="any"
-                          style={{ objectFit: "cover" }}
-                        />
-                      </div>
-                    ) : (
-                      <LockIcon width="100px" height="100px" />
-                    )}
-                  </div>
-                  <div className="flex items-center justify-between cursor-default">
-                    <p className="text-lg font-bold">{item.name}</p>
-                    {playerItem && item.upgradable ? (
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={() => {
-                            setSellModal({
-                              open: true,
-                              item: cloneDeep(item),
-                            });
-                          }}
-                          size="sm"
-                          color="warning"
-                        >
-                          Sell
-                        </Button>
-                        {isMaxed ? (
-                          <Chip className="rounded-lg py-4" color="primary"
-onClick={() => {
-                              setUpgradeModal({
-                                open: true,
-                                playerItem: cloneDeep(playerItem),
-                                item: cloneDeep(item),
-                              });
-                            }}
->
-                            Max
-                          </Chip>
-                        ) : (
+              const isMaxed =
+                playerItem &&
+                item.upgradable &&
+                isEqual(
+                  cloneDeep(
+                    playerItem.upgrades.map((el) => el.upgrade_code)
+                  ).sort(),
+                  cloneDeep(
+                    item.upgrade_tree.map((el) => el.upgrade_code)
+                  ).sort()
+                );
+              return (
+                <Card className="cursor-pointer" key={item.id} radius="lg">
+                  <CardBody className="space-y-2 p-4">
+                    <div className="flex items-center justify-center">
+                      {playerItem ? (
+                        <div className="relative w-full h-[100px]">
+                          <Image
+                            fill
+                            src={item.url}
+                            alt="any"
+                            style={{ objectFit: "cover" }}
+                          />
+                        </div>
+                      ) : (
+                        <LockIcon width="100px" height="100px" />
+                      )}
+                    </div>
+                    <div className="flex items-center justify-between cursor-default">
+                      <p className="text-lg font-bold">{item.name}</p>
+                      {playerItem && item.upgradable ? (
+                        <div className="flex gap-2">
                           <Button
                             onClick={() => {
-                              setUpgradeModal({
+                              setSellModal({
                                 open: true,
-                                playerItem: cloneDeep(playerItem),
                                 item: cloneDeep(item),
                               });
                             }}
                             size="sm"
+                            color="warning"
                           >
-                            Upgrade
+                            Sell
                           </Button>
-                        )}
-                      </div>
-                    ) : !playerItem ? (
-                      <Button
-                        onClick={() => {
-                          setPurchaseModal({
-                            item: cloneDeep(item),
-                            open: true,
-                          });
-                        }}
-                        size="sm"
-                      >
-                        Purchase
-                      </Button>
-                    ) : (
-                      <Chip color="secondary" size="sm">
-                        Owned
-                      </Chip>
-                    )}
-                  </div>
-                  <ScrollShadow className="h-[100px]">
-                    <p className="cursor-default">{item.description}</p>
-                  </ScrollShadow>
-                </CardBody>
-              </Card>
-            );
-          })
+                          {isMaxed ? (
+                            <Chip
+                              className="rounded-lg py-4"
+                              color="primary"
+                              onClick={() => {
+                                setUpgradeModal({
+                                  open: true,
+                                  playerItem: cloneDeep(playerItem),
+                                  item: cloneDeep(item),
+                                });
+                              }}
+                            >
+                              Max
+                            </Chip>
+                          ) : (
+                            <Button
+                              onClick={() => {
+                                setUpgradeModal({
+                                  open: true,
+                                  playerItem: cloneDeep(playerItem),
+                                  item: cloneDeep(item),
+                                });
+                              }}
+                              size="sm"
+                            >
+                              Upgrade
+                            </Button>
+                          )}
+                        </div>
+                      ) : !playerItem ? (
+                        <Button
+                          onClick={() => {
+                            setPurchaseModal({
+                              item: cloneDeep(item),
+                              open: true,
+                            });
+                          }}
+                          size="sm"
+                        >
+                          Purchase
+                        </Button>
+                      ) : (
+                        <Chip color="secondary" size="sm">
+                          Owned
+                        </Chip>
+                      )}
+                    </div>
+                    <ScrollShadow className="h-[100px]">
+                      <p className="cursor-default">{item.description}</p>
+                    </ScrollShadow>
+                  </CardBody>
+                </Card>
+              );
+            })
         : null}
       {upgradeModal.open ? (
         <UpgradeModal

@@ -2,12 +2,13 @@
 
 import { SWRConfig } from "swr";
 import ItemsView from "@src/components/Main/Items/ItemsView";
-
-import type { Item } from "@src/types/item";
 import { Button } from "@nextui-org/react";
 import PlusIcon from "@src/icons/PlusIcon";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import SearchInput from "@src/components/UI/SearchInput";
+
+import type { Item } from "@src/types/item";
 
 const AddItemModal = dynamic(
   () => import("@src/components/Main/Items/AddItemModal")
@@ -19,6 +20,7 @@ interface ItemsPageProps {
 
 const ItemsPage = ({ items }: ItemsPageProps) => {
   const [open, setOpen] = useState(false);
+  const [itemSearch, setItemSearch] = useState("");
 
   return (
     <SWRConfig
@@ -30,11 +32,14 @@ const ItemsPage = ({ items }: ItemsPageProps) => {
     >
       <div className="px-4 md:px-8 mt-8 mb-4 flex justify-between">
         <h3 className="text-2xl font-bold">Items:</h3>
-        <Button onClick={() => setOpen(true)} startContent={<PlusIcon />}>
-          Add Item
-        </Button>
+        <div className="flex items-center gap-4">
+          <SearchInput onChange={setItemSearch} />
+          <Button onClick={() => setOpen(true)} startContent={<PlusIcon />}>
+            Add Item
+          </Button>
+        </div>
       </div>
-      <ItemsView />
+      <ItemsView itemSearch={itemSearch} />
       {open ? <AddItemModal onClose={() => setOpen(false)} /> : null}
     </SWRConfig>
   );
