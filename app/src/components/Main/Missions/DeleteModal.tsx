@@ -39,7 +39,7 @@ const DeleteModal = ({ onClose, mission }: DeleteModalProps) => {
       const sql = `UPDATE "players" SET "money" = $1, "xp" = $2, "lvl" = $3, "ki" = $4 WHERE "id" = $5`;
       const newXP = player.xp - mission.xp_reward;
       const newLvL = calculateLvL(newXP);
-      const newKi = newLvL === 1 ? 100 : Math.pow(2, newLvL - 1) + 100;
+      const newKi = newLvL === 1 ? 100 : Math.pow(2, newLvL - 1) * 100 + 100;
       try {
         await clientORM(sql, {
           params: [
