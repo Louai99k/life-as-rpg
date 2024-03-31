@@ -15,4 +15,5 @@ export type Item = {
   upgrade_tree: ItemUpgrade[];
   price: number;
   url: string;
+  related_magic: string;
 };
