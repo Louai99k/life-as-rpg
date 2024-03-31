@@ -1,15 +1,20 @@
-const calculateLvL = (xp: number) => {
-  let currentLevel = 1;
+import calculateXP from "./calculateXP";
+
+const calculateLvL = (xp: number, currentLevel = 1) => {
+  let newLvL = currentLevel;
   let remainXP = xp;
-  let nextLvLRequiredXP = 20;
+  let nextLvLRequiredXP = calculateXP(currentLevel + 1);
 
   while (remainXP >= nextLvLRequiredXP) {
-    currentLevel++;
+    newLvL++;
     remainXP -= nextLvLRequiredXP;
-    nextLvLRequiredXP = (currentLevel + 1) * 10;
+    nextLvLRequiredXP = calculateXP(newLvL + 1);
   }
 
-  return currentLevel;
+  return {
+    remainXP,
+    newLvL,
+  };
 };
 
 export default calculateLvL;

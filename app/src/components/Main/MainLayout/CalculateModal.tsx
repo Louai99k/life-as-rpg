@@ -8,7 +8,6 @@ import {
   Input,
 } from "@nextui-org/react";
 import { useState } from "react";
-import calculateLvL from "@src/utils/game/calculateLvL";
 import calculateXP from "@src/utils/game/calculateXP";
 
 interface CalculateModalProps {
@@ -16,7 +15,6 @@ interface CalculateModalProps {
 }
 
 const CalculateModal = ({ onClose }: CalculateModalProps) => {
-  const [xp, setXp] = useState<null | number>(null);
   const [lvl, setLvL] = useState<null | number>(null);
 
   return (
@@ -28,19 +26,7 @@ const CalculateModal = ({ onClose }: CalculateModalProps) => {
             <ModalBody>
               <div className="flex flex-col gap-8">
                 <div className="flex flex-col gap-4">
-                  <h3>Calculate Level From XP:</h3>
-                  <Input
-                    onChange={(e) => setXp(e.target.valueAsNumber || null)}
-                    type="number"
-                    label="XP Amount"
-                    placeholder="500..."
-                  />
-                  <p>
-                    Level: <strong>{xp ? calculateLvL(xp) : null}</strong>
-                  </p>
-                </div>
-                <div className="flex flex-col gap-4">
-                  <h3>Calculate XP From Level:</h3>
+                  <h3>Calculate XP Required From Level:</h3>
                   <Input
                     onChange={(e) => setLvL(e.target.valueAsNumber || null)}
                     type="number"
