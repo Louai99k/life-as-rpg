@@ -9,6 +9,7 @@ import {
   Select,
   SelectItem,
   Textarea,
+  Checkbox,
 } from "@nextui-org/react";
 import PlusIcon from "@src/icons/PlusIcon";
 import { MISSION_RANK } from "@src/types/enum";
@@ -25,16 +26,65 @@ interface AddMissionModalProps {
   onClose: VoidFunction;
 }
 
+const rewardsMap: Record<
+  MISSION_RANK,
+  { money_reward: number; xp_reward: number }
+> = {
+  [MISSION_RANK.E]: {
+    money_reward: 2_500,
+    xp_reward: 25,
+  },
+  [MISSION_RANK.D]: {
+    money_reward: 5_000,
+    xp_reward: 50,
+  },
+  [MISSION_RANK.C]: {
+    money_reward: 10_000,
+    xp_reward: 100,
+  },
+  [MISSION_RANK.B]: {
+    money_reward: 15_000,
+    xp_reward: 150,
+  },
+  [MISSION_RANK.A]: {
+    money_reward: 25_000,
+    xp_reward: 250,
+  },
+  [MISSION_RANK.S]: {
+    money_reward: 50_000,
+    xp_reward: 500,
+  },
+  [MISSION_RANK.SS]: {
+    money_reward: 100_000,
+    xp_reward: 1000,
+  },
+  [MISSION_RANK.SSS]: {
+    money_reward: 150_000,
+    xp_reward: 25,
+  },
+  [MISSION_RANK.L]: {
+    money_reward: 200_000,
+    xp_reward: 2000,
+  },
+  [MISSION_RANK.Z]: {
+    money_reward: 300_000,
+    xp_reward: 3000,
+  },
+};
+
 const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
   const submitRef = useRef<HTMLButtonElement>(null);
   const [loading, setLoading] = useState(false);
+  const [autoFillRewards, setAutoFillRewards] = useState(false);
   const { mutate } = useSWRConfig();
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
+    watch,
   } = useForm<Omit<Mission, "id">>();
+  const values = watch();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "goals",
@@ -45,13 +95,21 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
     setLoading(true);
     const sql = `INSERT INTO "missions" ("name", "description", "money_reward", "xp_reward", "goals", "rank") VALUES ($1, $2, $3, $4, $5, $6)`;
 
+    let moneyReward = +data.money_reward,
+      xpReward = +data.xp_reward;
+    if (autoFillRewards) {
+      const { money_reward, xp_reward } = rewardsMap[data.rank];
+      moneyReward = money_reward;
+      xpReward = xp_reward;
+    }
+
     try {
       await clientORM(sql, {
         params: [
           data.name,
           data.description,
-          +data.money_reward,
-          +data.xp_reward,
+          moneyReward,
+          xpReward,
           data.goals,
           data.rank,
         ],
@@ -99,29 +157,46 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
                     ))}
                   </Select>
                 </div>
+                {autoFillRewards ? null : (
+                  <div className="flex gap-4 flex-wrap md:flex-nowrap">
+                    <Input
+                      {...register("money_reward", {
+                        required: "Required Field",
+                      })}
+                      isRequired
+                      label="Money Reward"
+                      type="number"
+                      placeholder="Enter an amount"
+                      isInvalid={errors.money_reward ? true : false}
+                      errorMessage={errors.money_reward?.message as string}
+                    />
+                    <Input
+                      {...register("xp_reward", {
+                        required: "Required Field",
+                      })}
+                      isRequired
+                      label="XP Reward"
+                      type="number"
+                      placeholder="Enter an amount"
+                      isInvalid={errors.xp_reward ? true : false}
+                      errorMessage={errors.xp_reward?.message as string}
+                    />
+                  </div>
+                )}
                 <div className="flex gap-4 flex-wrap md:flex-nowrap">
-                  <Input
-                    {...register("money_reward", {
-                      required: "Required Field",
-                    })}
-                    isRequired
-                    label="Money Reward"
-                    type="number"
-                    placeholder="Enter an amount"
-                    isInvalid={errors.money_reward ? true : false}
-                    errorMessage={errors.money_reward?.message as string}
-                  />
-                  <Input
-                    {...register("xp_reward", {
-                      required: "Required Field",
-                    })}
-                    isRequired
-                    label="XP Reward"
-                    type="number"
-                    placeholder="Enter an amount"
-                    isInvalid={errors.xp_reward ? true : false}
-                    errorMessage={errors.xp_reward?.message as string}
-                  />
+                  <Checkbox
+                    onChange={(e) => {
+                      setAutoFillRewards(e.target.checked);
+                    }}
+                  >
+                    Auto Fill
+                  </Checkbox>
+                  {autoFillRewards ? (
+                    <div>
+                      Money Reward: {rewardsMap[values.rank]?.money_reward}, XP
+                      Reward: {rewardsMap[values.rank]?.xp_reward}
+                    </div>
+                  ) : null}
                 </div>
                 <Textarea
                   {...register("description", { required: "Required Field" })}
