@@ -8,13 +8,16 @@ import {
   Input,
   Textarea,
   Checkbox,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
 import { useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useSWRConfig } from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import clientORM from "@src/lib/clientORM";
 
 import type { Item } from "@src/types/item";
+import type { MagicCategory } from "@src/types/magic";
 
 interface AddItemModalProps {
   onClose: VoidFunction;
@@ -32,10 +35,13 @@ const AddItemModal = ({ onClose }: AddItemModalProps) => {
     watch,
   } = useForm<Omit<Item, "id">>();
   const values = watch();
+  const { data: magic_categories } = useSWR("magic-categories", () =>
+    clientORM<MagicCategory[]>(`SELECT * FROM "magic_categories"`),
+  );
 
   const onSubmit: SubmitHandler<Omit<Item, "id">> = async (data) => {
     setLoading(true);
-    const sql = `INSERT INTO "items" ("name", "item_code", "price", "upgradable", "upgrade_tree", "description", "url") VALUES ($1, $2, $3, $4, $5, $6, $7)`;
+    const sql = `INSERT INTO "items" ("name", "item_code", "price", "upgradable", "upgrade_tree", "description", "url", "related_magic") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
 
     try {
       await clientORM(sql, {
@@ -47,6 +53,7 @@ const AddItemModal = ({ onClose }: AddItemModalProps) => {
           JSON.parse((data.upgrade_tree || "[]") as any),
           data.description,
           data.url,
+          data.related_magic,
         ],
       });
     } catch (e) {}
@@ -143,6 +150,25 @@ const AddItemModal = ({ onClose }: AddItemModalProps) => {
                   isInvalid={errors.url ? true : false}
                   errorMessage={errors.url?.message as string}
                 />
+                <Select
+                  {...register("related_magic", {
+                    required: "Related Magic is required",
+                  })}
+                  isRequired
+                  label="Related Magic"
+                  placeholder="Select a magic"
+                  isInvalid={errors.related_magic ? true : false}
+                  errorMessage={errors.related_magic?.message as string}
+                >
+                  {(magic_categories || []).map((category) => (
+                    <SelectItem
+                      key={category.category_code}
+                      value={category.category_code}
+                    >
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </Select>
                 <button type="submit" ref={submitRef} className="hidden" />
               </form>
             </ModalBody>

@@ -12,6 +12,7 @@ import isEqual from "lodash/isEqual";
 
 import type { Item } from "@src/types/item";
 import type { PlayerItem } from "@src/types/player";
+import type { MagicCategory } from "@src/types/magic";
 
 const UpgradeModal = dynamic(() => import("./UpgradeModal"));
 const SellModal = dynamic(() => import("./SellModal"));
@@ -38,7 +39,10 @@ interface ItemsViewProps {
 
 const ItemsView = ({ itemSearch }: ItemsViewProps) => {
   const { data: items } = useSWR("items", () =>
-    clientORM<Item[]>(`SELECT * FROM "items"`)
+    clientORM<Item[]>(`SELECT * FROM "items"`),
+  );
+  const { data: magic_categories } = useSWR("magic-categories", () =>
+    clientORM<MagicCategory[]>(`SELECT * FROM "magic_categories"`),
   );
   const { player } = useContext(MasterInfoContext);
   const [upgradeModal, setUpgradeModal] = useState<UpgradeModalState>({
@@ -67,22 +71,22 @@ const ItemsView = ({ itemSearch }: ItemsViewProps) => {
                 item.name.toLowerCase().includes(itemSearch.toLowerCase()) ||
                 item.description
                   .toLowerCase()
-                  .includes(itemSearch.toLowerCase())
+                  .includes(itemSearch.toLowerCase()),
             )
             .map((item) => {
               const playerItem = player.items.find(
-                (el) => el.item_code === item.item_code
+                (el) => el.item_code === item.item_code,
               );
               const isMaxed =
                 playerItem &&
                 item.upgradable &&
                 isEqual(
                   cloneDeep(
-                    playerItem.upgrades.map((el) => el.upgrade_code)
+                    playerItem.upgrades.map((el) => el.upgrade_code),
                   ).sort(),
                   cloneDeep(
-                    item.upgrade_tree.map((el) => el.upgrade_code)
-                  ).sort()
+                    item.upgrade_tree.map((el) => el.upgrade_code),
+                  ).sort(),
                 );
               return (
                 <Card className="cursor-pointer" key={item.id} radius="lg">
@@ -164,6 +168,13 @@ const ItemsView = ({ itemSearch }: ItemsViewProps) => {
                         </Chip>
                       )}
                     </div>
+                    <Chip color="success" size="sm">
+                      {
+                        magic_categories?.find(
+                          (el) => el.category_code === item.related_magic,
+                        )?.name
+                      }
+                    </Chip>
                     <ScrollShadow className="h-[100px]">
                       <p className="cursor-default">{item.description}</p>
                     </ScrollShadow>
