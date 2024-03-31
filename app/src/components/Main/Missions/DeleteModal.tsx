@@ -11,6 +11,7 @@ import clientORM from "@src/lib/clientORM";
 import { useContext, useState } from "react";
 import { useSWRConfig } from "swr";
 import calculateLvL from "@src/utils/game/calculateLvL";
+import calculateKi from "@src/utils/game/calculateKi";
 
 import type { Mission } from "@src/types/mission";
 
@@ -39,7 +40,7 @@ const DeleteModal = ({ onClose, mission }: DeleteModalProps) => {
       const sql = `UPDATE "players" SET "money" = $1, "xp" = $2, "lvl" = $3, "ki" = $4 WHERE "id" = $5`;
       const newXP = player.xp - mission.xp_reward;
       const newLvL = calculateLvL(newXP);
-      const newKi = newLvL === 1 ? 100 : Math.pow(2, newLvL - 1) * 100 + 100;
+      const newKi = calculateKi(newLvL);
       try {
         await clientORM(sql, {
           params: [

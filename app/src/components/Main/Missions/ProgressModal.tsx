@@ -11,9 +11,10 @@ import {
 import clientORM from "@src/lib/clientORM";
 import { useContext, useRef, useState } from "react";
 import { useSWRConfig } from "swr";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import MasterInfoContext from "@src/context/MasterInfoContext";
 import calculateLvL from "@src/utils/game/calculateLvL";
+import calculateKi from "@src/utils/game/calculateKi";
 
 import type { Mission } from "@src/types/mission";
 
@@ -34,7 +35,7 @@ const ProgressModal = ({ onClose, mission }: ProgressModalProps) => {
   const { player } = useContext(MasterInfoContext);
 
   const handleProgress: SubmitHandler<Pick<Mission, "goals">> = async (
-    data
+    data,
   ) => {
     if (!player) return;
     setLoading(true);
@@ -52,7 +53,7 @@ const ProgressModal = ({ onClose, mission }: ProgressModalProps) => {
       const newXP = player.xp + mission.xp_reward;
       const newLvL = calculateLvL(newXP);
       const newLvLPts = (newLvL - player.lvl) * 3 + player.lvl_points;
-      const newKi = newLvL === 1 ? 100 : Math.pow(2, newLvL - 1) * 100 + 100;
+      const newKi = calculateKi(newLvL);
       try {
         await clientORM(sql, {
           params: [
@@ -107,7 +108,7 @@ const ProgressModal = ({ onClose, mission }: ProgressModalProps) => {
                           ...goal,
                           completed: false,
                         };
-                      })
+                      }),
                     );
                   }}
                 >
