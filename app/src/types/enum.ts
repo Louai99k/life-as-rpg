@@ -9,4 +9,5 @@ export enum MISSION_RANK {
   SSS = "SSS",
   L = "L",
   Z = "Z",
+  Q = "Q",
 }
