@@ -70,6 +70,10 @@ const rewardsMap: Record<
     money_reward: 300_000,
     xp_reward: 3000,
   },
+  [MISSION_RANK.Q]: {
+    money_reward: 20_000,
+    xp_reward: 50,
+  },
 };
 
 const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
