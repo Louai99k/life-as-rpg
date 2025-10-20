@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require("electron/main");
 const path = require("path");
+const setupHandlers = require("./handlers");
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -16,6 +17,8 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
+  setupHandlers();
+
   createWindow();
 
   app.on("activate", () => {

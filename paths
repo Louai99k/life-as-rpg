@@ -1,8 +1,0 @@
-
-    "baseUrl": "./src",
-    "paths": {
-      "types/*": ["./types/*"],
-      "@src/*": ["./*"],
-      "@lib/*": ["./lib/*"],
-      "@services/*": ["./services/*"]
-    }

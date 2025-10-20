@@ -830,7 +830,7 @@
     "@types/node" "*"
     "@types/responselike" "^1.0.0"
 
-"@types/electron@^1.6.12":
+"@types/electron@1.6.12":
   version "1.6.12"
   resolved "https://registry.yarnpkg.com/@types/electron/-/electron-1.6.12.tgz#0921813f95b92fdce9f642f85cb561318fcf0a04"
   integrity sha512-NIJokDkGv9h+MStCL1IuiL1FOHYVkszoWeNxJtSI5dcEKRGbX83JcVYNAgk019qOQgJkHtz9WdP0CDXvrArrGg==
@@ -1322,7 +1322,7 @@ electron-to-chromium@^1.5.227:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.237.tgz#eacf61cef3f6345d0069ab427585c5a04d7084f0"
   integrity sha512-icUt1NvfhGLar5lSWH3tHNzablaA5js3HVHacQimfP8ViEBOQv+L7DKEuHdbTZ0SKCO1ogTJTIL1Gwk9S6Qvcg==
 
-electron@*, electron@^38.3.0:
+electron@*, electron@38.3.0:
   version "38.3.0"
   resolved "https://registry.yarnpkg.com/electron/-/electron-38.3.0.tgz#5f8c8bc3153555832a465cbe271b0ae8117f4145"
   integrity sha512-Wij4AzX4SAV0X/ktq+NrWrp5piTCSS8F6YWh1KAcG+QRtNzyns9XLKERP68nFHIwfprhxF2YCN2uj7nx9DaeJw==
@@ -2185,7 +2185,7 @@ prelude-ls@^1.2.1:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prisma@^6.17.1:
+prisma@6.17.1:
   version "6.17.1"
   resolved "https://registry.yarnpkg.com/prisma/-/prisma-6.17.1.tgz#e3ed9373f84ddde708718053e73c8e18c2110197"
   integrity sha512-ac6h0sM1Tg3zu8NInY+qhP/S9KhENVaw9n1BrGKQVFu05JT5yT5Qqqmb8tMRIE3ZXvVj4xcRA5yfrsy4X7Yy5g==
