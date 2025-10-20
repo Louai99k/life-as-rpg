@@ -1,0 +1,19 @@
+{
+  "name": "life-as-rpg",
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Louai99k/life-as-rpg.git"
+  },
+  "keywords": [],
+  "author": "Louai99k",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Louai99k/life-as-rpg/issues"
+  },
+  "homepage": "https://github.com/Louai99k/life-as-rpg#readme",
+  "dependencies": {},
+  "devDependencies": {}
+}
