@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./data.db"
+}
+
+model character_items {
+  uid           String @id
+  character_ref String
+  item_ref      String
+}
+
+model character_magic {
+  uid           String @id
+  character_ref String
+  magic_ref     String
+  lvl           Int    @default(1)
+}
+
+model character_skills {
+  uid           String @id
+  character_ref String
+  skill_ref     String
+  lvl           Int    @default(1)
+}
+
+model characters {
+  id                   Int    @id @unique(map: "sqlite_autoindex_characters_1") @default(autoincrement())
+  name                 String
+  money                Int    @default(0)
+  lvl                  Int    @default(1)
+  lvl_points           Int    @default(0)
+  max_ki               Int    @default(100)
+  ki                   Int    @default(0)
+  xp                   Int    @default(0)
+  character_skills_ref String
+  character_magic_ref  String
+  character_items_ref  String
+}
+
+model goals {
+  uid         String @id
+  description String
+}
+
+model items {
+  uid         String  @id
+  name        String
+  description String
+  in_store    Int     @default(1)
+  store_price Int?
+  avatar      String?
+}
+
+model magic {
+  uid         String @id
+  name        String
+  description String
+  max_lvl     Int    @default(1)
+  avatar      String
+}
+
+model mission_goals {
+  uid         String @id
+  mission_ref String
+  goal_ref    String
+  done        Int    @default(0)
+}
+
+model mission_rewards {
+  uid         String @id
+  mission_ref String
+  reward_ref  String
+}
+
+model missions {
+  uid           String  @id
+  title         String
+  description   String
+  xp_reward     Int     @default(1)
+  is_completed  Int     @default(0)
+  type          String
+  rank          String
+  character_ref String
+  goals_ref     String
+  rewards_ref   String?
+}
+
+model rewards {
+  uid           String  @id
+  description   String
+  reward_type   String
+  reward_amount Int?    @default(0)
+  reward_uid    String?
+  reward_lvl    String?
+}
+
+model skills {
+  uid         String @id
+  name        String
+  description String
+  max_lvl     Int    @default(1)
+  avatar      String
+}
