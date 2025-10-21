@@ -28,12 +28,12 @@ model character_skills {
 }
 
 model characters {
-  id                   Int    @id @unique(map: "sqlite_autoindex_characters_1") @default(autoincrement())
+  uid                  String @id
   name                 String
   money                Int    @default(0)
   lvl                  Int    @default(1)
   lvl_points           Int    @default(0)
-  max_ki               Int    @default(100)
+  max_ki               Int    @default(0)
   ki                   Int    @default(0)
   xp                   Int    @default(0)
   character_skills_ref String
@@ -80,7 +80,7 @@ model missions {
   uid           String  @id
   title         String
   description   String
-  xp_reward     Int     @default(1)
+  xp_reward     Int     @default(0)
   is_completed  Int     @default(0)
   type          String
   rank          String

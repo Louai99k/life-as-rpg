@@ -4,39 +4,56 @@ import type { FuncExtractor, Models, QueryOperations } from "types/prisma";
 
 interface State<T> {
   data?: T;
-  loading: boolean;
-  error: boolean;
+  isLoading: boolean;
+  isError: boolean;
 }
+
+type UsePrismaQueryRet<T> = State<T> & { refetch: VoidFunction };
 
 function usePrismaQuery<
   M extends Models,
   O extends QueryOperations,
   T extends Awaited<ReturnType<FuncExtractor<M, O>>>,
->(model: M, operation: O, ...args: Parameters<FuncExtractor<M, O>>): State<T> {
+>(
+  model: M,
+  operation: O,
+  ...args: Parameters<FuncExtractor<M, O>>
+): UsePrismaQueryRet<T> {
   const [state, setState] = useState<State<T>>({
-    loading: true,
-    error: false,
+    isLoading: true,
+    isError: false,
   });
 
-  useEffect(() => {
+  const fetchData = () => {
     electronAPI.db
       .query(model, operation, ...args)
       .then((res) => {
         setState({
           data: res as T,
-          loading: false,
-          error: false,
+          isLoading: false,
+          isError: false,
         });
       })
       .catch(() => {
         setState({
-          loading: false,
-          error: true,
+          isLoading: false,
+          isError: true,
         });
       });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
-  return state;
+  const refetch = () => {
+    fetchData();
+  };
+
+  return {
+    ...state,
+    refetch,
+  };
 }
 
 export default usePrismaQuery;
