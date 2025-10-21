@@ -23,14 +23,17 @@
     "@prisma/client": "6.17.1",
     "@tailwindcss/vite": "4.1.14",
     "framer-motion": "12.23.24",
+    "lodash": "4.17.21",
     "prisma": "6.17.1",
     "react": "19.1.1",
     "react-dom": "19.1.1",
+    "swr": "2.3.6",
     "tailwindcss": "4.1.14"
   },
   "devDependencies": {
     "@eslint/js": "9.36.0",
     "@types/electron": "1.6.12",
+    "@types/lodash": "4.17.20",
     "@types/node": "24.6.0",
     "@types/react": "19.1.16",
     "@types/react-dom": "19.1.9",

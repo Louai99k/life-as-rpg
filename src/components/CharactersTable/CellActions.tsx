@@ -1,6 +1,6 @@
 import { Button } from "@heroui/react";
-import DeleteIcon from "@src/icons/Delete";
-import EditIcon from "@src/icons/Edit";
+import DeleteIcon from "@src/icons/DeleteIcon";
+import EditIcon from "@src/icons/EditIcon";
 
 interface CellActionsProps {
   onDelete: VoidFunction;

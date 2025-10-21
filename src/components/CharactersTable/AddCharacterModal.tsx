@@ -11,15 +11,16 @@ import {
 import usePrismaMutation from "@src/hooks/usePrismaMutation";
 import submitHelper from "@src/utils/form/submitHelper";
 import { useRef } from "react";
+import { useSWRConfig } from "swr";
 
 interface AddCharacterModalProps {
   onClose: VoidFunction;
-  onSuccess: VoidFunction;
 }
 
-const AddCharacterModal = ({ onClose, onSuccess }: AddCharacterModalProps) => {
+const AddCharacterModal = ({ onClose }: AddCharacterModalProps) => {
   const submitRef = useRef<HTMLButtonElement>(null);
   const [createCharacter] = usePrismaMutation("characters", "create");
+  const { mutate } = useSWRConfig();
 
   return (
     <Modal isOpen size="lg" onClose={onClose}>
@@ -37,7 +38,8 @@ const AddCharacterModal = ({ onClose, onSuccess }: AddCharacterModalProps) => {
                     data: body,
                   })
                     .then(() => {
-                      onSuccess();
+                      mutate("characters");
+                      onClose();
                     })
                     .catch(() => {
                       onClose();

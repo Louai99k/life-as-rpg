@@ -1,4 +1,3 @@
-import usePrismaQuery from "@src/hooks/usePrismaQuery";
 import {
   Table,
   TableHeader,
@@ -12,19 +11,25 @@ import {
 } from "@heroui/react";
 import useColumns from "./useColumns";
 import { lazy, Suspense, useMemo, useState } from "react";
-import PlusIcon from "@src/icons/Plus";
-import SearchIcon from "@src/icons/Search";
+import PlusIcon from "@src/icons/PlusIcon";
+import SearchIcon from "@src/icons/SearchIcon";
 import CellActions from "./CellActions";
 import type { characters as Character } from "@prisma/client";
+import useSWR from "swr";
+import fetchData from "@src/utils/prisma/fetcher";
 
 const AddCharacterModal = lazy(() => import("./AddCharacterModal"));
 const DeleteCharacterModal = lazy(() => import("./DeleteCharacterModal"));
 const UpdateCharacterModal = lazy(() => import("./UpdateCharacterModal"));
 
-interface CharactersTableProps {}
+interface CharactersTableProps {
+  onSelect: (c: Character) => void;
+}
 
-const CharactersTable = ({}: CharactersTableProps) => {
-  const { data, isLoading, refetch } = usePrismaQuery("characters", "findMany");
+const CharactersTable = ({ onSelect }: CharactersTableProps) => {
+  const { data, isLoading } = useSWR("characters", () =>
+    fetchData("characters", "findMany"),
+  );
   const columns = useColumns();
   const [filterValue, setFilterValue] = useState<string>("");
   const filteredData = useMemo(() => {
@@ -79,7 +84,6 @@ const CharactersTable = ({}: CharactersTableProps) => {
     <>
       <div className="mt-8 px-8">
         <Table
-          selectionMode="single"
           aria-label="Characters Table"
           topContent={topContent}
           classNames={{
@@ -93,7 +97,12 @@ const CharactersTable = ({}: CharactersTableProps) => {
           </TableHeader>
           <TableBody isLoading={isLoading} items={filteredData || []}>
             {(item) => (
-              <TableRow key={item.uid}>
+              <TableRow
+                onClick={() => {
+                  onSelect(item);
+                }}
+                key={item.uid}
+              >
                 {(columnKey) => (
                   <TableCell>
                     {columnKey !== "actions" ? (
@@ -117,30 +126,16 @@ const CharactersTable = ({}: CharactersTableProps) => {
       </div>
       <Suspense>
         {addModal ? (
-          <AddCharacterModal
-            onSuccess={() => {
-              refetch();
-              setAddModal(false);
-            }}
-            onClose={() => setAddModal(false)}
-          />
+          <AddCharacterModal onClose={() => setAddModal(false)} />
         ) : null}
         {deleteModal !== null ? (
           <DeleteCharacterModal
-            onDelete={() => {
-              refetch();
-              setDeleteModal(null);
-            }}
             onClose={() => setDeleteModal(null)}
             uid={deleteModal}
           />
         ) : null}
         {updateModal !== null ? (
           <UpdateCharacterModal
-            onSuccess={() => {
-              refetch();
-              setUpdateModal(null);
-            }}
             onClose={() => setDeleteModal(null)}
             character={updateModal}
           />
