@@ -4,9 +4,10 @@ import EditIcon from "@src/icons/Edit";
 
 interface CellActionsProps {
   onDelete: VoidFunction;
+  onEdit: VoidFunction;
 }
 
-const CellActions = ({ onDelete }: CellActionsProps) => {
+const CellActions = ({ onDelete, onEdit }: CellActionsProps) => {
   return (
     <>
       <Button
@@ -15,6 +16,7 @@ const CellActions = ({ onDelete }: CellActionsProps) => {
         variant="bordered"
         size="sm"
         isIconOnly
+        onPress={onEdit}
       >
         <EditIcon />
       </Button>

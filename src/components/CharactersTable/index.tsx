@@ -15,9 +15,11 @@ import { lazy, Suspense, useMemo, useState } from "react";
 import PlusIcon from "@src/icons/Plus";
 import SearchIcon from "@src/icons/Search";
 import CellActions from "./CellActions";
+import type { characters as Character } from "@prisma/client";
 
 const AddCharacterModal = lazy(() => import("./AddCharacterModal"));
 const DeleteCharacterModal = lazy(() => import("./DeleteCharacterModal"));
+const UpdateCharacterModal = lazy(() => import("./UpdateCharacterModal"));
 
 interface CharactersTableProps {}
 
@@ -36,6 +38,7 @@ const CharactersTable = ({}: CharactersTableProps) => {
   }, [filterValue, setFilterValue, data]);
   const [addModal, setAddModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState<string | null>(null);
+  const [updateModal, setUpdateModal] = useState<Character | null>(null);
 
   const topContent = useMemo(() => {
     return (
@@ -100,6 +103,9 @@ const CharactersTable = ({}: CharactersTableProps) => {
                         onDelete={() => {
                           setDeleteModal(item.uid);
                         }}
+                        onEdit={() => {
+                          setUpdateModal(item);
+                        }}
                       />
                     )}
                   </TableCell>
@@ -127,6 +133,16 @@ const CharactersTable = ({}: CharactersTableProps) => {
             }}
             onClose={() => setDeleteModal(null)}
             uid={deleteModal}
+          />
+        ) : null}
+        {updateModal !== null ? (
+          <UpdateCharacterModal
+            onSuccess={() => {
+              refetch();
+              setUpdateModal(null);
+            }}
+            onClose={() => setDeleteModal(null)}
+            character={updateModal}
           />
         ) : null}
       </Suspense>
