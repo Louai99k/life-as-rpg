@@ -9,10 +9,16 @@ const useColumns = () => {
   const columns = useMemo(() => {
     const columns: KeyLabel[] = [];
 
-    columns.push({
-      key: "name",
-      label: "Character Name",
-    });
+    columns.push(
+      {
+        key: "name",
+        label: "Character Name",
+      },
+      {
+        key: "actions",
+        label: "Actions",
+      },
+    );
 
     return columns;
   }, []);

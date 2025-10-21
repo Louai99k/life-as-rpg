@@ -11,10 +11,13 @@ import {
   Button,
 } from "@heroui/react";
 import useColumns from "./useColumns";
-import { Suspense, useMemo, useState } from "react";
+import { lazy, Suspense, useMemo, useState } from "react";
 import PlusIcon from "@src/icons/Plus";
 import SearchIcon from "@src/icons/Search";
-import AddCharacterModal from "./AddCharacterModal";
+import CellActions from "./CellActions";
+
+const AddCharacterModal = lazy(() => import("./AddCharacterModal"));
+const DeleteCharacterModal = lazy(() => import("./DeleteCharacterModal"));
 
 interface CharactersTableProps {}
 
@@ -22,7 +25,17 @@ const CharactersTable = ({}: CharactersTableProps) => {
   const { data, isLoading, refetch } = usePrismaQuery("characters", "findMany");
   const columns = useColumns();
   const [filterValue, setFilterValue] = useState<string>("");
+  const filteredData = useMemo(() => {
+    if (!filterValue || !data) {
+      return data;
+    }
+
+    return data.filter((c) =>
+      c.name.toLowerCase().includes(filterValue.toLowerCase()),
+    );
+  }, [filterValue, setFilterValue, data]);
   const [addModal, setAddModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState<string | null>(null);
 
   const topContent = useMemo(() => {
     return (
@@ -72,19 +85,24 @@ const CharactersTable = ({}: CharactersTableProps) => {
         >
           <TableHeader columns={columns}>
             {(column) => (
-              <TableColumn
-                width={column.key === "name" ? "90%" : undefined}
-                key={column.key}
-              >
-                {column.label}
-              </TableColumn>
+              <TableColumn key={column.key}>{column.label}</TableColumn>
             )}
           </TableHeader>
-          <TableBody isLoading={isLoading} items={data || []}>
+          <TableBody isLoading={isLoading} items={filteredData || []}>
             {(item) => (
               <TableRow key={item.uid}>
                 {(columnKey) => (
-                  <TableCell>{getKeyValue(item, columnKey)}</TableCell>
+                  <TableCell>
+                    {columnKey !== "actions" ? (
+                      getKeyValue(item, columnKey)
+                    ) : (
+                      <CellActions
+                        onDelete={() => {
+                          setDeleteModal(item.uid);
+                        }}
+                      />
+                    )}
+                  </TableCell>
                 )}
               </TableRow>
             )}
@@ -99,6 +117,16 @@ const CharactersTable = ({}: CharactersTableProps) => {
               setAddModal(false);
             }}
             onClose={() => setAddModal(false)}
+          />
+        ) : null}
+        {deleteModal !== null ? (
+          <DeleteCharacterModal
+            onDelete={() => {
+              refetch();
+              setDeleteModal(null);
+            }}
+            onClose={() => setDeleteModal(null)}
+            uid={deleteModal}
           />
         ) : null}
       </Suspense>

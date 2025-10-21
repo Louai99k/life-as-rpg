@@ -27,7 +27,7 @@ const AddCharacterModal = ({ onClose, onSuccess }: AddCharacterModalProps) => {
         {() => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Add Character Modal
+              Add Character
             </ModalHeader>
             <ModalBody>
               <Form
