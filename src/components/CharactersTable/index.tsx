@@ -136,7 +136,7 @@ const CharactersTable = ({ onSelect }: CharactersTableProps) => {
         ) : null}
         {updateModal !== null ? (
           <UpdateCharacterModal
-            onClose={() => setDeleteModal(null)}
+            onClose={() => setUpdateModal(null)}
             character={updateModal}
           />
         ) : null}

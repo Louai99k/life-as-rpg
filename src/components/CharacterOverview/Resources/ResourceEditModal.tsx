@@ -7,14 +7,16 @@ import {
   Button,
   Form,
   NumberInput,
+  Select,
+  SelectItem,
 } from "@heroui/react";
 import usePrismaMutation from "@src/hooks/usePrismaMutation";
 import submitHelper from "@src/utils/form/submitHelper";
 import get from "lodash/get";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useSWRConfig } from "swr";
 
 import type { characters as Character } from "@prisma/client";
-import { useSWRConfig } from "swr";
 
 interface ResourceEditModalProps {
   onClose: VoidFunction;
@@ -49,6 +51,25 @@ const ResourceMap = (character: Character) => ({
   },
 });
 
+const DIRECT = "direct";
+const ADD = "adding";
+const SUB = "subtract";
+
+const options = [
+  {
+    key: DIRECT,
+    label: "Direct Editing",
+  },
+  {
+    key: ADD,
+    label: "Adding to value",
+  },
+  {
+    key: SUB,
+    label: "Subtracting from value",
+  },
+];
+
 const ResourceEditModal = ({
   onClose,
   character,
@@ -57,6 +78,7 @@ const ResourceEditModal = ({
   const submitRef = useRef<HTMLButtonElement>(null);
   const [updateCharacter] = usePrismaMutation("characters", "update");
   const { mutate } = useSWRConfig();
+  const [editingMethod, setEditingMethod] = useState(options[0].key);
 
   const lookup = useMemo(() => {
     const resLookup = ResourceMap(character)[resource];
@@ -73,15 +95,38 @@ const ResourceEditModal = ({
               {lookup.title}
             </ModalHeader>
             <ModalBody>
+              <Select
+                className="max-w-xs"
+                label="Editing Method"
+                placeholder="Select a method"
+                selectedKeys={[editingMethod]}
+                onSelectionChange={(keys) => setEditingMethod(keys.currentKey!)}
+              >
+                {options.map((opt) => (
+                  <SelectItem key={opt.key}>{opt.label}</SelectItem>
+                ))}
+              </Select>
               <Form
                 onSubmit={submitHelper((data) => {
+                  const value = +data[resource];
+                  const original = character[resource];
+                  const updateData: any = {};
+                  switch (editingMethod) {
+                    case ADD:
+                      updateData[resource] = original + value;
+                      break;
+                    case SUB:
+                      updateData[resource] = Math.max(original - value, 0);
+                      break;
+                    default:
+                      updateData[resource] = value;
+                  }
+
                   updateCharacter({
                     where: {
                       uid: character.uid,
                     },
-                    data: {
-                      [resource]: +data[resource],
-                    },
+                    data: updateData,
                   })
                     .then(() => {
                       mutate("characters");
@@ -96,8 +141,14 @@ const ResourceEditModal = ({
                   defaultValue={get(character, resource)}
                   isRequired
                   name={resource}
-                  label={lookup.label}
-                  placeholder={`Enter character ${lookup.label}`}
+                  label={
+                    editingMethod === ADD
+                      ? `Adding to ${lookup.label}`
+                      : editingMethod === SUB
+                        ? `Subtracting from ${lookup.label}`
+                        : lookup.label
+                  }
+                  placeholder="Enter a value"
                 />
                 <button className="hidden" type="submit" ref={submitRef} />
               </Form>
