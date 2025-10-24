@@ -1,4 +1,4 @@
-import { HeroUIProvider } from "@heroui/react";
+import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import Header from "@src/components/Header";
 import { useState } from "react";
 import CharactersTable from "@src/components/CharactersTable";
@@ -13,6 +13,7 @@ const App = () => {
 
   return (
     <HeroUIProvider>
+      <ToastProvider />
       <Header />
       {selectedCharacter ? (
         <CharacterOverview

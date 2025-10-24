@@ -36,9 +36,6 @@ model characters {
   max_ki               Int    @default(0)
   ki                   Int    @default(0)
   xp                   Int    @default(0)
-  character_skills_ref String
-  character_magic_ref  String
-  character_items_ref  String
 }
 
 model goals {
@@ -85,8 +82,6 @@ model missions {
   type          String
   rank          String
   character_ref String
-  goals_ref     String
-  rewards_ref   String?
 }
 
 model rewards {

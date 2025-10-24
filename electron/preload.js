@@ -4,5 +4,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
   db: {
     query: (...args) => ipcRenderer.invoke("db-query", ...args),
     mutation: (...args) => ipcRenderer.invoke("db-mutation", ...args),
+    controller: (...args) => ipcRenderer.invoke("db-controller", ...args),
   },
 });
