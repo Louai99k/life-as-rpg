@@ -7,3 +7,13 @@ export interface CreateMissionControllerPayload {
   goals: { description: string; uid?: string }[];
   xp_reward: number;
 }
+
+export interface UpdateMissionControllerPayload {
+  description?: string;
+  title?: string;
+  rank?: string;
+  type?: string;
+  goals?: { description: string; uid: string }[];
+  xp_reward?: number;
+  uid: string;
+}

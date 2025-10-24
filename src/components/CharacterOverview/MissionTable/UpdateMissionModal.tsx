@@ -5,69 +5,64 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Form,
-  Input,
 } from "@heroui/react";
-import usePrismaMutation from "@src/hooks/usePrismaMutation";
-import submitHelper from "@src/utils/form/submitHelper";
 import { useRef } from "react";
 import { useSWRConfig } from "swr";
+import MissionForm from "./MissionForm";
+import usePrismaController from "@src/hooks/usePrismaController";
 
-import type { missions as Mission } from "@prisma/client";
+import type { MissionWithGoals } from "types/mission";
 
 interface UpdateCharacterModalProps {
   onClose: VoidFunction;
-  mission: Mission;
+  mission: MissionWithGoals;
 }
 
 const UpdateCharacterModal = ({
   onClose,
-  character,
+  mission,
 }: UpdateCharacterModalProps) => {
   const submitRef = useRef<HTMLButtonElement>(null);
-  const [updateCharacter] = usePrismaMutation("characters", "update");
+  const [updateMission, { isLoading }] = usePrismaController("updateMission");
   const { mutate } = useSWRConfig();
 
   return (
-    <Modal isOpen size="lg" onClose={onClose}>
+    <Modal isOpen size="4xl" onClose={onClose}>
       <ModalContent>
         {() => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Add Character
+              Update Mission
             </ModalHeader>
             <ModalBody>
-              <Form
-                onSubmit={submitHelper((data) => {
-                  updateCharacter({
-                    where: {
-                      uid: character.uid,
-                    },
-                    data,
+              <MissionForm
+                mission={mission}
+                onSubmit={(data) => {
+                  updateMission({
+                    description: data.description,
+                    xp_reward: +data.xp_reward,
+                    type: data.type,
+                    rank: data.rank,
+                    title: data.title,
+                    goals: data.goals,
+                    uid: mission.uid,
                   })
                     .then(() => {
-                      mutate("characters");
+                      mutate("missions");
                       onClose();
                     })
                     .catch(() => {
                       onClose();
                     });
-                })}
-              >
-                <Input
-                  defaultValue={character.name}
-                  isRequired
-                  name="name"
-                  label="Name"
-                  placeholder="Enter character name"
-                />
-                <button className="hidden" type="submit" ref={submitRef} />
-              </Form>
+                }}
+                submitRef={submitRef}
+              />
             </ModalBody>
             <ModalFooter>
               <Button
                 size="sm"
                 color="primary"
+                isLoading={isLoading}
                 onPress={() => {
                   submitRef.current?.click();
                 }}

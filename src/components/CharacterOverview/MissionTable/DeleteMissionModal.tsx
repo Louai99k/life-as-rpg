@@ -16,7 +16,7 @@ interface DeleteCharacterModalProps {
 
 const DeleteCharacterModal = ({ onClose, uid }: DeleteCharacterModalProps) => {
   const { mutate } = useSWRConfig();
-  const [deleteCharacter] = usePrismaMutation("characters", "delete");
+  const [deleteCharacter] = usePrismaMutation("missions", "delete");
 
   return (
     <Modal isOpen onClose={onClose}>
@@ -24,10 +24,10 @@ const DeleteCharacterModal = ({ onClose, uid }: DeleteCharacterModalProps) => {
         {() => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Delete Character
+              Delete Mission
             </ModalHeader>
             <ModalBody>
-              <p>Are you sure you want to delete this character?</p>
+              <p>Are you sure you want to delete this mission?</p>
             </ModalBody>
             <ModalFooter>
               <Button
@@ -46,7 +46,7 @@ const DeleteCharacterModal = ({ onClose, uid }: DeleteCharacterModalProps) => {
                     },
                   })
                     .then(() => {
-                      mutate("characters");
+                      mutate("missions");
                       onClose();
                     })
                     .catch(() => {

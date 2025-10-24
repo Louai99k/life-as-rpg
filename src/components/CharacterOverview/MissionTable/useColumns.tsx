@@ -15,6 +15,14 @@ const useColumns = () => {
         label: "Title",
       },
       {
+        key: "type",
+        label: "Type",
+      },
+      {
+        key: "rank",
+        label: "Rank",
+      },
+      {
         key: "actions",
         label: "Actions",
       },

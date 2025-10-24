@@ -12,22 +12,24 @@ import useColumns from "./useColumns";
 import { lazy, Suspense, useMemo, useState } from "react";
 import PlusIcon from "@src/icons/PlusIcon";
 import CellActions from "./CellActions";
-import type { missions as Mission } from "@prisma/client";
 import useSWR from "swr";
 import fetchData from "@src/utils/prisma/fetcher";
+
+import type { MissionWithGoals } from "types/mission";
 
 const AddMissionModal = lazy(() => import("./AddMissionModal"));
 const DeleteMissionModal = lazy(() => import("./DeleteMissionModal"));
 const UpdateMissionModal = lazy(() => import("./UpdateMissionModal"));
 
 const MissionsTable = () => {
-  const { data, isLoading } = useSWR("missions", () =>
-    fetchData("missions", "findMany"),
+  const { data, isLoading } = useSWR<MissionWithGoals[]>(
+    "missions",
+    () => fetchData("missions", "findMany") as never,
   );
   const columns = useColumns();
   const [addModal, setAddModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState<string | null>(null);
-  const [updateModal, setUpdateModal] = useState<Mission | null>(null);
+  const [updateModal, setUpdateModal] = useState<MissionWithGoals | null>(null);
 
   const topContent = useMemo(() => {
     return (

@@ -13,19 +13,21 @@ import DeleteIcon from "@src/icons/DeleteIcon";
 
 import type { Ref } from "react";
 import type { goals as Goal } from "@prisma/client";
+import type { MissionWithGoals } from "types/mission";
 
 interface MissionFormProps {
   onSubmit: (data: any) => void;
   submitRef: Ref<HTMLButtonElement>;
+  mission?: MissionWithGoals;
 }
 
-const MissionForm = ({ onSubmit, submitRef }: MissionFormProps) => {
+const MissionForm = ({ onSubmit, submitRef, mission }: MissionFormProps) => {
   const {
     list: goals,
     add: addGoal,
     remove: removeGoal,
     editItem: editItem,
-  } = useList<Partial<Goal>>();
+  } = useList<Partial<Goal>>(mission?.goals);
 
   return (
     <Form
@@ -54,12 +56,14 @@ const MissionForm = ({ onSubmit, submitRef }: MissionFormProps) => {
         name="title"
         label="Title"
         placeholder="Enter mission title"
+        defaultValue={mission?.title}
       />
       <Textarea
         isRequired
         name="description"
         label="Description"
         placeholder="Enter mission description"
+        defaultValue={mission?.description}
       />
       <div className="grid w-full gap-4 grid-cols-3">
         <Input
@@ -67,18 +71,20 @@ const MissionForm = ({ onSubmit, submitRef }: MissionFormProps) => {
           name="type"
           label="Type"
           placeholder="Enter mission type"
+          defaultValue={mission?.type}
         />
         <Input
           isRequired
           name="rank"
           label="Rank"
           placeholder="Enter mission rank"
+          defaultValue={mission?.rank}
         />
         <NumberInput
           name="xp_reward"
           isRequired
           placeholder="Enter a value"
-          defaultValue={0}
+          defaultValue={mission?.xp_reward || 0}
           label="XP Reward"
         />
       </div>

@@ -33,7 +33,7 @@ const UpdateCharacterModal = ({
         {() => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Add Character
+              Update Character
             </ModalHeader>
             <ModalBody>
               <Form

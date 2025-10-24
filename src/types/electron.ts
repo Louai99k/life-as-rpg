@@ -1,15 +1,20 @@
 import type { missions as Mission, PrismaClient } from "@prisma/client";
 import type { Models, QueryOperations, MutationOperations } from "types/prisma";
-import type { CreateMissionControllerPayload } from "./controllers/mission";
+import type {
+  CreateMissionControllerPayload,
+  UpdateMissionControllerPayload,
+} from "./controllers/mission";
 
-export type Controller = "createMission";
+export type Controller = "createMission" | "updateMission";
 
 export interface ControllerPayloadMap extends Record<Controller, any[]> {
   createMission: [CreateMissionControllerPayload];
+  updateMission: [UpdateMissionControllerPayload];
 }
 
 export interface ControllerReturnMap extends Record<Controller, any> {
   createMission: Mission;
+  updateMission: Mission;
 }
 
 export interface ElectronAPI {
