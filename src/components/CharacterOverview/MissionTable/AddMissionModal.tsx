@@ -7,7 +7,6 @@ import {
   Button,
 } from "@heroui/react";
 import { useContext, useRef } from "react";
-import { useSWRConfig } from "swr";
 import MissionForm from "./MissionForm";
 import OverviewContext from "../OverviewContext";
 import usePrismaController from "@src/hooks/usePrismaController";
@@ -19,8 +18,10 @@ interface AddMissionModalProps {
 const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
   const { character } = useContext(OverviewContext);
   const submitRef = useRef<HTMLButtonElement>(null);
-  const [createMission, { isLoading }] = usePrismaController("createMission");
-  const { mutate } = useSWRConfig();
+  const [createMission, { isLoading }] = usePrismaController(
+    "createMission",
+    "missions",
+  );
 
   return (
     <Modal isOpen size="4xl" onClose={onClose}>
@@ -43,7 +44,6 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
                     goals: data.goals,
                   })
                     .then(() => {
-                      mutate("missions");
                       onClose();
                     })
                     .catch(() => {

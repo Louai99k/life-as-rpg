@@ -14,7 +14,6 @@ import usePrismaMutation from "@src/hooks/usePrismaMutation";
 import submitHelper from "@src/utils/form/submitHelper";
 import get from "lodash/get";
 import { useMemo, useRef, useState } from "react";
-import { useSWRConfig } from "swr";
 
 import type { characters as Character } from "@prisma/client";
 
@@ -77,7 +76,6 @@ const ResourceEditModal = ({
 }: ResourceEditModalProps) => {
   const submitRef = useRef<HTMLButtonElement>(null);
   const [updateCharacter] = usePrismaMutation("characters", "update");
-  const { mutate } = useSWRConfig();
   const [editingMethod, setEditingMethod] = useState(options[0].key);
 
   const lookup = useMemo(() => {
@@ -129,7 +127,6 @@ const ResourceEditModal = ({
                     data: updateData,
                   })
                     .then(() => {
-                      mutate("characters");
                       onClose();
                     })
                     .catch(() => {

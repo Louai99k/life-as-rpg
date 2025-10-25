@@ -13,7 +13,7 @@ interface CharacterOverviewProps {
 }
 
 const CharacterOverview = ({ onBack, character }: CharacterOverviewProps) => {
-  const { data, isLoading } = useSWR("characters", () =>
+  const { data, isLoading } = useSWR(`characters/${character.uid}`, () =>
     fetchData("characters", "findFirst", { where: { uid: character.uid } }),
   );
 

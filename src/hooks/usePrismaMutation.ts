@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { useSWRConfig } from "swr";
 
 import type { FuncExtractor, Models, MutationOperations } from "types/prisma";
 
@@ -17,6 +18,7 @@ function usePrismaMutation<M extends Models, O extends MutationOperations>(
 ): UsePrismaMutationRet<M, O> {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const { mutate } = useSWRConfig();
 
   const handleCallback = useCallback<UsePrismaMutationFunc<M, O>>(
     async (...args) => {
@@ -24,6 +26,7 @@ function usePrismaMutation<M extends Models, O extends MutationOperations>(
       let res: ReturnType<FuncExtractor<M, O>> | undefined;
       try {
         res = await electronAPI.db.mutation(model, operation, ...args);
+        mutate((key) => typeof key === "string" && key.startsWith(model));
       } catch (e) {
         setError(true);
       } finally {

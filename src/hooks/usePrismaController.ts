@@ -1,32 +1,37 @@
 import { useCallback, useState } from "react";
+import { useSWRConfig } from "swr";
 
 import type {
   ControllerReturnMap,
   ControllerPayloadMap,
   Controller,
 } from "types/electron";
+import type { Models } from "types/prisma";
 
-type UsePrismaControllerFunc<M extends Controller> = (
-  ...args: ControllerPayloadMap[M]
-) => Promise<ControllerReturnMap[M]>;
+type UsePrismaControllerFunc<C extends Controller> = (
+  ...args: ControllerPayloadMap[C]
+) => Promise<ControllerReturnMap[C]>;
 
-type UsePrismaControllerRet<M extends Controller> = [
-  UsePrismaControllerFunc<M>,
+type UsePrismaControllerRet<C extends Controller> = [
+  UsePrismaControllerFunc<C>,
   { isLoading: boolean; isError: boolean },
 ];
 
-function usePrismaController<M extends Controller>(
-  controllerName: M,
-): UsePrismaControllerRet<M> {
+function usePrismaController<C extends Controller, M extends Models>(
+  controllerName: C,
+  modelToMutate?: M,
+): UsePrismaControllerRet<C> {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const { mutate } = useSWRConfig();
 
-  const handleCallback = useCallback<UsePrismaControllerFunc<M>>(
+  const handleCallback = useCallback<UsePrismaControllerFunc<C>>(
     async (...args) => {
       setLoading(true);
       let res: any;
       try {
         res = await electronAPI.db.controller(controllerName, ...args);
+        mutate(modelToMutate);
       } catch (e) {
         setError(true);
       } finally {

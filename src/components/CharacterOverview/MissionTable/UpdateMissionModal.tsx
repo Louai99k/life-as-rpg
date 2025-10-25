@@ -7,7 +7,6 @@ import {
   Button,
 } from "@heroui/react";
 import { useRef } from "react";
-import { useSWRConfig } from "swr";
 import MissionForm from "./MissionForm";
 import usePrismaController from "@src/hooks/usePrismaController";
 
@@ -23,8 +22,10 @@ const UpdateCharacterModal = ({
   mission,
 }: UpdateCharacterModalProps) => {
   const submitRef = useRef<HTMLButtonElement>(null);
-  const [updateMission, { isLoading }] = usePrismaController("updateMission");
-  const { mutate } = useSWRConfig();
+  const [updateMission, { isLoading }] = usePrismaController(
+    "updateMission",
+    "missions",
+  );
 
   return (
     <Modal isOpen size="4xl" onClose={onClose}>
@@ -48,7 +49,6 @@ const UpdateCharacterModal = ({
                     uid: mission.uid,
                   })
                     .then(() => {
-                      mutate("missions");
                       onClose();
                     })
                     .catch(() => {

@@ -7,7 +7,6 @@ import {
   Button,
 } from "@heroui/react";
 import usePrismaMutation from "@src/hooks/usePrismaMutation";
-import { useSWRConfig } from "swr";
 
 interface DeleteCharacterModalProps {
   onClose: VoidFunction;
@@ -15,7 +14,6 @@ interface DeleteCharacterModalProps {
 }
 
 const DeleteCharacterModal = ({ onClose, uid }: DeleteCharacterModalProps) => {
-  const { mutate } = useSWRConfig();
   const [deleteCharacter] = usePrismaMutation("characters", "delete");
 
   return (
@@ -46,7 +44,6 @@ const DeleteCharacterModal = ({ onClose, uid }: DeleteCharacterModalProps) => {
                     },
                   })
                     .then(() => {
-                      mutate("characters");
                       onClose();
                     })
                     .catch(() => {

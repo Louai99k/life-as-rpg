@@ -12,7 +12,6 @@ import type { characters as Character } from "@prisma/client";
 import usePrismaMutation from "@src/hooks/usePrismaMutation";
 import submitHelper from "@src/utils/form/submitHelper";
 import { useRef } from "react";
-import { useSWRConfig } from "swr";
 
 interface UpdateCharacterModalProps {
   onClose: VoidFunction;
@@ -25,7 +24,6 @@ const UpdateCharacterModal = ({
 }: UpdateCharacterModalProps) => {
   const submitRef = useRef<HTMLButtonElement>(null);
   const [updateCharacter] = usePrismaMutation("characters", "update");
-  const { mutate } = useSWRConfig();
 
   return (
     <Modal isOpen size="lg" onClose={onClose}>
@@ -45,7 +43,6 @@ const UpdateCharacterModal = ({
                     data,
                   })
                     .then(() => {
-                      mutate("characters");
                       onClose();
                     })
                     .catch(() => {
