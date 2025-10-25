@@ -34,9 +34,6 @@ const Resources = () => {
               </div>
               <Button
                 onPress={() => {
-                  if (!character) {
-                    return;
-                  }
                   setResourceModal({
                     character,
                     resource: item.dataIndex as any,

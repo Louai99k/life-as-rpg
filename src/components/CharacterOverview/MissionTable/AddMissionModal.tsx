@@ -33,10 +33,6 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
             <ModalBody>
               <MissionForm
                 onSubmit={(data) => {
-                  if (!character) {
-                    return;
-                  }
-
                   createMission({
                     description: data.description,
                     xp_reward: +data.xp_reward,
