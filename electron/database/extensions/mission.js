@@ -16,7 +16,8 @@ SELECT
             SELECT json_group_array(
                 json_object(
                     'uid', g.uid,
-                    'description', g.description
+                    'description', g.description,
+                    'done', mg.done
                 )
             )
             FROM mission_goals mg
