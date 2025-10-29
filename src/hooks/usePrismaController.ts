@@ -19,7 +19,7 @@ type UsePrismaControllerRet<C extends Controller> = [
 
 function usePrismaController<C extends Controller, M extends Models>(
   controllerName: C,
-  modelToMutate?: M,
+  modelToMutate?: M | (string & {}) | M[] | (string & {})[],
 ): UsePrismaControllerRet<C> {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -31,7 +31,13 @@ function usePrismaController<C extends Controller, M extends Models>(
       let res: any;
       try {
         res = await electronAPI.db.controller(controllerName, ...args);
-        mutate(modelToMutate);
+        if (Array.isArray(modelToMutate)) {
+          for (const model of modelToMutate) {
+            mutate(model);
+          }
+        } else {
+          mutate(modelToMutate);
+        }
       } catch (e) {
         setError(true);
       } finally {

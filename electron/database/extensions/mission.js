@@ -1,40 +1,22 @@
-const { PrismaClient, Prisma } = require("@prisma/client");
-const { deleteMissionGoals } = require("../services/mission");
-
-const baseClient = new PrismaClient();
+const { Prisma } = require("@prisma/client");
+const {
+  deleteMissionGoals,
+  findCharacterMissionsWithGoals,
+} = require("../services/mission");
 
 const missionsExtendedQueries = Prisma.defineExtension({
   name: "missions-extended-queries",
   query: {
     missions: {
-      async findMany() {
-        const rawRes = await baseClient.$queryRaw`
-SELECT
-    m.*,
-    coalesce(
-        (
-            SELECT json_group_array(
-                json_object(
-                    'uid', g.uid,
-                    'description', g.description,
-                    'done', mg.done
-                )
-            )
-            FROM mission_goals mg
-            JOIN goals g ON mg.goal_ref=g.uid
-            WHERE mg.mission_ref=m.uid
-        ),
-        '[]'
-    ) AS goals
-FROM missions m
-`;
+      async findMany({ args }) {
+        if (!args.where?.character_ref) {
+          return [];
+        }
 
-        const res = rawRes.map((item) => ({
-          ...item,
-          goals: JSON.parse(item.goals),
-        }));
-
-        return res;
+        return findCharacterMissionsWithGoals(
+          args.where.character_ref,
+          args.where.is_completed,
+        );
       },
 
       async delete({ args, query }) {

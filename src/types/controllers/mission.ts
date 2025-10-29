@@ -17,3 +17,8 @@ export interface UpdateMissionControllerPayload {
   xp_reward?: number;
   uid: string;
 }
+
+export interface ProgressMissionControllerPayload {
+  uid: string;
+  doneGoals: string[];
+}

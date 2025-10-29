@@ -28,14 +28,14 @@ model character_skills {
 }
 
 model characters {
-  uid                  String @id
-  name                 String
-  money                Int    @default(0)
-  lvl                  Int    @default(1)
-  lvl_points           Int    @default(0)
-  max_ki               Int    @default(0)
-  ki                   Int    @default(0)
-  xp                   Int    @default(0)
+  uid        String @id
+  name       String
+  money      Int    @default(0)
+  lvl        Int    @default(1)
+  lvl_points Int    @default(0)
+  max_ki     Int    @default(0)
+  ki         Int    @default(0)
+  xp         Int    @default(0)
 }
 
 model goals {
@@ -63,7 +63,7 @@ model magic {
 model mission_goals {
   uid         String @id
   mission_ref String
-  goal_ref    String
+  goal_ref    String @unique(map: "sqlite_autoindex_mission_goals_2")
   done        Int    @default(0)
 }
 
@@ -74,11 +74,11 @@ model mission_rewards {
 }
 
 model missions {
-  uid           String  @id
+  uid           String @id
   title         String
   description   String
-  xp_reward     Int     @default(0)
-  is_completed  Int     @default(0)
+  xp_reward     Int    @default(0)
+  is_completed  Int    @default(0)
   type          String
   rank          String
   character_ref String

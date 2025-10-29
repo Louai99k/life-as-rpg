@@ -7,29 +7,58 @@ import {
   TableCell,
   getKeyValue,
   Button,
+  Chip,
+  Switch,
 } from "@heroui/react";
 import useColumns from "./useColumns";
-import { lazy, Suspense, useMemo, useState } from "react";
+import {
+  lazy,
+  Suspense,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import PlusIcon from "@src/icons/PlusIcon";
 import CellActions from "./CellActions";
 import useSWR from "swr";
 import fetchData from "@src/utils/prisma/fetcher";
+import OverviewContext from "../OverviewContext";
+import CheckIcon from "@src/icons/CheckIcon";
 
 import type { MissionWithGoals } from "types/mission";
 
 const AddMissionModal = lazy(() => import("./AddMissionModal"));
 const DeleteMissionModal = lazy(() => import("./DeleteMissionModal"));
 const UpdateMissionModal = lazy(() => import("./UpdateMissionModal"));
+const ProgressMissionModal = lazy(() => import("./ProgressMissionModal"));
 
 const MissionsTable = () => {
-  const { data, isLoading } = useSWR<MissionWithGoals[]>(
+  const [hideDone, setHideDone] = useState(true);
+  const { character } = useContext(OverviewContext);
+  const { data, isLoading, mutate } = useSWR<MissionWithGoals[]>(
     "missions",
-    () => fetchData("missions", "findMany") as never,
+    () =>
+      fetchData("missions", "findMany", {
+        where: {
+          character_ref: character.uid,
+          ...(hideDone ? { is_completed: 0 } : {}),
+        },
+      }) as never,
   );
   const columns = useColumns();
   const [addModal, setAddModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState<string | null>(null);
   const [updateModal, setUpdateModal] = useState<MissionWithGoals | null>(null);
+  const [progressModal, setProgressModal] = useState<MissionWithGoals | null>(
+    null,
+  );
+
+  useEffect(() => {
+    return () => {
+      mutate();
+    };
+  }, [hideDone]);
 
   const topContent = useMemo(() => {
     return (
@@ -37,6 +66,14 @@ const MissionsTable = () => {
         <div className="flex justify-between gap-3 items-end">
           <span>Missions Table</span>
           <div className="flex gap-3">
+            <Switch
+              isSelected={hideDone}
+              onValueChange={(v) => {
+                setHideDone(v);
+              }}
+            >
+              Hide Done
+            </Switch>
             <Button
               className="bg-foreground text-background"
               endContent={<PlusIcon />}
@@ -49,7 +86,7 @@ const MissionsTable = () => {
         </div>
       </div>
     );
-  }, [addModal, setAddModal]);
+  }, [addModal, setAddModal, hideDone, setHideDone]);
 
   return (
     <>
@@ -68,20 +105,40 @@ const MissionsTable = () => {
           </TableHeader>
           <TableBody isLoading={isLoading} items={data || []}>
             {(item) => (
-              <TableRow key={item.uid}>
+              <TableRow
+                onClick={() => {
+                  if (item.is_completed === 1) {
+                    return;
+                  }
+
+                  setProgressModal(item);
+                }}
+                key={item.uid}
+              >
                 {(columnKey) => (
                   <TableCell>
                     {columnKey !== "actions" ? (
                       getKeyValue(item, columnKey)
                     ) : (
-                      <CellActions
-                        onDelete={() => {
-                          setDeleteModal(item.uid);
-                        }}
-                        onEdit={() => {
-                          setUpdateModal(item);
-                        }}
-                      />
+                      <div className="flex items-center gap-2">
+                        <CellActions
+                          onDelete={() => {
+                            setDeleteModal(item.uid);
+                          }}
+                          onEdit={
+                            item.is_completed === 1
+                              ? undefined
+                              : () => {
+                                  setUpdateModal(item);
+                                }
+                          }
+                        />
+                        {item.is_completed === 1 ? (
+                          <Chip startContent={<CheckIcon />} color="success">
+                            Done
+                          </Chip>
+                        ) : null}
+                      </div>
                     )}
                   </TableCell>
                 )}
@@ -104,6 +161,12 @@ const MissionsTable = () => {
           <UpdateMissionModal
             onClose={() => setUpdateModal(null)}
             mission={updateModal}
+          />
+        ) : null}
+        {progressModal !== null ? (
+          <ProgressMissionModal
+            onClose={() => setProgressModal(null)}
+            mission={progressModal}
           />
         ) : null}
       </Suspense>
