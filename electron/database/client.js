@@ -1,11 +1,16 @@
 const { PrismaClient } = require("@prisma/client");
-const { missionsExtendedQueries, uidExtension } = require("./extensions/index");
+const {
+  missionsExtendedQueries,
+  uidExtension,
+  skillsExtendedQueries,
+} = require("./extensions/index");
 
 const baseClient = new PrismaClient();
 
 /**@type {import('@prisma/client').PrismaClient} */
 const client = baseClient
   .$extends(uidExtension)
-  .$extends(missionsExtendedQueries);
+  .$extends(missionsExtendedQueries)
+  .$extends(skillsExtendedQueries);
 
 module.exports = client;

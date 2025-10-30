@@ -8,13 +8,13 @@ import {
 } from "@heroui/react";
 import usePrismaMutation from "@src/hooks/usePrismaMutation";
 
-interface DeleteMissionModalProps {
+interface DeleteSkillModalProps {
   onClose: VoidFunction;
   uid: string;
 }
 
-const DeleteMissionModal = ({ onClose, uid }: DeleteMissionModalProps) => {
-  const [deleteMission] = usePrismaMutation("missions", "delete");
+const DeleteSkillModal = ({ onClose, uid }: DeleteSkillModalProps) => {
+  const [deleteSkill] = usePrismaMutation("skills", "delete");
 
   return (
     <Modal isOpen onClose={onClose}>
@@ -22,10 +22,10 @@ const DeleteMissionModal = ({ onClose, uid }: DeleteMissionModalProps) => {
         {() => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Delete Mission
+              Delete Skill
             </ModalHeader>
             <ModalBody>
-              <p>Are you sure you want to delete this mission?</p>
+              <p>Are you sure you want to delete this skill?</p>
             </ModalBody>
             <ModalFooter>
               <Button
@@ -38,17 +38,13 @@ const DeleteMissionModal = ({ onClose, uid }: DeleteMissionModalProps) => {
               </Button>
               <Button
                 onPress={() => {
-                  deleteMission({
+                  deleteSkill({
                     where: {
                       uid,
                     },
-                  })
-                    .then(() => {
-                      onClose();
-                    })
-                    .catch(() => {
-                      onClose();
-                    });
+                  }).finally(() => {
+                    onClose();
+                  });
                 }}
                 size="sm"
                 color="primary"
@@ -63,4 +59,4 @@ const DeleteMissionModal = ({ onClose, uid }: DeleteMissionModalProps) => {
   );
 };
 
-export default DeleteMissionModal;
+export default DeleteSkillModal;

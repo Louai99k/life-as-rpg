@@ -6,6 +6,7 @@ import fetchData from "@src/utils/prisma/fetcher";
 import MissionsTable from "./MissionTable";
 import { Button, Skeleton } from "@heroui/react";
 import BackIcon from "@src/icons/BackIcon";
+import Store from "./Store";
 
 interface CharacterOverviewProps {
   onBack: VoidFunction;
@@ -28,12 +29,9 @@ const CharacterOverview = ({ onBack, character }: CharacterOverviewProps) => {
           Back To Character Selection
         </Button>
       </div>
-      <div>
-        <Resources />
-      </div>
-      <div>
-        <MissionsTable />
-      </div>
+      <Resources />
+      <MissionsTable />
+      <Store />
     </OverviewContext.Provider>
   );
 };
