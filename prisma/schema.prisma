@@ -53,11 +53,11 @@ model items {
 }
 
 model magic {
-  uid         String @id
+  uid         String  @id
   name        String
   description String
-  max_lvl     Int    @default(1)
-  avatar      String
+  max_lvl     Int     @default(1)
+  avatar      String?
 }
 
 model mission_goals {
@@ -94,9 +94,9 @@ model rewards {
 }
 
 model skills {
-  uid         String @id
+  uid         String  @id
   name        String
   description String
-  max_lvl     Int    @default(1)
-  avatar      String
+  max_lvl     Int     @default(1)
+  avatar      String?
 }
