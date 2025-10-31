@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const {
   deleteMissionGoals,
   createMissionGoals,
-} = require("../services/mission.cjs");
+} = require("../../services/mission.cjs");
 
 const client = new PrismaClient();
 
