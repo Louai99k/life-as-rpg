@@ -1,5 +1,5 @@
 const { Prisma } = require("@prisma/client");
-const { generateUID } = require("../utils");
+const { generateUID } = require("../utils.cjs");
 
 const uidExtension = Prisma.defineExtension({
   name: "uid-middleware",

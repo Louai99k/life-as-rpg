@@ -1,7 +1,7 @@
 const { ipcMain } = require("electron");
-const handleQuery = require("./database/query");
-const handleMutation = require("./database/mutation");
-const handleController = require("./database/controller");
+const handleQuery = require("./database/query.cjs");
+const handleMutation = require("./database/mutation.cjs");
+const handleController = require("./database/controller.cjs");
 
 const setupHandlers = () => {
   ipcMain.handle("db-query", (_event, model, operation, ...args) => {

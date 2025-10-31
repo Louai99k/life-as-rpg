@@ -2,7 +2,7 @@ const { Prisma } = require("@prisma/client");
 const {
   deleteMissionGoals,
   findCharacterMissionsWithGoals,
-} = require("../services/mission");
+} = require("../services/mission.cjs");
 
 const missionsExtendedQueries = Prisma.defineExtension({
   name: "missions-extended-queries",

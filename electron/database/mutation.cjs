@@ -1,4 +1,4 @@
-const client = require("./client");
+const client = require("./client.cjs");
 
 const handleMutation = async (uid, operation, ...args) => {
   const model = client[uid];

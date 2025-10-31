@@ -3,7 +3,7 @@ const {
   missionsExtendedQueries,
   uidExtension,
   skillsExtendedQueries,
-} = require("./extensions/index");
+} = require("./extensions/index.cjs");
 
 const baseClient = new PrismaClient();
 

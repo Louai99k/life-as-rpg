@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-const { findMissionWithGoals } = require("../services/mission");
+const { findMissionWithGoals } = require("../services/mission.cjs");
 
 const client = new PrismaClient();
 

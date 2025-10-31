@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require("electron/main");
 const path = require("path");
-const setupHandlers = require("./handlers");
+const setupHandlers = require("./handlers.cjs");
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -9,7 +9,7 @@ const createWindow = () => {
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-      preload: path.join(__dirname, "./preload.js"),
+      preload: path.join(__dirname, "./preload.cjs"),
     },
   });
 

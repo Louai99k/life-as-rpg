@@ -1,4 +1,4 @@
-const client = require("./client");
+const client = require("./client.cjs");
 
 const handleQuery = async (uid, operation, ...args) => {
   const model = client[uid];
