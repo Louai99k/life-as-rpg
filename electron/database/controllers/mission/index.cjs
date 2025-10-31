@@ -1,6 +1,6 @@
-const createMission = require("./createMission.cjs");
-const updateMission = require("./updateMission.cjs");
-const progressMission = require("./progressMission.cjs");
+const createMission = require("./create-mission.cjs");
+const updateMission = require("./update-mission.cjs");
+const progressMission = require("./progress-mission.cjs");
 
 module.exports = {
   createMission,
