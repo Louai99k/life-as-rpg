@@ -1,7 +1,5 @@
-const { PrismaClient } = require("@prisma/client");
 const { findMissionWithGoals } = require("../../services/mission.cjs");
-
-const client = new PrismaClient();
+const client = require("../../base-client.cjs");
 
 // mark goals as done
 // check if all goals in mission is done then mark mission as done and give the rewards to player

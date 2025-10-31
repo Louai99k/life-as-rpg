@@ -1,10 +1,8 @@
-const { PrismaClient } = require("@prisma/client");
 const {
   deleteMissionGoals,
   createMissionGoals,
 } = require("../../services/mission.cjs");
-
-const client = new PrismaClient();
+const client = require("../../base-client.cjs");
 
 const updateMission = async (payload = {}) => {
   if (Array.isArray(payload.goals)) {

@@ -1,8 +1,6 @@
-const { PrismaClient } = require("@prisma/client");
 const { generateUID } = require("../../utils.cjs");
 const { createMissionGoals } = require("../../services/mission.cjs");
-
-const client = new PrismaClient();
+const client = require("../../base-client.cjs");
 
 const createMission = async (payload = {}) => {
   const mission = await client.missions.create({
