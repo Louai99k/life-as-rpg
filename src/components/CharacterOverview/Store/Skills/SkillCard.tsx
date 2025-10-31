@@ -1,5 +1,4 @@
-import { Button, Card, CardBody } from "@heroui/react";
-import { CARD_IMAGE_HEIGHT } from "@src/constants";
+import { Button, Card, CardBody, Image } from "@heroui/react";
 import EditIcon from "@src/icons/EditIcon";
 import DeleteIcon from "@src/icons/DeleteIcon";
 
@@ -18,15 +17,15 @@ const SkillCard = ({ skill, onUpdate, onDelete }: SkillCardProps) => {
         {/* Avatar */}
         <div className="relative group cursor-pointer">
           {skill.avatar ? (
-            <div
-              className={`w-full h-[${CARD_IMAGE_HEIGHT}px] bg-zinc-700 rounded-medium`}
+            <Image
+              isZoomed
+              className="w-full h-card-height"
+              src={skill.avatar}
             />
           ) : (
-            <div
-              className={`w-full h-[${CARD_IMAGE_HEIGHT}px] bg-zinc-700 rounded-medium`}
-            />
+            <div className="w-full h-card-height bg-zinc-700 rounded-medium" />
           )}
-          <div className="absolute opacity-0 group-hover:opacity-100 flex transition-all gap-2 top-2 right-2">
+          <div className="absolute z-50 opacity-0 group-hover:opacity-100 flex transition-all gap-2 top-2 right-2">
             <Button
               size="sm"
               color="primary"

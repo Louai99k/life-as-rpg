@@ -20,7 +20,7 @@ const AddButton = ({ onPress }: AddButtonProps) => {
       <CardBody>
         <Button
           onPress={onPress}
-          className="w-full flex flex-col min-h-[224px] h-full"
+          className="w-full flex flex-col min-h-card-height h-full"
         >
           <span>Add Skill</span>
           <PlusIcon />
