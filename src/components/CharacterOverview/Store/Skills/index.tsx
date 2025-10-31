@@ -1,14 +1,21 @@
 import { Button, Card, CardBody, Skeleton } from "@heroui/react";
 import PlusIcon from "@src/icons/PlusIcon";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useContext, useState } from "react";
 import SkillCard from "./SkillCard";
-import type { skills as Skill } from "@prisma/client";
 import useSWR from "swr";
-import fetchData from "@src/utils/prisma/fetcher";
+import usePrismaMutation from "@src/hooks/usePrismaMutation";
+import OverviewContext from "../../OverviewContext";
+import fetchControllerData from "@src/utils/prisma/fetcher-controller";
+
+import type {
+  SkillWithCharacterSkill,
+  SkillWithCharacterSkill_M,
+} from "types/controllers/skill";
 
 const AddSkillModal = lazy(() => import("./AddSkillModal"));
 const UpdateSkillModal = lazy(() => import("./UpdateSkillModal"));
 const DeleteSkillModal = lazy(() => import("./DeleteSkillModal"));
+const EditCharacterSkillModal = lazy(() => import("./EditCharacterSkillModal"));
 
 interface AddButtonProps {
   onPress: VoidFunction;
@@ -31,11 +38,24 @@ const AddButton = ({ onPress }: AddButtonProps) => {
 };
 
 const Skills = () => {
-  const { data: skills, isLoading } = useSWR("skills", () =>
-    fetchData("skills", "findMany"),
+  const { character } = useContext(OverviewContext);
+  const {
+    data: skills,
+    isLoading,
+    mutate,
+  } = useSWR("skills", () =>
+    fetchControllerData("findSkillWithCharacter", character.uid),
   );
+  const [createCharacterSkill, { isLoading: creatingCharacterSkill }] =
+    usePrismaMutation("character_skills", "create");
+  const [deleteCharacterSkill, { isLoading: deletingCharacterSkill }] =
+    usePrismaMutation("character_skills", "delete");
   const [addModal, setAddModal] = useState(false);
-  const [updateModal, setUpdateModal] = useState<Skill | null>(null);
+  const [updateModal, setUpdateModal] =
+    useState<SkillWithCharacterSkill | null>(null);
+  const [editModal, setEditModal] = useState<SkillWithCharacterSkill_M | null>(
+    null,
+  );
   const [deleteModal, setDeleteModal] = useState<string | null>(null);
 
   return (
@@ -48,10 +68,39 @@ const Skills = () => {
         ) : (
           skills?.map((skill) => (
             <SkillCard
+              activating={creatingCharacterSkill}
+              deactivating={deletingCharacterSkill}
+              onActivate={() => {
+                createCharacterSkill({
+                  data: {
+                    uid: "",
+                    character_ref: character.uid,
+                    skill_ref: skill.uid,
+                  },
+                }).finally(() => {
+                  mutate();
+                });
+              }}
               onDelete={() => {
                 setDeleteModal(skill.uid);
               }}
               onUpdate={() => setUpdateModal(skill)}
+              onEdit={() => {
+                setEditModal(skill as any);
+              }}
+              onDeactivate={() => {
+                if (!skill.character_skill) {
+                  return;
+                }
+
+                deleteCharacterSkill({
+                  where: {
+                    uid: skill.character_skill.uid,
+                  },
+                }).finally(() => {
+                  mutate();
+                });
+              }}
               key={skill.uid}
               skill={skill}
             />
@@ -77,6 +126,12 @@ const Skills = () => {
               setDeleteModal(null);
             }}
             uid={deleteModal}
+          />
+        ) : null}
+        {editModal ? (
+          <EditCharacterSkillModal
+            skill={editModal}
+            onClose={() => setEditModal(null)}
           />
         ) : null}
       </Suspense>

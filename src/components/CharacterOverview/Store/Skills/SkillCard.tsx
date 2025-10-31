@@ -1,16 +1,38 @@
-import { Button, Card, CardBody, Image } from "@heroui/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Image,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@heroui/react";
 import EditIcon from "@src/icons/EditIcon";
 import DeleteIcon from "@src/icons/DeleteIcon";
 
-import type { skills as Skill } from "@prisma/client";
+import type { SkillWithCharacterSkill } from "types/controllers/skill";
 
 interface SkillCardProps {
-  skill: Skill;
+  skill: SkillWithCharacterSkill;
+  activating?: boolean;
+  deactivating?: boolean;
   onUpdate: VoidFunction;
   onDelete: VoidFunction;
+  onActivate: VoidFunction;
+  onDeactivate: VoidFunction;
+  onEdit: VoidFunction;
 }
 
-const SkillCard = ({ skill, onUpdate, onDelete }: SkillCardProps) => {
+const SkillCard = ({
+  skill,
+  activating = false,
+  deactivating = false,
+  onUpdate,
+  onDelete,
+  onActivate,
+  onEdit,
+  onDeactivate,
+}: SkillCardProps) => {
   return (
     <Card>
       <CardBody>
@@ -52,18 +74,55 @@ const SkillCard = ({ skill, onUpdate, onDelete }: SkillCardProps) => {
         {/* Name */}
         <div className="mt-4">
           <strong>{skill.name}</strong>
+          {skill.character_skill ? (
+            <span> (Level: {skill.character_skill.lvl})</span>
+          ) : null}
         </div>
 
         {/* Description */}
-        <div className="mt-4 line-clamp-4 text-small">
-          <p>{skill.description}</p>
-        </div>
+        <Popover placement="top">
+          <PopoverTrigger>
+            <div className="mt-4 cursor-pointer line-clamp-4 text-small">
+              <p>{skill.description}</p>
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="w-1/2">
+            <p>{skill.description}</p>
+          </PopoverContent>
+        </Popover>
 
         {/* Actions */}
         <div className="mt-4">
-          <Button color="primary" className="w-full">
-            Activate
-          </Button>
+          {skill.character_skill ? (
+            <div className="flex gap-4">
+              <Button
+                variant="bordered"
+                onPress={onEdit}
+                color="primary"
+                className="flex-1"
+              >
+                Edit
+              </Button>
+              <Button
+                isLoading={deactivating}
+                variant="bordered"
+                onPress={onDeactivate}
+                color="danger"
+                className="flex-1"
+              >
+                Deactivate
+              </Button>
+            </div>
+          ) : (
+            <Button
+              isLoading={activating}
+              onPress={onActivate}
+              color="primary"
+              className="w-full"
+            >
+              Activate
+            </Button>
+          )}
         </div>
       </CardBody>
     </Card>
