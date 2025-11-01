@@ -15,10 +15,15 @@ const MagicForm = ({ onSubmit, submitRef, magic }: MagicFormProps) => {
     <Form
       className="max-h-[60vh] overflow-auto"
       onSubmit={submitHelper((data) => {
-        onSubmit(data);
+        onSubmit({
+          data: {
+            ...data,
+            max_lvl: +data.max_lvl,
+          },
+        });
       })}
     >
-      <div className="grid w-full gap-4 grid-cols-3">
+      <div className="grid w-full gap-4 grid-cols-2">
         <Input
           isRequired
           name="name"

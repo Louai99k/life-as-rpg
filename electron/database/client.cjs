@@ -4,6 +4,7 @@ const {
   uidExtension,
   skillsExtendedQueries,
   magicExtendedQueries,
+  itemsExtendedQueries,
 } = require("./extensions/index.cjs");
 
 const baseClient = new PrismaClient();
@@ -13,6 +14,7 @@ const client = baseClient
   .$extends(uidExtension)
   .$extends(missionsExtendedQueries)
   .$extends(skillsExtendedQueries)
-  .$extends(magicExtendedQueries);
+  .$extends(magicExtendedQueries)
+  .$extends(itemsExtendedQueries);
 
 module.exports = client;

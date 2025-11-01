@@ -27,12 +27,7 @@ const AddMagicModal = ({ onClose }: AddMagicModalProps) => {
             <ModalBody>
               <MagicForm
                 onSubmit={(data) => {
-                  createMagic({
-                    data: {
-                      ...data,
-                      max_lvl: +data.max_lvl,
-                    },
-                  }).finally(() => {
+                  createMagic(data).finally(() => {
                     onClose();
                   });
                 }}

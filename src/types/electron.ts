@@ -7,13 +7,15 @@ import type {
 } from "./controllers/mission";
 import type { SkillWithCharacterSkill } from "./controllers/skill";
 import type { MagicWithCharacterMagic } from "./controllers/magic";
+import type { ItemWithCharacterItem } from "./controllers/item";
 
 export type Controller =
   | "createMission"
   | "updateMission"
   | "progressMission"
   | "findSkillWithCharacter"
-  | "findMagicWithCharacter";
+  | "findMagicWithCharacter"
+  | "findItemWithCharacter";
 
 export interface ControllerPayloadMap extends Record<Controller, any[]> {
   createMission: [CreateMissionControllerPayload];
@@ -21,6 +23,7 @@ export interface ControllerPayloadMap extends Record<Controller, any[]> {
   progressMission: [ProgressMissionControllerPayload];
   findSkillWithCharacter: [string];
   findMagicWithCharacter: [string];
+  findItemWithCharacter: [string];
 }
 
 export interface ControllerReturnMap extends Record<Controller, any> {
@@ -29,6 +32,7 @@ export interface ControllerReturnMap extends Record<Controller, any> {
   progressMission: Mission;
   findSkillWithCharacter: SkillWithCharacterSkill[];
   findMagicWithCharacter: MagicWithCharacterMagic[];
+  findItemWithCharacter: ItemWithCharacterItem[];
 }
 
 export interface ElectronAPI {

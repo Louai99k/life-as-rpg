@@ -5,6 +5,7 @@ import MagicIcon from "@src/icons/MagicIcon";
 import { useState } from "react";
 import ItemsIcon from "@src/icons/ItemsIcon";
 import Magic from "./Magic";
+import Items from "./Items";
 
 type TabColor = TabsProps["color"];
 
@@ -70,7 +71,9 @@ const Store = () => {
               <span>Items</span>
             </div>
           }
-        ></Tab>
+        >
+          <Items />
+        </Tab>
       </Tabs>
     </div>
   );

@@ -7,27 +7,27 @@ import {
   Button,
 } from "@heroui/react";
 import { useRef } from "react";
-import SkillForm from "./SkillForm";
+import ItemForm from "./ItemForm";
 import usePrismaMutation from "@src/hooks/usePrismaMutation";
 
-interface AddSkillModalProps {
+interface AddItemModalProps {
   onClose: VoidFunction;
 }
 
-const AddSkillModal = ({ onClose }: AddSkillModalProps) => {
+const AddItemModal = ({ onClose }: AddItemModalProps) => {
   const submitRef = useRef<HTMLButtonElement>(null);
-  const [createSkill, { isLoading }] = usePrismaMutation("skills", "create");
+  const [createItem, { isLoading }] = usePrismaMutation("items", "create");
 
   return (
     <Modal isOpen size="4xl" onClose={onClose}>
       <ModalContent>
         {() => (
           <>
-            <ModalHeader className="flex flex-col gap-1">Add Skill</ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">Add Item</ModalHeader>
             <ModalBody>
-              <SkillForm
+              <ItemForm
                 onSubmit={(data) => {
-                  createSkill(data).finally(() => {
+                  createItem(data).finally(() => {
                     onClose();
                   });
                 }}
@@ -53,4 +53,4 @@ const AddSkillModal = ({ onClose }: AddSkillModalProps) => {
   );
 };
 
-export default AddSkillModal;
+export default AddItemModal;
