@@ -27,7 +27,7 @@ const AddSkillModal = ({ onClose }: AddSkillModalProps) => {
             <ModalBody>
               <SkillForm
                 onSubmit={(data) => {
-                  createSkill(data).finally(() => {
+                  createSkill({ data }).finally(() => {
                     onClose();
                   });
                 }}

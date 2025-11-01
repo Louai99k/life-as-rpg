@@ -16,10 +16,8 @@ const MagicForm = ({ onSubmit, submitRef, magic }: MagicFormProps) => {
       className="max-h-[60vh] overflow-auto"
       onSubmit={submitHelper((data) => {
         onSubmit({
-          data: {
-            ...data,
-            max_lvl: +data.max_lvl,
-          },
+          ...data,
+          max_lvl: +data.max_lvl,
         });
       })}
     >

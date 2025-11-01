@@ -18,12 +18,10 @@ const ItemForm = ({ onSubmit, submitRef, item }: ItemFormProps) => {
       className="max-h-[60vh] overflow-auto"
       onSubmit={submitHelper((data) => {
         onSubmit({
-          data: {
-            ...data,
-            max_qty: +data.max_qty,
-            in_store: inStore ? 1 : 0,
-            store_price: +data.store_price,
-          },
+          ...data,
+          max_qty: +data.max_qty,
+          in_store: inStore ? 1 : 0,
+          store_price: +data.store_price,
         });
       })}
     >

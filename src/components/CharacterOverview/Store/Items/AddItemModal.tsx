@@ -27,7 +27,7 @@ const AddItemModal = ({ onClose }: AddItemModalProps) => {
             <ModalBody>
               <ItemForm
                 onSubmit={(data) => {
-                  createItem(data).finally(() => {
+                  createItem({ data }).finally(() => {
                     onClose();
                   });
                 }}

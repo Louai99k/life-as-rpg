@@ -34,12 +34,7 @@ const UpdateMagicModal = ({ onClose, magic }: UpdateMagicModalProps) => {
                 magic={magic}
                 onSubmit={(data) => {
                   updateMagic({
-                    data: {
-                      description: data.description,
-                      name: data.name,
-                      max_lvl: +data.max_lvl,
-                      avatar: data.avatar,
-                    },
+                    data,
                     where: {
                       uid: magic.uid,
                     },

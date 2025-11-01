@@ -27,7 +27,7 @@ const AddMagicModal = ({ onClose }: AddMagicModalProps) => {
             <ModalBody>
               <MagicForm
                 onSubmit={(data) => {
-                  createMagic(data).finally(() => {
+                  createMagic({ data }).finally(() => {
                     onClose();
                   });
                 }}

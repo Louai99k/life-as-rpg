@@ -34,12 +34,7 @@ const UpdateSkillModal = ({ onClose, skill }: UpdateSkillModalProps) => {
                 skill={skill}
                 onSubmit={(data) => {
                   updateSkill({
-                    data: {
-                      description: data.description,
-                      name: data.name,
-                      max_lvl: +data.max_lvl,
-                      avatar: data.avatar,
-                    },
+                    data,
                     where: {
                       uid: skill.uid,
                     },

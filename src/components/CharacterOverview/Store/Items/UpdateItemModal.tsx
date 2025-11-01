@@ -34,12 +34,7 @@ const UpdateItemModal = ({ onClose, item }: UpdateItemModalProps) => {
                 item={item}
                 onSubmit={(data) => {
                   updateItem({
-                    data: {
-                      description: data.description,
-                      name: data.name,
-                      max_qty: +data.max_qty,
-                      avatar: data.avatar,
-                    },
+                    data,
                     where: {
                       uid: item.uid,
                     },

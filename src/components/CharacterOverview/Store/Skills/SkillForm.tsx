@@ -16,10 +16,8 @@ const SkillForm = ({ onSubmit, submitRef, skill }: SkillFormProps) => {
       className="max-h-[60vh] overflow-auto"
       onSubmit={submitHelper((data) => {
         onSubmit({
-          data: {
-            ...data,
-            max_lvl: +data.max_lvl,
-          },
+          ...data,
+          max_lvl: +data.max_lvl,
         });
       })}
     >
