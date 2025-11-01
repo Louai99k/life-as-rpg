@@ -14,7 +14,6 @@ import type { ItemWithCharacterItem } from "types/controllers/item";
 
 interface ItemCardProps {
   item: ItemWithCharacterItem;
-  purchasing?: boolean;
   selling?: boolean;
   onUpdate: VoidFunction;
   onDelete: VoidFunction;
@@ -24,7 +23,6 @@ interface ItemCardProps {
 
 const ItemCard = ({
   item,
-  purchasing = false,
   selling = false,
   onUpdate,
   onDelete,
@@ -89,23 +87,23 @@ const ItemCard = ({
         {/* Actions */}
         <div className="mt-4">
           {item.character_item ? (
-            <Button
-              isLoading={selling}
-              variant="bordered"
-              onPress={onSell}
-              color="warning"
-              className="w-full"
-            >
-              Sell
-            </Button>
+            <div className="flex gap-4">
+              <Button
+                isLoading={selling}
+                variant="bordered"
+                onPress={onSell}
+                color="warning"
+                className="flex-1"
+              >
+                Sell
+              </Button>
+              <Button onPress={onPurchase} color="warning" className="flex-1">
+                Buy More
+              </Button>
+            </div>
           ) : (
-            <Button
-              isLoading={purchasing}
-              onPress={onPurchase}
-              color="warning"
-              className="w-full"
-            >
-              Purchase
+            <Button onPress={onPurchase} color="warning" className="w-full">
+              Buy
             </Button>
           )}
         </div>

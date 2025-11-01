@@ -3,6 +3,7 @@ const skillsExtendedQueries = require("./skill.cjs");
 const uidExtension = require("./uid.cjs");
 const magicExtendedQueries = require("./magic.cjs");
 const itemsExtendedQueries = require("./item.cjs");
+const characterItemsExtendedQueries = require("./character_item.cjs");
 
 module.exports = {
   missionsExtendedQueries,
@@ -10,4 +11,5 @@ module.exports = {
   skillsExtendedQueries,
   magicExtendedQueries,
   itemsExtendedQueries,
+  characterItemsExtendedQueries,
 };

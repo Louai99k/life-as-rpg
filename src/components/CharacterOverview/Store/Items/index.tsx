@@ -2,16 +2,21 @@ import { Button, Card, CardBody, Skeleton } from "@heroui/react";
 import PlusIcon from "@src/icons/PlusIcon";
 import { lazy, Suspense, useContext, useState } from "react";
 import ItemCard from "./ItemCard";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import usePrismaMutation from "@src/hooks/usePrismaMutation";
 import OverviewContext from "../../OverviewContext";
 import fetchControllerData from "@src/utils/prisma/fetcher-controller";
 
-import type { ItemWithCharacterItem } from "types/controllers/item";
+import type {
+  ItemWithCharacterItem,
+  ItemWithCharacterItem_M,
+} from "types/controllers/item";
 
 const AddItemModal = lazy(() => import("./AddItemModal"));
 const UpdateItemModal = lazy(() => import("./UpdateItemModal"));
 const DeleteItemModal = lazy(() => import("./DeleteItemModal"));
+const PurchaseItemModal = lazy(() => import("./PurchaseItemModal"));
+const SellItemModal = lazy(() => import("./SellItemModal"));
 
 interface AddButtonProps {
   onPress: VoidFunction;
@@ -42,15 +47,23 @@ const Items = () => {
   } = useSWR("items", () =>
     fetchControllerData("findItemWithCharacter", character.uid),
   );
+  const { mutate: generalMutate } = useSWRConfig();
   const [createCharacterItem, { isLoading: creatingCharacterItem }] =
     usePrismaMutation("character_items", "create");
   const [deleteCharacterItem, { isLoading: deletingCharacterItem }] =
     usePrismaMutation("character_items", "delete");
+  const [updateCharacterItem, { isLoading: updatingCharacterItem }] =
+    usePrismaMutation("character_items", "update");
   const [addModal, setAddModal] = useState(false);
   const [updateModal, setUpdateModal] = useState<ItemWithCharacterItem | null>(
     null,
   );
   const [deleteModal, setDeleteModal] = useState<string | null>(null);
+  const [purchasingModal, setPurchasingModal] =
+    useState<ItemWithCharacterItem | null>(null);
+  const [sellModal, setSellModal] = useState<ItemWithCharacterItem_M | null>(
+    null,
+  );
 
   return (
     <>
@@ -62,35 +75,16 @@ const Items = () => {
         ) : (
           items?.map((item) => (
             <ItemCard
-              purchasing={creatingCharacterItem}
               selling={deletingCharacterItem}
               onPurchase={() => {
-                createCharacterItem({
-                  data: {
-                    uid: "",
-                    character_ref: character.uid,
-                    item_ref: item.uid,
-                  },
-                }).finally(() => {
-                  mutate();
-                });
+                setPurchasingModal(item);
               }}
               onDelete={() => {
                 setDeleteModal(item.uid);
               }}
               onUpdate={() => setUpdateModal(item)}
               onSell={() => {
-                if (!item.character_item) {
-                  return;
-                }
-
-                deleteCharacterItem({
-                  where: {
-                    uid: item.character_item.uid,
-                  },
-                }).finally(() => {
-                  mutate();
-                });
+                setSellModal(item as any);
               }}
               key={item.uid}
               item={item}
@@ -117,6 +111,78 @@ const Items = () => {
               setDeleteModal(null);
             }}
             uid={deleteModal}
+          />
+        ) : null}
+        {purchasingModal ? (
+          <PurchaseItemModal
+            item={purchasingModal}
+            onClose={() => setPurchasingModal(null)}
+            onConfirm={(qty) => {
+              if (purchasingModal.character_item) {
+                updateCharacterItem({
+                  data: {
+                    qty: purchasingModal.character_item.qty + qty,
+                  },
+                  where: {
+                    uid: purchasingModal.character_item.uid,
+                  },
+                }).finally(() => {
+                  mutate();
+                  generalMutate(`characters/${character.uid}`);
+                  setPurchasingModal(null);
+                });
+                return;
+              }
+
+              createCharacterItem({
+                data: {
+                  uid: "",
+                  character_ref: character.uid,
+                  item_ref: purchasingModal.uid,
+                  qty,
+                },
+              }).finally(() => {
+                mutate();
+                generalMutate(`characters/${character.uid}`);
+                setPurchasingModal(null);
+              });
+            }}
+            purchasing={creatingCharacterItem}
+            character={character}
+          />
+        ) : null}
+        {sellModal ? (
+          <SellItemModal
+            item={sellModal}
+            onClose={() => setSellModal(null)}
+            onConfirm={(qty) => {
+              if (qty >= sellModal.character_item.qty) {
+                deleteCharacterItem({
+                  where: {
+                    uid: sellModal.character_item.uid,
+                  },
+                }).finally(() => {
+                  mutate();
+                  generalMutate(`characters/${character.uid}`);
+                  setSellModal(null);
+                });
+                return;
+              }
+
+              updateCharacterItem({
+                data: {
+                  qty: sellModal.character_item.qty - qty,
+                },
+                where: {
+                  uid: sellModal.character_item.uid,
+                },
+              }).finally(() => {
+                mutate();
+                generalMutate(`characters/${character.uid}`);
+                setSellModal(null);
+              });
+            }}
+            selling={deletingCharacterItem || updatingCharacterItem}
           />
         ) : null}
       </Suspense>

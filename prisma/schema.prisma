@@ -49,7 +49,7 @@ model items {
   name        String
   description String
   in_store    Int     @default(1)
-  store_price Int?
+  store_price Int     @default(0)
   avatar      String?
   max_qty     Int     @default(9999)
 }
