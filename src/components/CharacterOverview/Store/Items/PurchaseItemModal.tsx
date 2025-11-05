@@ -47,6 +47,11 @@ const PurchaseItemModal = ({
                 value={qty}
                 onValueChange={(v) => (v ? setQty(v) : null)}
                 minValue={1}
+                maxValue={
+                  item.character_item
+                    ? item.max_qty - item.character_item.qty
+                    : item.max_qty
+                }
                 label="Quantity to purchase"
               />
               <p>Total: {formatCurrency(totalPrice)}</p>

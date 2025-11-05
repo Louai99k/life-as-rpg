@@ -97,9 +97,12 @@ const ItemCard = ({
               >
                 Sell
               </Button>
-              <Button onPress={onPurchase} color="warning" className="flex-1">
-                Buy More
-              </Button>
+              {item.character_item &&
+              item.max_qty <= item.character_item.qty ? null : (
+                <Button onPress={onPurchase} color="warning" className="flex-1">
+                  Buy More
+                </Button>
+              )}
             </div>
           ) : (
             <Button onPress={onPurchase} color="warning" className="w-full">
