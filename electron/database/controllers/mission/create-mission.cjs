@@ -1,5 +1,8 @@
 const { generateUID } = require("../../utils.cjs");
-const { createMissionGoals } = require("../../services/mission.cjs");
+const {
+  createMissionGoals,
+  createMissionRewards,
+} = require("../../services/mission.cjs");
 const client = require("../../base-client.cjs");
 
 const createMission = async (payload = {}) => {
@@ -17,6 +20,7 @@ const createMission = async (payload = {}) => {
   });
 
   await createMissionGoals(mission.uid, payload.goals);
+  await createMissionRewards(mission.uid, payload.rewards);
 
   return mission;
 };

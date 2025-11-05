@@ -1,6 +1,8 @@
 const {
   deleteMissionGoals,
   createMissionGoals,
+  deleteMissionRewards,
+  createMissionRewards,
 } = require("../../services/mission.cjs");
 const client = require("../../base-client.cjs");
 
@@ -8,6 +10,8 @@ const updateMission = async (payload = {}) => {
   if (Array.isArray(payload.goals)) {
     await deleteMissionGoals(payload.uid);
     await createMissionGoals(payload.uid, payload.goals);
+    await deleteMissionRewards(payload.uid);
+    await createMissionRewards(payload.uid, payload.rewards);
   }
 
   const updatedMission = await client.missions.update({

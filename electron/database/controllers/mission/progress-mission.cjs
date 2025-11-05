@@ -1,13 +1,16 @@
-const { findMissionWithGoals } = require("../../services/mission.cjs");
+const {
+  findMissionWithRelations,
+  handleMissionDone,
+} = require("../../services/mission.cjs");
 const client = require("../../base-client.cjs");
 
 // mark goals as done
 // check if all goals in mission is done then mark mission as done and give the rewards to player
 
 const progressMission = async (payload = {}) => {
-  const missionWithGoals = await findMissionWithGoals(payload.uid);
+  const missionWithRelations = await findMissionWithRelations(payload.uid);
 
-  if (!missionWithGoals) {
+  if (!missionWithRelations) {
     return null;
   }
 
@@ -30,30 +33,13 @@ const progressMission = async (payload = {}) => {
   }
 
   const updatedGoalsUid = updatedGoals.map((g) => g.goal_ref);
-  const missionGoalsUid = missionWithGoals.goals.map((g) => g.uid);
+  const missionGoalsUid = missionWithRelations.goals.map((g) => g.uid);
 
   const isMissionDone =
     updatedGoalsUid.sort().join(",") === missionGoalsUid.sort().join(",");
 
   if (isMissionDone) {
-    const updatedMission = await client.missions.update({
-      where: {
-        uid: payload.uid,
-      },
-      data: {
-        is_completed: 1,
-      },
-    });
-
-    await client.$queryRaw`
-UPDATE characters
-SET xp = xp + ${missionWithGoals.xp_reward}
-WHERE characters.uid = ${missionWithGoals.character_ref}
-`;
-
-    // handle rewards
-
-    return updatedMission;
+    await handleMissionDone(missionWithRelations);
   }
 
   return {

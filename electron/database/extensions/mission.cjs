@@ -1,7 +1,8 @@
 const { Prisma } = require("@prisma/client");
 const {
   deleteMissionGoals,
-  findCharacterMissionsWithGoals,
+  deleteMissionRewards,
+  findCharacterMissionsWithRelations,
 } = require("../services/mission.cjs");
 
 const missionsExtendedQueries = Prisma.defineExtension({
@@ -13,7 +14,7 @@ const missionsExtendedQueries = Prisma.defineExtension({
           return [];
         }
 
-        return findCharacterMissionsWithGoals(
+        return findCharacterMissionsWithRelations(
           args.where.character_ref,
           args.where.is_completed,
         );
@@ -27,6 +28,7 @@ const missionsExtendedQueries = Prisma.defineExtension({
         }
 
         await deleteMissionGoals(uid);
+        await deleteMissionRewards(uid);
 
         return query(args);
       },
