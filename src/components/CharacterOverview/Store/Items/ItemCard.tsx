@@ -29,6 +29,12 @@ const ItemCard = ({
   onPurchase,
   onSell,
 }: ItemCardProps) => {
+  const canBuy = item.in_store
+    ? item.character_item
+      ? item.max_qty > item.character_item.qty
+      : true
+    : false;
+
   return (
     <Card>
       <CardBody>
@@ -97,18 +103,17 @@ const ItemCard = ({
               >
                 Sell
               </Button>
-              {item.character_item &&
-              item.max_qty <= item.character_item.qty ? null : (
+              {canBuy ? (
                 <Button onPress={onPurchase} color="warning" className="flex-1">
                   Buy More
                 </Button>
-              )}
+              ) : null}
             </div>
-          ) : (
+          ) : canBuy ? (
             <Button onPress={onPurchase} color="warning" className="w-full">
               Buy
             </Button>
-          )}
+          ) : null}
         </div>
       </CardBody>
     </Card>

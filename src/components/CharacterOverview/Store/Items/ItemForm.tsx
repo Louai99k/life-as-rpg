@@ -21,7 +21,7 @@ const ItemForm = ({ onSubmit, submitRef, item }: ItemFormProps) => {
           ...data,
           max_qty: +data.max_qty,
           in_store: inStore ? 1 : 0,
-          store_price: +data.store_price,
+          store_price: +data.store_price || 0,
         });
       })}
     >
