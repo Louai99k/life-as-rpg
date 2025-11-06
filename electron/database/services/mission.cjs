@@ -73,11 +73,11 @@ const createMissionRewards = async (missionUid, rewards) => {
     const createdReward = await client.rewards.create({
       data: {
         uid: generateUID(),
-        description: "",
-        reward_type: "",
-        reward_amount: 0,
-        reward_lvl: 0,
-        reward_uid: "",
+        description: reward.description || "",
+        reward_type: reward.reward_type,
+        reward_amount: reward.reward_amount || 0,
+        reward_lvl: reward.reward_lvl || 0,
+        reward_uid: reward.reward_uid || "",
       },
     });
 
@@ -109,7 +109,7 @@ const deleteMissionRewards = async (missionUid) => {
   for (const mr of missionsRewards) {
     await client.rewards.delete({
       where: {
-        uid: mr.goal_ref,
+        uid: mr.reward_ref,
       },
     });
   }

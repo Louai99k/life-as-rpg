@@ -42,6 +42,7 @@ const AddMissionModal = ({ onClose }: AddMissionModalProps) => {
                     rank: data.rank,
                     title: data.title,
                     goals: data.goals,
+                    rewards: data.rewards,
                   })
                     .then(() => {
                       onClose();

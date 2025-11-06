@@ -88,11 +88,11 @@ model missions {
 
 model rewards {
   uid           String  @id
-  description   String
+  description   String?
   reward_type   String
   reward_amount Int?    @default(0)
   reward_uid    String?
-  reward_lvl    String?
+  reward_lvl    Int?    @default(0)
 }
 
 model skills {

@@ -46,6 +46,7 @@ const UpdateCharacterModal = ({
                     rank: data.rank,
                     title: data.title,
                     goals: data.goals,
+                    rewards: data.rewards,
                     uid: mission.uid,
                   })
                     .then(() => {

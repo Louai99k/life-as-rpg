@@ -1,3 +1,5 @@
+import type { rewards as Reward } from "@prisma/client";
+
 export interface CreateMissionControllerPayload {
   description: string;
   title: string;
@@ -6,6 +8,7 @@ export interface CreateMissionControllerPayload {
   type: string;
   goals: { description: string; uid?: string }[];
   xp_reward: number;
+  rewards: Reward[];
 }
 
 export interface UpdateMissionControllerPayload {
@@ -15,6 +18,7 @@ export interface UpdateMissionControllerPayload {
   type?: string;
   goals?: { description: string; uid: string }[];
   xp_reward?: number;
+  rewards?: Reward[];
   uid: string;
 }
 
