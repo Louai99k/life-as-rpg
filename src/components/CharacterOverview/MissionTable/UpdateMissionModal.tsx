@@ -10,11 +10,11 @@ import { useRef } from "react";
 import MissionForm from "./MissionForm";
 import usePrismaController from "@src/hooks/usePrismaController";
 
-import type { MissionWithGoals } from "types/mission";
+import type { MissionWithRelations } from "types/mission";
 
 interface UpdateCharacterModalProps {
   onClose: VoidFunction;
-  mission: MissionWithGoals;
+  mission: MissionWithRelations;
 }
 
 const UpdateCharacterModal = ({

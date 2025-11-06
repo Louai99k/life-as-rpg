@@ -12,14 +12,14 @@ import {
 import usePrismaController from "@src/hooks/usePrismaController";
 import { useState } from "react";
 
-import type { MissionWithGoals } from "types/mission";
+import type { MissionWithRelations } from "types/mission";
 
 interface ProgressMissionModalProps {
   onClose: VoidFunction;
-  mission: MissionWithGoals;
+  mission: MissionWithRelations;
 }
 
-const getSelectedGoals = (goals: MissionWithGoals["goals"]) =>
+const getSelectedGoals = (goals: MissionWithRelations["goals"]) =>
   goals.filter((g) => g.done === 1).map((g) => g.uid);
 
 const ProgressMissionModal = ({

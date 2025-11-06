@@ -26,7 +26,7 @@ import fetchData from "@src/utils/prisma/fetcher";
 import OverviewContext from "../OverviewContext";
 import CheckIcon from "@src/icons/CheckIcon";
 
-import type { MissionWithGoals } from "types/mission";
+import type { MissionWithRelations } from "types/mission";
 
 const AddMissionModal = lazy(() => import("./AddMissionModal"));
 const DeleteMissionModal = lazy(() => import("./DeleteMissionModal"));
@@ -36,7 +36,7 @@ const ProgressMissionModal = lazy(() => import("./ProgressMissionModal"));
 const MissionsTable = () => {
   const [hideDone, setHideDone] = useState(true);
   const { character } = useContext(OverviewContext);
-  const { data, isLoading, mutate } = useSWR<MissionWithGoals[]>(
+  const { data, isLoading, mutate } = useSWR<MissionWithRelations[]>(
     "missions",
     () =>
       fetchData("missions", "findMany", {
@@ -49,10 +49,11 @@ const MissionsTable = () => {
   const columns = useColumns();
   const [addModal, setAddModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState<string | null>(null);
-  const [updateModal, setUpdateModal] = useState<MissionWithGoals | null>(null);
-  const [progressModal, setProgressModal] = useState<MissionWithGoals | null>(
+  const [updateModal, setUpdateModal] = useState<MissionWithRelations | null>(
     null,
   );
+  const [progressModal, setProgressModal] =
+    useState<MissionWithRelations | null>(null);
 
   useEffect(() => {
     return () => {
