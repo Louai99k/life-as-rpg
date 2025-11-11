@@ -4,9 +4,13 @@
   "main": "electron/main.cjs",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "electron": "electron .",
-    "build": "vite build"
+    "vite:dev": "vite",
+    "electron:dev": "electron .",
+    "dev": "concurrently \"npm:vite:dev\" \"npm:electron:dev\"",
+    "build:vite": "vite build",
+    "build:electron": "electron-builder",
+    "build": "npx prisma generate && npm run build:vite && npm run build:electron",
+    "postinstall": "npx prisma generate"
   },
   "repository": {
     "type": "git",
