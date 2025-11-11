@@ -1,4 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
+const baseClient = require("./base-client.cjs");
 const {
   missionsExtendedQueries,
   uidExtension,
@@ -8,8 +8,6 @@ const {
   characterItemsExtendedQueries,
   charactersExtendedQueries,
 } = require("./extensions/index.cjs");
-
-const baseClient = new PrismaClient();
 
 /**@type {import('@prisma/client').PrismaClient} */
 const client = baseClient

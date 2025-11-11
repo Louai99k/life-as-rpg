@@ -2,6 +2,8 @@ const { app, BrowserWindow } = require("electron/main");
 const path = require("path");
 const setupHandlers = require("./handlers.cjs");
 
+const isPackaged = app.isPackaged;
+
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
@@ -9,11 +11,14 @@ const createWindow = () => {
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-      preload: path.join(__dirname, "./preload.cjs"),
+      preload: path.join(__dirname, "preload.cjs"),
     },
   });
 
-  win.loadFile(path.join(__dirname, "../electron.html"));
+  if (isPackaged) {
+  } else {
+    win.loadURL("http://localhost:5173");
+  }
 };
 
 app.whenReady().then(() => {
