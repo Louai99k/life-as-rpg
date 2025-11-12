@@ -1,4 +1,4 @@
-const { Prisma } = require("@prisma/client");
+const { Prisma } = require("../prisma.cjs");
 const { generateUID } = require("../utils.cjs");
 const client = require("../base-client.cjs");
 

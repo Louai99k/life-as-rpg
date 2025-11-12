@@ -1,4 +1,4 @@
-const { Prisma } = require("@prisma/client");
+const { Prisma } = require("../prisma.cjs");
 const { deleteCharacterMagic } = require("../services/magic.cjs");
 
 const magicExtendedQueries = Prisma.defineExtension({

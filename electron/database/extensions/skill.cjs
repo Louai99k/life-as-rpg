@@ -1,4 +1,4 @@
-const { Prisma } = require("@prisma/client");
+const { Prisma } = require("../prisma.cjs");
 const { deleteCharacterSkills } = require("../services/skill.cjs");
 
 const skillsExtendedQueries = Prisma.defineExtension({

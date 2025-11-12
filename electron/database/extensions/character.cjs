@@ -1,4 +1,4 @@
-const { Prisma } = require("@prisma/client");
+const { Prisma } = require("../prisma.cjs");
 const client = require("../base-client.cjs");
 const {
   deleteMissionGoals,
