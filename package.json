@@ -23,6 +23,19 @@
     "url": "https://github.com/Louai99k/life-as-rpg/issues"
   },
   "homepage": "https://github.com/Louai99k/life-as-rpg#readme",
+  "build": {
+    "appId": "com.life-as-rpg",
+    "extraResources": [
+      {
+        "from": "node_modules/.prisma",
+        "to": "node_modules/.prisma"
+      },
+      {
+        "from": "node_modules/@prisma",
+        "to": "node_modules/@prisma"
+      }
+    ]
+  },
   "dependencies": {
     "@heroui/react": "2.8.5",
     "@prisma/client": "6.17.1",

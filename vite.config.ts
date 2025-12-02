@@ -6,6 +6,10 @@ import path from "node:path";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
 
+  build: {
+    outDir: "dist-vite",
+  },
+
   resolve: {
     alias: [
       { find: "types", replacement: path.resolve(__dirname, "src/types") },
