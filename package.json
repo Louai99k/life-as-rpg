@@ -33,6 +33,10 @@
       {
         "from": "node_modules/@prisma",
         "to": "node_modules/@prisma"
+      },
+      {
+        "from": "sample-data.db",
+        "to": "data.db"
       }
     ]
   },
