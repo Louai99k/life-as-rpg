@@ -1,6 +1,5 @@
 const { app, BrowserWindow } = require("electron/main");
 const path = require("path");
-const fs = require("fs");
 const setupHandlers = require("./handlers.cjs");
 
 const isPackaged = app.isPackaged;
@@ -28,46 +27,7 @@ const createWindow = () => {
   }
 };
 
-function setupPrismaForPackagedApp() {
-  if (!app.isPackaged) return;
-
-  const resourcesPath = process.resourcesPath;
-  const unpackedRoot = path.join(resourcesPath, "node_modules");
-
-  const findEngine = (dir) => {
-    try {
-      const entries = fs.readdirSync(dir, { withFileTypes: true });
-      for (const e of entries) {
-        const full = path.join(dir, e.name);
-        if (e.isDirectory()) {
-          const found = findEngine(full);
-          if (found) return found;
-        } else {
-          if (/query-engine|prisma.*\\.node|\\.exe$/.test(e.name)) return full;
-        }
-      }
-    } catch (err) {}
-    return null;
-  };
-
-  let enginePath = findEngine(unpackedRoot);
-
-  if (enginePath) {
-    // set env var for binary-engine
-    process.env.PRISMA_QUERY_ENGINE_BINARY = enginePath;
-    // if you also need migration or introspection engines, set:
-    // process.env.PRISMA_MIGRATION_ENGINE_BINARY = pathToMigrationEngine
-    console.log("Prisma engine located at", enginePath);
-  } else {
-    console.warn(
-      "Prisma engine not found in packaged resources — Prisma might fail",
-    );
-  }
-}
-
 app.whenReady().then(() => {
-  setupPrismaForPackagedApp();
-
   setupHandlers();
 
   createWindow();
