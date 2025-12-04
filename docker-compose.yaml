@@ -1,0 +1,27 @@
+services:
+  electron-builder:
+    image: electronuserland/builder:wine
+    container_name: electron-windows-builder
+    working_dir: /project
+    volumes:
+      - .:/project
+      - electron-cache:/root/.cache/electron
+      - electron-builder-cache:/root/.cache/electron-builder
+    environment:
+      - ELECTRON_CACHE=/root/.cache/electron
+      - ELECTRON_BUILDER_CACHE=/root/.cache/electron-builder
+    command: >
+      sh -c "
+      echo 'Installing dependencies...' &&
+      yarn install &&
+      echo 'Generating Prisma client...' &&
+      yarn prisma generate &&
+      echo 'Building Vite...' &&
+      yarn build:vite &&
+      echo 'Building Electron app for Windows...' &&
+      yarn build:electron --win --x64
+      "
+
+volumes:
+  electron-cache:
+  electron-builder-cache:
