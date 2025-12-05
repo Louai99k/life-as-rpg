@@ -38,7 +38,16 @@
         "from": "sample-data.db",
         "to": "data.db"
       }
-    ]
+    ],
+    "mac": {
+      "icon": "public/icon.png"
+    },
+    "win": {
+      "icon": "public/icon.png"
+    },
+    "linux": {
+      "icon": "public/icon.png"
+    }
   },
   "dependencies": {
     "@heroui/react": "2.8.5",
