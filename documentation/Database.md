@@ -30,7 +30,7 @@ datasource db {
 
 ### Entity Relationship Diagram
 
-![[DB Model.excalidraw.png]]
+![Database Entity Relationship Diagram](DB%20Model.excalidraw.png)
 
 ## Model Definitions
 
