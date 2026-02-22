@@ -108,10 +108,6 @@ const MissionsTable = () => {
             {(item) => (
               <TableRow
                 onClick={() => {
-                  if (item.is_completed === 1) {
-                    return;
-                  }
-
                   setProgressModal(item);
                 }}
                 key={item.uid}

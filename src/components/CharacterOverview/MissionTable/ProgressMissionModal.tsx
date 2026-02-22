@@ -156,30 +156,37 @@ const ProgressMissionModal = ({
                 value={selectedGoals}
                 label="Goals:"
                 onValueChange={setSelectedGoals}
+                isDisabled={mission.is_completed === 1}
               >
                 {mission.goals.map((goal) => (
-                  <Checkbox key={goal.uid} value={goal.uid}>
+                  <Checkbox
+                    disabled={mission.is_completed === 1}
+                    key={goal.uid}
+                    value={goal.uid}
+                  >
                     {goal.description}
                   </Checkbox>
                 ))}
               </CheckboxGroup>
             </ModalBody>
             <ModalFooter>
-              <Button
-                size="sm"
-                color="primary"
-                isLoading={isLoading}
-                onPress={() => {
-                  progressMission({
-                    doneGoals: selectedGoals,
-                    uid: mission.uid,
-                  }).finally(() => {
-                    onClose();
-                  });
-                }}
-              >
-                Submit
-              </Button>
+              {mission.is_completed === 1 ? null : (
+                <Button
+                  size="sm"
+                  color="primary"
+                  isLoading={isLoading}
+                  onPress={() => {
+                    progressMission({
+                      doneGoals: selectedGoals,
+                      uid: mission.uid,
+                    }).finally(() => {
+                      onClose();
+                    });
+                  }}
+                >
+                  Submit
+                </Button>
+              )}
             </ModalFooter>
           </>
         )}
