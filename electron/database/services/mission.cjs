@@ -290,6 +290,15 @@ WHERE characters.uid = ${missionWithRelations.character_ref}
 `;
         }
         break;
+      case "lvl_points":
+        {
+          await client.$queryRaw`
+UPDATE characters
+SET lvl_points = lvl_points + ${reward.reward_amount}
+WHERE characters.uid = ${missionWithRelations.character_ref}
+`;
+        }
+        break;
       case "item":
         {
           const characterItem = await client.character_items.findFirst({

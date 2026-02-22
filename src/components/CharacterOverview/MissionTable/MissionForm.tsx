@@ -51,7 +51,10 @@ const RewardForm = ({ reward, editReward }: RewardFormProps) => {
     () => fetchData("magic", "findMany"),
   );
 
-  if (reward.reward_type === "money") {
+  if (
+    reward.reward_type === REWARD_TYPES.MONEY ||
+    reward.reward_type === REWARD_TYPES.LVL_POINTS
+  ) {
     return (
       <div className="max-w-xs">
         <NumberInput
@@ -67,7 +70,7 @@ const RewardForm = ({ reward, editReward }: RewardFormProps) => {
     );
   }
 
-  if (reward.reward_type === "item" && items) {
+  if (reward.reward_type === REWARD_TYPES.ITEM && items) {
     const selectedItem = items.find((i) => i.uid === reward.reward_uid);
     return (
       <div className="flex gap-4">
@@ -107,7 +110,7 @@ const RewardForm = ({ reward, editReward }: RewardFormProps) => {
     );
   }
 
-  if (reward.reward_type === "magic" && magic) {
+  if (reward.reward_type === REWARD_TYPES.MAGIC && magic) {
     const selectedMagic = magic.find((m) => m.uid === reward.reward_uid);
     return (
       <div className="flex gap-4">
@@ -145,7 +148,7 @@ const RewardForm = ({ reward, editReward }: RewardFormProps) => {
     );
   }
 
-  if (reward.reward_type === "skill" && skills) {
+  if (reward.reward_type === REWARD_TYPES.SKILL && skills) {
     const selectedSkill = skills.find((s) => s.uid === reward.reward_uid);
     return (
       <div className="flex gap-4">
@@ -330,11 +333,14 @@ const MissionForm = ({ onSubmit, submitRef, mission }: MissionFormProps) => {
                 }
               >
                 {Object.values(REWARD_TYPES).map((type) => (
-                  <SelectItem key={type}>{capitalize(type)}</SelectItem>
+                  <SelectItem key={type}>
+                    {capitalize(type.replace(/_/g, " "))}
+                  </SelectItem>
                 ))}
               </Select>
             </div>
             {reward.reward_type === REWARD_TYPES.MONEY ||
+            reward.reward_type === REWARD_TYPES.LVL_POINTS ||
             !reward.reward_type ? null : (
               <div className="mb-4">
                 <Textarea

@@ -51,6 +51,10 @@ const RewardItem = ({ reward, items, skills, magic }: RewardItemProps) => {
     );
   }
 
+  if (reward.reward_type === REWARD_TYPES.LVL_POINTS) {
+    return <Chip color="primary">LvL Points: {reward.reward_amount}</Chip>;
+  }
+
   if (reward.reward_type === REWARD_TYPES.SKILL) {
     return (
       <div>
