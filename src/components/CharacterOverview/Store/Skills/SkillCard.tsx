@@ -41,8 +41,12 @@ const SkillCard = ({
           {skill.avatar ? (
             <Image
               isZoomed
-              className="w-full h-card-height"
               src={skill.avatar}
+              classNames={{
+                wrapper:
+                  "w-full h-card-height overflow-hidden flex items-center",
+                img: "w-full h-full object-cover object-center min-h-full min-w-full",
+              }}
             />
           ) : (
             <div className="w-full h-card-height bg-zinc-700 rounded-medium" />
