@@ -9,6 +9,7 @@ import {
 } from "@heroui/react";
 import EditIcon from "@src/icons/EditIcon";
 import DeleteIcon from "@src/icons/DeleteIcon";
+import { Icon } from "@iconify/react";
 
 import type { MagicWithCharacterMagic } from "types/controllers/magic";
 
@@ -39,15 +40,21 @@ const MagicCard = ({
         {/* Avatar */}
         <div className="relative group cursor-pointer">
           {magic.avatar ? (
-            <Image
-              isZoomed
-              src={magic.avatar}
-              classNames={{
-                wrapper:
-                  "w-full h-card-height overflow-hidden flex items-center",
-                img: "w-full h-full object-cover object-center min-h-full min-w-full",
-              }}
-            />
+            magic.avatar.startsWith("https://") ? (
+              <Image
+                isZoomed
+                src={magic.avatar}
+                classNames={{
+                  wrapper:
+                    "w-full h-card-height overflow-hidden flex items-center",
+                  img: "w-full h-full object-cover object-center min-h-full min-w-full",
+                }}
+              />
+            ) : (
+              <div className="w-full h-card-height bg-zinc-700 rounded-medium items-center justify-center flex">
+                <Icon fontSize={64} icon={magic.avatar} />
+              </div>
+            )
           ) : (
             <div className="w-full h-card-height bg-zinc-700 rounded-medium" />
           )}
