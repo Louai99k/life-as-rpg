@@ -9,6 +9,7 @@ import {
 } from "@heroui/react";
 import EditIcon from "@src/icons/EditIcon";
 import DeleteIcon from "@src/icons/DeleteIcon";
+import { Icon } from "@iconify/react";
 
 import type { ItemWithCharacterItem } from "types/controllers/item";
 
@@ -41,15 +42,21 @@ const ItemCard = ({
         {/* Avatar */}
         <div className="relative group cursor-pointer">
           {item.avatar ? (
-            <Image
-              isZoomed
-              src={item.avatar}
-              classNames={{
-                wrapper:
-                  "w-full h-card-height overflow-hidden flex items-center",
-                img: "w-full h-full object-cover object-center min-h-full min-w-full",
-              }}
-            />
+            item.avatar.startsWith("https://") ? (
+              <Image
+                isZoomed
+                src={item.avatar}
+                classNames={{
+                  wrapper:
+                    "w-full h-card-height overflow-hidden flex items-center",
+                  img: "w-full h-full object-cover object-center min-h-full min-w-full",
+                }}
+              />
+            ) : (
+              <div className="w-full h-card-height bg-zinc-700 rounded-medium items-center justify-center flex">
+                <Icon fontSize={64} icon={item.avatar} />
+              </div>
+            )
           ) : (
             <div className="w-full h-card-height bg-zinc-700 rounded-medium" />
           )}
