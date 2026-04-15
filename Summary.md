@@ -1,0 +1,26 @@
+This is a solo tabletop game inspired by D&D, set within the Solo Urban Fantasy and LitRPG genres. In this setup, I act as both the Dungeon Master and the player, controlling one or more characters.
+
+Since childhood, I have envisioned what this game would look like, eventually drawing heavy inspiration from "isekai" animes and the series "Solo Leveling". While I spent years merely fantasizing about these scenarios, I only recently attempted to codify them into a solid system. My first attempt at formal rules fell apart quickly due to numerous bugs and balance issues. This current version represents my second iteration, designed to overcome the hurdles of the previous system.
+
+The setting is our mundane, modern Earth, adhering to all real-world physics and mechanics. However, fantasy elements have begun to integrate into our reality. A mysterious "System" selects certain individuals—including myself—as "Players", granting them access to virtual panels visible only to them. These players can grow in power, driven by the natural human desire to achieve their goals through strength.
+
+Previously, my sessions were just random scenarios playing out in my head. To make the experience more structured, I introduced three core mechanics: skills, magic, and items.
+
+**Skills** are based on real-world physical capabilities but enhanced to superhuman levels; for example, a speed skill could eventually allow a human to move like the Flash.
+
+**Magic**, conversely, is entirely supernatural and heavily inspired by anime aesthetics. Rather than a generic fireball, I envision techniques like those seen in Naruto Shippuden.
+
+Finally, there are **Items**, which provide specific abilities for combat, mobility, or utility. Unlike skills or magic, which are learned, items are primarily purchased or acquired by completing specific missions and meeting certain criteria.
+
+I also defined secondary mechanics such as player levels, experience points (XP), and level points used for upgrading **Skills** & **Magic**. I introduced **KI** power as a resource required for magic, whereas physical skills do not consume it. Furthermore, I developed details for enemies, power calculation formulas, and a "slot" mechanic to limit how many abilities can be used at once. To keep the experience unpredictable, I use oracle tables for random generation. A mission mechanic provides objectives that reward XP, currency, and gear. Since the setting is the real world without traditional dungeons, I created an "Altar" mechanic where players can train to improve their power.
+
+For logging, I use Obsidian. As a software engineer, I also developed a state management tool called "Life as RPG" and a random generator called "Oracle HTML" to handle missions, enemies, and random choices. My goal is to eventually merge these two custom tools into a single, cohesive application.
+
+The following were the major problems of my previous system:
+
+1. Regarding the issues with the previous system, the most prominent was the game's slow tempo. I spent significantly more time managing programs and organizing notes than actually playing. Having to manually log sessions in Obsidian while generating enemies and calculating stats created a tedious cycle that hindered the fun.
+2. The slot mechanic was also flawed. At higher levels, having 50 slots became overwhelming because I felt pressured to utilize every single one to survive the game's difficulty. Filling 50 slots was a massive time sink. In the new version, I want to limit the slots to four or five but introduce "Ability Sets". For instance, instead of one slot being used for a single minor technique, I could equip a "Sasuke Set" that grants access to his entire repertoire from the anime. I still need to define how these sets are generated and balanced.
+3. My state manager also had a minor technical issue where levels were not calculated automatically. I need the tool to automatically trigger a level-up and reset the XP bar once a threshold is reached, providing the rewards immediately without manual intervention.
+4. On a logical level, I struggled with power scaling. I lack a reference for what "Level 20 Speed" or "Level 100 Strength" actually looks like in real-world terms. Additionally, measuring KI consumption is difficult in a tabletop format; unlike a video game, there is no real-time clock to track resource depletion during a fight.
+5. One of the most frustrating problems involved **Requirements**. Previously, if a mission required a lock-picking skill or a specific elemental property, I had to subjectively decide if my current skills "seemed" to fit. I want a more systematic approach where every item, skill, and magic has defined properties. For example, an item must explicitly have a "Fire" tag to satisfy a fire-related mission. This removes the guesswork and ensures the game follows its own internal logic. Similarly, the "NERF" system—which applies penalties when certain conditions are met—relied too much on my personal opinion. By implementing the property system mentioned, I hope to make these triggers more objective and certain.
+6. Finally, the game's scaling was poorly balanced, requiring an impossible amount of grinding to progress or defeat enemies. I need to refine the scaling to be challenging but fair.
