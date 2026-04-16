@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        UID: ${HOST_UID:-1000}
+        GID: ${HOST_GID:-1000}
+    image: life-as-rpg-dev
+    volumes:
+      - .:/app
+      - cargo-cache:/usr/local/cargo/registry
+      - target-cache:/app/target
+    working_dir: /app
+    command: ["sleep", "infinity"]
+    environment:
+      - DISPLAY=${DISPLAY:-}
+    network_mode: host
+
+volumes:
+  cargo-cache:
+  target-cache:
