@@ -1,19 +1,25 @@
+FROM node:24-bookworm-slim AS node
+
 FROM rust:1.85-slim-bookworm
 
+COPY --from=node /usr/local/bin/ /usr/local/bin/
+COPY --from=node /usr/local/lib/node_modules/ /usr/local/lib/node_modules/
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libxkbcommon-dev \
-    libwayland-dev \
-    libegl1-mesa-dev \
-    libfontconfig-dev \
-    libx11-dev \
-    libxrandr-dev \
-    libxi-dev \
-    libxcursor-dev \
-    libxinerama-dev \
+    build-essential \
+    curl \
+    file \
+    libayatana-appindicator3-dev \
+    librsvg2-dev \
+    libssl-dev \
+    libwebkit2gtk-4.1-dev \
+    libxdo-dev \
     pkg-config \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
-RUN rustup component add clippy rustfmt
+RUN rustup component add clippy rustfmt && \
+    corepack enable
 
 ARG UID=1000
 ARG GID=1000

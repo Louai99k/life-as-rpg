@@ -2,13 +2,15 @@
 
 ## Repo type
 
-Game design docs + Rust/Iced desktop app. App implements the solo tabletop RPG system described in `Docs/`.
+Game design docs + Rust/Tauri desktop app. App implements the solo tabletop RPG system described in `Docs/`.
 
 ## Tech stack
 
 - **Language**: Rust (edition 2024)
-- **GUI framework**: Iced (Elm-like architecture, `iced` crate)
-- **State management**: Iced's `Sandbox` / `Application` traits
+- **Desktop framework**: Tauri 2
+- **Frontend**: React + TypeScript + Vite + Tailwind CSS
+- **Package manager**: Yarn 4 through Corepack
+- **State management**: Rust domain state behind serializable Tauri commands; React owns presentation state
 - **Serialization**: `serde` + `serde_json` or `ron` for save/load
 - **RNG**: `rand` crate for oracle rolls and dice
 
@@ -16,7 +18,7 @@ Game design docs + Rust/Iced desktop app. App implements the solo tabletop RPG s
 
 User writes all production code. Agent acts as:
 
-- Mentor: guide Rust syntax, borrow checker, Iced patterns, project structure
+- Mentor: guide Rust syntax, borrow checker, Tauri commands and IPC, frontend integration, project structure
 - Validator: review code for correctness, idiomatic Rust, make sure user writes with best practices, and consistency with `Docs/`
 - Test writer: write unit tests where appropriate
 - Doc keeper: update `Docs/` whenever app behavior diverges from or extends the design docs
@@ -51,18 +53,24 @@ docker compose exec app cargo clippy
 docker compose exec app cargo fmt --check
 docker compose exec app cargo fmt
 
+# Frontend commands become available after the frontend scaffold is added
+docker compose exec -w /app/frontend app yarn install
+docker compose exec -w /app/frontend app yarn dev
+
 # Or open a shell inside the container
 docker compose exec app bash
 ```
 
-## Project structure (Rust)
+## Project structure
 
-Standard Cargo project layout:
+Keep the game domain independent from Tauri. The root Cargo package is the
+framework-independent domain library. `src-tauri` is a thin desktop shell that
+depends on it; the React frontend communicates with that shell through typed,
+serializable command boundaries.
 
 ```
 src/
-  main.rs          # entrypoint, Iced app runner
-  app.rs           # Application/Sandbox impl, update/view
+  lib.rs           # domain library entrypoint
   state.rs         # Character state structs (level, XP, stats, Ki, money, etc.)
   abilities.rs     # Skill, Magic, AbilitySet, Item structs and logic
   missions.rs      # Mission, Goal, Encounter structs and generation
@@ -70,7 +78,16 @@ src/
   progression.rs   # Level-up, XP overflow, LP spend, Ki formula
   resolution.rs    # Resolution Score calculator, requirement checks, tags, NERF
   save.rs          # Serialization, save/load logic
+src-tauri/
+  src/
+    main.rs        # Tauri entrypoint
+    lib.rs         # commands, desktop lifecycle, and domain integration
+frontend/
+  src/             # React frontend after the frontend scaffold is added
 ```
+
+Tauri command arguments and return values are boundary DTOs. Do not expose
+Tauri types from the root domain crate or move game rules into command handlers.
 
 Build from core outward:
 
@@ -80,7 +97,8 @@ Build from core outward:
 4. Oracle / dice tools
 5. Resolution engine
 6. Mission generation
-7. Iced UI
+7. Tauri command boundary
+8. React UI
 
 ## Rust mentorship notes
 
@@ -89,8 +107,10 @@ Build from core outward:
 - Show `rustc --explain E####` for compiler error codes
 - Favor `derive` macros over manual trait impls unless performance or logic requires it
 - Use `enum` with payloads instead of unions or type flags (Rust idioms differ from JS/TS)
-- Iced follows Elm Architecture: `Message` enum, `update(&mut self, message)`, `view(&self)` — explain the closure-less event loop
-- `Rc<RefCell<>>` is not needed for Iced; state lives in the Application struct and `update` takes `&mut self`
+- Teach Tauri's process and IPC model before adding commands: the frontend invokes narrow Rust commands and receives serializable results
+- Keep Tauri command handlers thin; they validate boundary input, call the domain API, and translate domain errors for IPC
+- Do not use shared mutable state as a shortcut around domain ownership; introduce Tauri managed state only when desktop lifecycle requires it
+- Keep React components focused on rendering and interaction rather than duplicating game rules from Rust
 
 ## Doc-sync workflow
 

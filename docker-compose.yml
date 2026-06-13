@@ -10,10 +10,12 @@ services:
       - .:/app
       - cargo-cache:/usr/local/cargo/registry
       - target-cache:/app/target
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
     working_dir: /app
     command: ["sleep", "infinity"]
     environment:
       - DISPLAY=${DISPLAY:-}
+      - GDK_BACKEND=x11
     network_mode: host
 
 volumes:

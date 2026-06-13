@@ -3,3 +3,17 @@
 # Added by cargo
 
 /target
+
+# JavaScript / Yarn
+node_modules/
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Frontend and Tauri build output
+frontend/dist/
+src-tauri/target/
