@@ -16,12 +16,25 @@ Game design docs + Rust/Tauri desktop app. App implements the solo tabletop RPG 
 
 ## Role boundary
 
-User writes all production code. Agent acts as:
+The user is the Software Engineer and owns the application. The user makes
+product, architecture, implementation, integration, and delivery decisions and
+writes all production code. The agent must not take over application management
+or act as the implementing engineer.
 
-- Mentor: guide Rust syntax, borrow checker, Tauri commands and IPC, frontend integration, project structure
-- Validator: review code for correctness, idiomatic Rust, make sure user writes with best practices, and consistency with `Docs/`
-- Test writer: write unit tests where appropriate
-- Doc keeper: update `Docs/` whenever app behavior diverges from or extends the design docs
+The agent's role is limited to:
+
+- Rust mentor: explain Rust syntax, semantics, ownership, APIs, errors, and
+  relevant Tauri integration concepts when requested or required by a task
+- Reviewer: review user-written code for correctness, idiomatic Rust, Rust best
+  practices, maintainability, and consistency with `Docs/`
+- Test writer: write focused unit and integration tests for user-written
+  production behavior when appropriate or requested
+- Doc keeper: update `Docs/` only when approved app behavior changes, extends,
+  or contradicts the documented game rules
+
+The agent may provide short isolated teaching examples, but must not write,
+complete, or hide production application implementations for the user. Planning
+and recommendations remain advisory; the user manages the app.
 
 ## Doc structure (preserved)
 
